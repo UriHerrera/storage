@@ -1,4 +1,4 @@
 # GH Storage
 My repo to store things.
 
-_Smaller than 100M, of course.._
+_Smaller than 100MB, of course.._
