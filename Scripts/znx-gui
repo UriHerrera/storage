@@ -1,70 +1,91 @@
-#! /bin/sh	
+#! /bin/sh
 
 
- # -- Variables.	
+# -- Variables.
 
- TITLE=ZNX_GUI	
-STYLE=breeze	
-
- set -x	
+TITLE=znx-gui
+STYLE=breeze
 
 
- # -- Functions for the GUI.	
+# -- Functions for the GUI.
 
- alias ui="kdialog --title='$TITLE'"	
+ui="kdialog --title='$TITLE'"
 
- error () { ui --error "$@"; exit 1; }	
-notify () { ui --passivepopup "$@" 5; }	
-ask () { ui --yesno "$@"; }	
-as_root () { ui --password "Password:" | sudo -Sk $@; }	
+_e () { $ui --error "$@"; }
+notify () { $ui --passivepopup "$@" 5; }
+ask () { $ui --yesno "$@"; }
+as_root () { echo "$password" | sudo -Sk $@; }
 
- CMDS="init restore-esp deploy update revert remove clean reset stats"	
+select_command () {
+	$ui --combobox "Command to run:" \
+		init \
+		fix-esp \
+		deploy \
+		rename \
+		update \
+		check-update \
+		rollback \
+		reset \
+		clean \
+		remove \
+		status
+}
 
- select_command () { ui --combobox "Command to run:" $CMDS; }	
-select_device () { ui --combobox "Device:" $(lsblk -npdlo NAME); }	
-select_image () { ui --combobox "Image:" $(as_root znx list $DEVICE); }	
+select_device () { $ui --menu "Select device:" $(lsblk -npdlo NAME,MODEL); }
+select_image () { $ui --combobox "Select image:" $(as_root $ZNX_BIN list $1); }
 
- get_url () { ui --inputbox "File to deploy (URL or path):"; }	
-get_image () { ui --inputbox "Image name:"; }	
-
-
- # -- Wrappers for znx's commands.	
-
- _znx_gui_init () { as_root znx init $DEVICE; }	
-_znx_gui_restore () { as_root znx restore $DEVICE; }	
-_znx_gui_deploy () { as_root znx deploy $DEVICE $(get_image) $(eval echo $(get_url)); }	
-_znx_gui_update () { as_root znx update $DEVICE $(select_image); }	
-_znx_gui_revert () { as_root znx revert $DEVICE $(select_image); }	
-_znx_gui_remove () { as_root znx remove $DEVICE $(select_image); }	
-_znx_gui_clean () { as_root znx clean $DEVICE $(select_image); }	
-_znx_gui_reset () { as_root znx reset $DEVICE $(select_image); }	
-
- _znx_gui_stats () {	
-    TMP_FILE=$(mktemp)	
-    as_root znx stats $DEVICE $(select_image) > $TMP_FILE	
-    ui --textbox $TMP_FILE	
-    rm -rf $TMP_FILE	
-}	
+get_source () { $ui --inputbox "URL, directory or file to deploy:"; }
+get_image () { $ui --inputbox "Image name:"; }
 
 
- # -- Loop until the user closes the main window.	
+# -- Wrappers for znx's commands.
 
- while :; do	
+_init () { as_root $ZNX_BIN -y init $1; }
+_fix_esp () { as_root $ZNX_BIN fix-esp $1; }
+_deploy () { as_root $ZNX_BIN deploy $1 $(get_image) "$(get_source)"; }
+_rename () { as_root $ZNX_BIN rename $1 $(select_image $1) $(get_image); }
+_update () { as_root $ZNX_BIN update $1 $(select_image $1); }
+_check_update () { as_root $ZNX_BIN check-update $1 $(select_image $1); }
+_rollback () { as_root $ZNX_BIN rollback $1 $(select_image $1); }
+_reset () { as_root $ZNX_BIN -y reset $1 $(select_image $1); }
+_clean () { as_root $ZNX_BIN -y clean $1 $(select_image $1); }
+_remove () { as_root $ZNX_BIN -y remove $1 $(select_image $1); }
 
-     COMMAND=$(select_command)	
+_status () {
+	tmp=$(mktemp)
+	as_root $ZNX_BIN status $1 $(select_image $1) > $tmp
+	$ui --textbox $tmp
+	rm -rf $tmp
+}
 
-     [ ${#COMMAND} -gt 0 ] ||	
-        error "Operation cancelled."	
 
-     DEVICE=$(select_device)	
+#	Shortcut for enabling debugging.
 
-     notify "Please wait. You will be notified when the command finishes." &	
+[ "$1" = "-d" -o "$1" = "--debug" ] && {
+	set -x
+	shift
+}
 
-     _znx_gui_$COMMAND &&	
-        notify "Operation completed successfully." ||	
-        error "Operation failed!."	
 
-     ask "Do you want to perform another action?." ||	
-        exit	
+# -- Loop until the user closes the main window.
 
- done
+while :; do
+
+	password=$($ui --password "To proceed, type your password.")
+
+	cmd=$(select_command)
+
+	[ ${#cmd} -gt 0 ] ||
+		_e "Operation cancelled."
+
+	_$cmd $(select_device) && {
+		notify "Please wait. You will be notified when the command finishes." &
+		$ui --msgbox "Operation completed successfully."
+	} || {
+		_e "Operation failed!"
+	}
+
+	ask "Do you want to perform another action?" ||
+		exit
+
+done
