@@ -36,7 +36,7 @@ select_command () {
 		status
 }
 
-select_device () { $ui --menu "Select device:" $(lsblk -npdlo NAME,MODEL); }
+select_device () { $ui --menu "Select device:" $(lsblk -npdlo NAME,LABEL,MODEL); }
 select_image () { $ui --combobox "Select image:" $(as_root $ZNX_BIN list $1); }
 
 get_source () { $ui --inputbox "URL, directory or file to deploy:"; }
