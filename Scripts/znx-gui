@@ -3,7 +3,7 @@
 
 # -- Variables.
 
-TITLE=znx-gui
+TITLE=ZNX-GUI-dev
 STYLE=breeze
 
 
@@ -15,6 +15,11 @@ _e () { $ui --error "$@"; }
 notify () { $ui --passivepopup "$@" 5; }
 ask () { $ui --yesno "$@"; }
 as_root () { echo "$password" | sudo -Sk $@; }
+
+
+# -- Determine znx binary.
+
+ZNX_BIN=znx
 
 select_command () {
 	$ui --combobox "Command to run:" \
@@ -41,11 +46,11 @@ get_image () { $ui --inputbox "Image name:"; }
 # -- Wrappers for znx's commands.
 
 _init () { as_root $ZNX_BIN -y init $1; }
-_fix_esp () { as_root $ZNX_BIN fix-esp $1; }
+_fix-esp () { as_root $ZNX_BIN fix-esp $1; }
 _deploy () { as_root $ZNX_BIN deploy $1 $(get_image) "$(get_source)"; }
 _rename () { as_root $ZNX_BIN rename $1 $(select_image $1) $(get_image); }
 _update () { as_root $ZNX_BIN update $1 $(select_image $1); }
-_check_update () { as_root $ZNX_BIN check-update $1 $(select_image $1); }
+_check-update () { as_root $ZNX_BIN check-update $1 $(select_image $1); }
 _rollback () { as_root $ZNX_BIN rollback $1 $(select_image $1); }
 _reset () { as_root $ZNX_BIN -y reset $1 $(select_image $1); }
 _clean () { as_root $ZNX_BIN -y clean $1 $(select_image $1); }
