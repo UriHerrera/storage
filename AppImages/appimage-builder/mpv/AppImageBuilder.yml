@@ -1,14 +1,15 @@
 version: 1
 
-script:
-  - rm -r ./AppDir
+script: []
+  #- rm -r ./AppDir
   #- rm -r ./appimage-builder-cache
-  
+  #- rm ./*.AppImage
+
 AppDir:
   path: ./AppDir
 
   app_info:
-    id: mpv
+    id: mpv-fixed
     name: mpv
     icon: mpv
     version: 0.32.0
@@ -21,7 +22,7 @@ AppDir:
       - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu bionic-security main restricted universe multiverse'
       - sourceline: 'deb [arch=amd64] http://archive.ubuntu.com/ubuntu bionic-updates main restricted universe multiverse'
         key_url: 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3b4fe6acc0b21f32'
-      - sourceline: 'deb [arch=amd64] http://ppa.launchpad.net/mc3man/mpv-tests/ubuntu bionic main '
+      - sourceline: 'deb [arch=amd64] http://ppa.launchpad.net/mc3man/mpv-tests/ubuntu bionic main'
         key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x90bd7eaced8e640a'
     
     include:
