@@ -9,7 +9,7 @@ AppDir:
   path: ./AppDir
 
   app_info:
-    id: mpv-fixed
+    id: mpv
     name: mpv
     icon: mpv
     version: 0.32.0
