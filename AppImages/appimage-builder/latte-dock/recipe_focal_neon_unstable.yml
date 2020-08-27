@@ -317,7 +317,6 @@ AppDir:
       - libkf5runner5
       - libkf5screen-bin
       - libkf5screen7
-      - libkf5service-data
       - libkf5solid5
       - libkf5solid5-data
       - libkf5sonnet5-data
