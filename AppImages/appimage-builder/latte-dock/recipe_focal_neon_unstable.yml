@@ -1,9 +1,9 @@
 version: 1
 
-script: []
-  #- rm -r ./AppDir
-  #- rm -r ./appimage-builder-cache
-  #- rm ./*.AppImage
+script:
+  - rm -r $(pwd)/AppDir
+  - rm -r $(pwd)/appimage-builder-cache
+  - rm $(pwd)/*.AppImage
 
 AppDir:
   path: ./AppDir
