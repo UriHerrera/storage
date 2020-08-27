@@ -1,9 +1,7 @@
 version: 1
 
 script:
-  - rm -r $(pwd)/AppDir
-  - rm -r $(pwd)/appimage-builder-cache
-  - rm $(pwd)/*.AppImage
+  - rm -r $(pwd)/AppDir $(pwd)/appimage-builder-cache $(pwd)/*.AppImage
 
 AppDir:
   path: ./AppDir
