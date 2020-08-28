@@ -730,7 +730,7 @@ AppDir:
 
     env:
      PATH: $APPDIR/usr/bin
-     XDG_DATA_DIRS: $APPDIR/usr/share:$XDG_DATA_DIRS
+     XDG_DATA_DIRS: $APPDIR/share:$XDG_DATA_DIRS
      APPDIR_LIBRARY_PATH: $APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio
 
   files:
