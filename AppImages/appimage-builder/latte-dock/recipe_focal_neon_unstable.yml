@@ -36,6 +36,7 @@ AppDir:
       - qt5-style-kvantum
       - gstreamer1.0-plugins-base
       - gstreamer1.0-pulseaudio
+      - luv-icon-theme
 
     exclude:
       - adwaita-icon-theme
@@ -727,10 +728,12 @@ AppDir:
   runtime:
     path_mappings:
      - /usr/share/plasma/plasmoids/org.kde.latte.plasmoid/:$APPDIR/usr/share/plasma/plasmoids/org.kde.latte.plasmoid/
+     - /usr/share/plasma/plasmoids/org.kde.latte.containment/:$APPDIR/usr/share/plasma/plasmoids/org.kde.latte.containment/
+     - /usr/share/plasma/shells/org.kde.latte.shell/:$APPDIR/usr/share/plasma/shells/org.kde.latte.shell/
 
     env:
      PATH: $APPDIR/usr/bin
-     XDG_DATA_DIRS: $APPDIR/share:$XDG_DATA_DIRS
+     XDG_DATA_DIRS: $APPDIR/usr/share:$APPDIR/usr/share/plasma/shells/org.kde.latte.shell/:$APPDIR/usr/share/plasma/plasmoids/org.kde.latte.containment/:$APPDIR/usr/share/plasma/plasmoids/org.kde.latte.plasmoid/:$XDG_DATA_DIRS
      APPDIR_LIBRARY_PATH: $APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio
 
   files:
