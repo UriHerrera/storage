@@ -9,7 +9,7 @@ AppDir:
     id: latte-dock
     name: latte-dock
     icon: latte-dock
-    version: 0.9.11+p20.04+git20200911.0234-0
+    version: 0.9.11+p20.04+git20201027.0018-0
     exec: usr/bin/latte-dock
 
   apt:
@@ -35,6 +35,10 @@ AppDir:
       - nx-systemtray-applet
       - nx-simplemenu-applet
       - qt5-style-kvantum
+      - qml-module-org-kde-bluezqt
+      - plasma-vault
+      - kdeconnect
+      - bluedevil
 
     exclude:
       - adwaita-icon-theme
