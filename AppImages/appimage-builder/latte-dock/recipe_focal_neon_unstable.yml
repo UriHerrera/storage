@@ -503,6 +503,7 @@ AppDir:
     env:
      PATH: $APPDIR/usr/bin:$PATH
      APPDIR_LIBRARY_PATH: $APPDIR/usr/lib/x86_64-linux-gnu/:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio
+     XDG_DATA_DIRS: $APPDIR/usr/share:$XDG_DATA_DIRS
 
   files:
     exclude:
