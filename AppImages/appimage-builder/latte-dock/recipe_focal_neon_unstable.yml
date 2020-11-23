@@ -9,7 +9,7 @@ AppDir:
     id: latte-dock
     name: latte-dock
     icon: latte-dock
-    version: 0.9.11+p20.04+git20201027.0018-0
+    version: 0.9.11+p20.04+git20201120.0024
     exec: usr/bin/latte-dock
 
   apt:
@@ -39,6 +39,7 @@ AppDir:
       - plasma-vault
       - kdeconnect
       - bluedevil
+      - kup
 
     exclude:
       - adwaita-icon-theme
