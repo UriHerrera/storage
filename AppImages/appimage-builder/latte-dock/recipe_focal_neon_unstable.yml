@@ -44,6 +44,7 @@ AppDir:
       - kup
       - libdouble-conversion3
       - libicu66
+      - libfam0
 
     exclude:
       - adwaita-icon-theme
