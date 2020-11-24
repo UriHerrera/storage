@@ -43,6 +43,7 @@ AppDir:
       - bluedevil
       - kup
       - libdouble-conversion3
+      - libicu66
 
     exclude:
       - adwaita-icon-theme
@@ -231,7 +232,6 @@ AppDir:
       - libhx509-5-heimdal
       - libibus-1.0-5
       - libice6
-      - libicu66
       - libidn11
       - libidn2-0
       - libinput10
