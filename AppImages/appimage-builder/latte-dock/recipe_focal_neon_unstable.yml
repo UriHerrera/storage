@@ -1,3 +1,5 @@
+# Recipe for appimage-builder 0.79
+
 version: 1
 
 script: []
@@ -40,6 +42,7 @@ AppDir:
       - kdeconnect
       - bluedevil
       - kup
+      - libdouble-conversion3
 
     exclude:
       - adwaita-icon-theme
@@ -169,7 +172,6 @@ AppDir:
       - libdconf1
       - libdevmapper1.02.1
       - libdmtx0b
-      - libdouble-conversion3
       - libdvbpsi10
       - libdvdnav4
       - libdvdread7
