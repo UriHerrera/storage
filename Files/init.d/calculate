@@ -1,0 +1,213 @@
+#!/sbin/openrc-run
+# Copyright 2011-2016 Mir Calculate. http://www.calculate-linux.org
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
+CL_VIDEO_INSTALL=/usr/libexec/calculate/cl-video-install
+
+depend() {
+	need localmount root fsck modules
+	before keymaps consolefont dbus display-manager
+	use swap hostname
+	keyword -timeout -docker -systemd-nspawn -vserver
+}
+
+check_install_ability()
+{
+	local pkg=$1
+	FEATURES="-getbinpkg" FETCHCOMMAND=false DISTDIR=/usr/portage/distfiles emerge -fq $pkg &>/dev/null
+}
+
+is_already_install()
+{
+	local pkg=$1
+	local category=`echo $pkg | cut -d\/ -f1`
+	local pkg=`echo $pkg | cut -d\/ -f2`
+	local categoryPath=/var/db/pkg/${category}
+	[[ -e $categoryPath ]] && ls $categoryPath | grep -q "^$pkg"
+}
+
+install_pkg()
+{
+	local pkg=$1
+	ebegin "Installing $pkg"
+	FEATURES="-getbinpkg" FETCHCOMMAND=false DISTDIR=/usr/portage/distfiles emerge $pkg &>/dev/null
+}
+
+new_install_pkg()
+{
+	local pkg=$1
+	pkg=`echo $pkg | cut -d\/ -f2`
+	ebegin "Installing $pkg"
+	FETCHCOMMAND=false DISTDIR=/usr/portage/distfiles PKGDIR=/usr/portage/packages ${CL_VIDEO_INSTALL} $pkg &>/dev/null
+	eend $?
+}
+
+variable_value()
+{
+	local varname=$1
+	/usr/libexec/calculate/cl-variable --value $varname
+}
+
+install_video_driver()
+{
+	ebegin "Checking video drivers"
+	case `variable_value install.os_install_x11_video_drv` in
+		fglrx)
+			local drv="x11-drivers/ati-drivers"
+			;;
+		nvidia)
+			local nvidiamask=`variable_value install.os_nvidia_mask`
+			if [[ -n $nvidiamask ]]
+			then
+				[[ -d /etc/portage/package.mask ]] || mkdir /etc/portage/package.mask
+				echo $nvidiamask >/etc/portage/package.mask/nvidia
+			fi
+			local drv="x11-drivers/nvidia-drivers"
+			;;
+		*)
+			true
+			;;
+	esac
+	if [[ -n $drv ]]
+	then
+		if ! is_already_install $drv
+		then
+			if [[ -x ${CL_VIDEO_INSTALL} ]]
+			then
+				new_install_pkg $drv
+			else
+				check_install_ability $drv && install_pkg $drv
+			fi
+		fi
+		eend $?
+	else
+		eend 0
+	fi
+}
+
+# create user guest if system has not non-root user
+create_nonroot_user() {
+	if which cl-desktop &>/dev/null &&
+	  [[ -z $(variable_value install.cl_migrate_user | sed -r "s/[][,']|root//g") ]] &&
+		[[  `variable_value install.os_install_linux_system` != "server" ]]
+	then
+		# passwd of non root user
+		local nonroot_pw='$5$e/joOLXL$5GfArWgJx7BEcGqil3hTZoPGqWLRUUjCbzvl3gTWN75'
+		# name of  non root user
+		local nonroot_user="guest"
+		ebegin "Creating ${nonroot_user} user"
+		LANG=C useradd -p "${nonroot_pw}" \
+			--groups users,wheel,audio,cdrom,video,cdrw,usb,plugdev,games,lp,lpadmin,scanner,uucp \
+			${nonroot_user}
+		chmod 700 /home/${nonroot_user}
+		eend $?
+	fi
+}
+
+# create/update root profile
+configure_users() {
+	if which cl-desktop &>/dev/null
+	then
+		LANG=C cl-desktop root
+	fi
+}
+
+# setup alsautils astate
+setup_alsautils() {
+	if type alsactl &>/dev/null
+	then
+		local alsastatedir=/var/lib/alsa
+		local alsahomedir=/var/run/alsasound
+
+		checkpath -q -d -m 0700 -o root:root ${alsahomedir}
+
+		mkdir -p "${alsastatedir}"
+		LANG=C alsactl -E HOME="${alsahomedir}" -I -f "${alsastatedir}/asound.state" store
+	fi
+}
+
+restore_filecaps() {
+	if [[ -f /var/lib/calculate/filecaps ]] && type filecap &>/dev/null
+	then
+		while read line;
+		do
+			filecap $line
+		done </var/lib/calculate/filecaps
+	fi
+	rm -f /var/lib/calculate/filecaps
+}
+
+start() {
+	if rc-config list boot | grep -q -e "calculate " -e "calculate$"
+	then
+		local roottype=`variable_value main.os_root_type`
+		local subsystem=`variable_value main.os_subsystem`
+		local rootflash=`variable_value main.os_root_flash_dev`
+		[[ $subsystem == "lxc" ]] && restore_filecaps
+		if [[ $roottype != "livecd" ]] || grep "video:nvidia" /proc/cmdline &>/dev/null
+		then
+			install_video_driver
+		fi
+		setup_alsautils
+		LANG=C create_nonroot_user
+		if [[ $subsystem == "lxc" ]] || [[ $roottype == "livecd" ]]
+		then
+			LANG=C /usr/sbin/cl-core --method setup_system --no-progress --usenew-conf --live on --network on
+		else
+			LANG=C /usr/sbin/cl-core --method setup_system --no-progress --usenew-conf --live on
+		fi
+		LANG=C configure_users
+		[[ -n $rootflash ]] && mount -o remount,rw $rootflash
+
+		# reinit net.* services
+		local roottypeext=`variable_value main.os_root_type_ext`
+		if [[ $roottypeext == "nfs" ]]
+		then
+			touch /* /bin/* /sbin/*
+		fi
+
+		rc-update del calculate boot
+		# set en_US sort service order (make net.eth,net.br,net.wlan more preferable than NetworkManager)
+		LANG=en_US.utf8 /sbin/rc-update --update
+		udevadm control --reload
+		udevadm trigger --action="add" --subsystem-match=net
+
+		if ! [[ -f /var/calculate/server/ca/server.key ]]
+		then
+			LANG=C /usr/sbin/cl-core --bootstrap
+		fi
+
+		if [[ $roottype == "livecd" ]]
+		then
+			LANG=C /usr/sbin/cl-core -u guest
+		fi
+
+		if [[ $roottype == "hdd" ]]
+		then
+			/usr/sbin/cl-core --clear-localuser-cert
+			local distdir="/usr/portage/distfiles"
+			local pkgdir="/usr/portage/packages"
+			local video_script="/usr/local/sbin/cl-video-install"
+			local cache_video="/var/cache/calculate/video_drivers"
+			[[ -d "${distdir}" ]] && [[ -n "`ls ${distdir}`" ]] && rm ${distdir}/*
+			[[ -d "${pkgdir}" ]] && [[ -n "`ls ${pkgdir}`" ]] && rm -r ${pkgdir}/*
+			[[ -f "${video_script}" ]] && rm -f "${video_script}"
+			[[ -f "${cache_video}" ]] && rm -f "${cache_video}"
+		fi
+	else
+		ewarn "System already configured!"
+	fi
+
+	return 0
+}
