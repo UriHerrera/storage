@@ -11,7 +11,7 @@
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
 
 if(NOT TAGLIB_MIN_VERSION)
-  set(TAGLIB_MIN_VERSION "1.10.0")
+  set(TAGLIB_MIN_VERSION "1.12.0")
 endif(NOT TAGLIB_MIN_VERSION)
 
 if(NOT WIN32)
