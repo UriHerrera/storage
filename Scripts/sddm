@@ -1,0 +1,56 @@
+#! /bin/sh
+# kFreeBSD do not accept scripts as interpreters, using #!/bin/sh and sourcing.
+if [ true != "$INIT_D_SCRIPT_SOURCED" ] ; then
+    set "$0" "$@"; INIT_D_SCRIPT_SOURCED=true . /lib/init/init-d-script
+fi
+### BEGIN INIT INFO
+# Provides:          sddm
+# Should-Start:      dbus
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start SDDM
+# Description:       Script to start SDDM
+### END INIT INFO
+
+# Author: Rohan Garg <rohangarg@kubuntu.org>
+#
+
+# To start sddm even if it is not the default display manager, change
+# HEED_DEFAULT_DISPLAY_MANAGER to "false."
+# Also overridable from command line like:
+# HEED_DEFAULT_DISPLAY_MANAGER=false /etc/init.d/lightdm start
+[ -z "$HEED_DEFAULT_DISPLAY_MANAGER" ] && HEED_DEFAULT_DISPLAY_MANAGER=true
+
+DEFAULT_DISPLAY_MANAGER_FILE=/etc/X11/default-display-manager
+
+DESC="Init script for Simple Desktop Display Manager"
+DAEMON=/usr/bin/sddm
+START_ARGS='--background --make-pidfile'
+
+#
+# Function that starts the daemon/service
+#
+do_start_override()
+{
+	if grep -wqs text /proc/cmdline; then
+		log_warning_msg "Not starting Simple Desktop Display Manager ($NAME); found 'text' in kernel commandline."
+	elif [ "$HEED_DEFAULT_DISPLAY_MANAGER" = "true" ] \
+	    && [ -e $DEFAULT_DISPLAY_MANAGER_FILE ] \
+	    && [ "$(basename $(cat $DEFAULT_DISPLAY_MANAGER_FILE))" != \
+	         "$(basename $DAEMON)" ]; then
+		log_action_msg "Not starting Simple Desktop Display Manager ($NAME); it is not the default display manager."
+	else
+		[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+		# Wait for plymouth if running
+		[ -x /bin/plymouth ] && /bin/plymouth quit
+		call do_start_cmd
+		case "$?" in
+		  0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		  2)   [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+		esac
+	fi
+}
+
+:
