@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # Should be written with python-apt
 # but for now parse the output of apt-cache policy
@@ -27,7 +27,7 @@ for s in content:
 
 #Display the list
 for pkg in pkgList:
-  print pkg.name    + '\t'\
+  print(...) pkg.name    + '\t'\
       + pkg.version + '\t'\
       + pkg.origin  + '\t'\
       + pkg.suite
