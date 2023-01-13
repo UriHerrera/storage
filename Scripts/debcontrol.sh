@@ -1,6 +1,10 @@
+#! /bin/bash
+
+set -xe
+
 DEBFILE="$1"
-TMPDIR=`mktemp -d /tmp/deb.XXXXXXXXXX` || exit 1
-OUTPUT=`basename "$DEBFILE" .deb`.modfied.deb
+TMPDIR=$(mktemp -d /tmp/deb.XXXXXXXXXX) || exit 1
+OUTPUT=$(basename "$DEBFILE" .deb).modfied.deb
 
 if [[ -e "$OUTPUT" ]]; then
   echo "$OUTPUT exists."
@@ -20,10 +24,10 @@ fi
 
 CONTROL="$TMPDIR"/DEBIAN/control
 
-MOD=`stat -c "%y" "$CONTROL"`
+MOD=$(stat -c "%y" "$CONTROL")
 nano "$CONTROL"
 
-if [[ "$MOD" == `stat -c "%y" "$CONTROL"` ]]; then
+if [[ "$MOD" == $(stat -c "%y" "$CONTROL") ]]; then
   echo Not modfied.
 else
   echo Building new deb...
