@@ -27,7 +27,7 @@ for s in content:
 
 #Display the list
 for pkg in pkgList:
-  print(...) pkg.name    + '\t'\
+  print(pkg.name    + '\t'\
       + pkg.version + '\t'\
       + pkg.origin  + '\t'\
-      + pkg.suite
+      + pkg.suite)
