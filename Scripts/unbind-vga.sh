@@ -42,4 +42,6 @@ boot_vga_id=$(echo "$boot_vga" | grep -o "$vga_dev_drv_id")
 dev_drv_id=$(echo "$dev_drv" | cut -c5- | rev | cut -c1- | rev)
 echo "$boot_vga_id" > /sys/bus/pci/drivers/"$dev_drv_id"/unbind
 
-exit 0
+# -- Alternatively, end user session
+
+# pkill -u "$USER"
