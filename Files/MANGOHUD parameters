@@ -2,12 +2,16 @@ General:
 
 #   Install Flatpaks
 
-flatpak install -y --user com.github.tchx84.Flatseal com.valvesoftware.Steam.Utility.MangoHud org.freedesktop.Platform.VulkanLayer.MangoHud com.leinardi.gwe
+flatpak install -y --user \
+    com.github.tchx84.Flatseal \
+    com.valvesoftware.Steam.Utility.MangoHud \
+    org.freedesktop.Platform.VulkanLayer.MangoHud \
+    com.leinardi.gwe
 
 Steam 1.0.0.75:
 
 #   Add to "Launch Options" for each game
-#   Depending on the game use one of the following combinations (the last environment variable is for The Cycle:Frontier)
+#   Depending on the game use one of the following combinations (the last environment variable is for The Cycle:Frontier but it might be useful for other titles; it does not enable MangoHud though)
 
 MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
