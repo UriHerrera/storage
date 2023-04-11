@@ -1,27 +1,34 @@
-Steam:
+General:
+
+#   Install Flatpaks
+
+flatpak install -y --user com.github.tchx84.Flatseal com.valvesoftware.Steam.Utility.MangoHud org.freedesktop.Platform.VulkanLayer.MangoHud com.leinardi.gwe
+
+Steam 1.0.0.75:
 
 #   Add to "Launch Options" for each game
 #   Depending on the game use one of the following combinations
 
-MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun %command%
+MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
 MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime %command%
 
 WINEDLLOVERRIDES="DXGI.dll=n,b" PROTON_NO_ESYNC=1 MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun %command%
 
-PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr DXVK_ASYNC=1 PROTON_BATTLEYE_RUNTIME="/home/newacc/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/Proton BattlEye Runtime" %command% -nointro
+PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr DXVK_ASYNC=1 PROTON_BATTLEYE_RUNTIME="/home/uri/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/Proton BattlEye Runtime" %command% -nointro
 
-Heroic:
+Heroic 2.7.0:
 
 #   Select "Use GameMode" in game options
-#   Select "Enable Mangohud" in game options
+#   DO NOT Select "Enable Mangohud" in game options or HGL settings
 #   Create a new variable
 
 Variable Name       Value
 ENABLE_VKBASALT     1
+MANGOHUD            1
 MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime
 
-Bottles:
+Bottles: 51.5
 
 #   EA Play: Custom bottle (GE-Proton-7-47, dxvk-2.0-1-196fefe, vkd3d-proton-2.8.1, dxvk-nvapi-v0.6-1, latencyflex-v0.1.1)
 #   Installers > Click "EA Launcher" and wait until installation completes and login page appears
