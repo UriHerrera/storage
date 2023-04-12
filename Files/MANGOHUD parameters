@@ -15,9 +15,9 @@ Steam 1.0.0.75:
 #   Add to "Launch Options" for each game
 #   Depending on the game use one of the following combinations (the last environment variable is for The Cycle:Frontier but it might be useful for other titles; it does not enable MangoHud though)
 
-MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
-
 MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime %command%
+
+MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
 WINEDLLOVERRIDES="DXGI.dll=n,b" PROTON_NO_ESYNC=1 MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun %command%
 
@@ -41,11 +41,15 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 
 Bottles: 51.5
 
-#   EA Play: Custom bottle (GE-Proton-7-47, dxvk-2.0-1-196fefe, vkd3d-proton-2.8.1, dxvk-nvapi-v0.6-1, latencyflex-v0.1.1)
-#   Installers > Click "EA Launcher" and wait until installation completes and login page appears
-#   Bottle Preferences > Display configuration > Fullscreen Mouse Capture (check toggle)
+#   EA Play: Custom bottle (GE-Proton-7-48; download Proton-GE from Preferences > Runners)
+#   Bottle Preferences > Settings > Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
+#   Bottle Preferences > Display > Discrete Graphics should be automatically enabled
+#   Installers > Click "EA Launcher" and DO NOT change, edit, add, touch anything until the login window appears
+#   Programs should list: EA Client, EALauncher and EAUpdater; if ALL of these are not listed, delete the bottle and start over
+#   Bottle Preferences > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
 #   Bottle Preferences > Feral GameMode (check toggle)
 #   Bottle Preferences > Monitor performance [enable MangoHud] (check toggle)
+#   Bottle Preferences > Compatibility > Envrionment variables (add variables below)
 
 Variable Name       Value
 ENABLE_VKBASALT     1
