@@ -45,7 +45,7 @@ Bottles: 51.5
 #   Bottle Settings > Default seetings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
 #   Bottle Setiings > Display > Discrete Graphics should be automatically enabled
 #   Installers > Click "EA Launcher" and DO NOT change, edit, add, touch anything until the login window appears
-#   After completion, Programs should list: EA Client, EALauncher and EAUpdater; if ALL of these are not listed, delete the bottle and start over
+#   After completion, Programs should list: EA Client, EALauncher, and EAUpdater; all three should be there; if any is missing, delete the bottle and start over
 #   Bottle Setiings > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
 #   Bottle Setiings > Performance > Feral GameMode (check toggle)
 #   Bottle Setiings > Compatibility > Envrionment variables (add variables below)
