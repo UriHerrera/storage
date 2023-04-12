@@ -42,13 +42,13 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 Bottles: 51.5
 
 #   EA Play: Custom bottle (GE-Proton-7-48; download Proton-GE from Preferences > Runners)
-#   Bottle Preferences > Settings > Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
+#   Bottle Preferences > Settings > Default seetings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
 #   Bottle Preferences > Display > Discrete Graphics should be automatically enabled
 #   Installers > Click "EA Launcher" and DO NOT change, edit, add, touch anything until the login window appears
-#   Programs should list: EA Client, EALauncher and EAUpdater; if ALL of these are not listed, delete the bottle and start over
+#   After completion, Programs should list: EA Client, EALauncher and EAUpdater; if ALL of these are not listed, delete the bottle and start over
 #   Bottle Preferences > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
 #   Bottle Preferences > Feral GameMode (check toggle)
-#   Bottle Preferences > Monitor performance [enable MangoHud] (check toggle)
+#   Bottle Preferences > Monitor performance (check toggle)
 #   Bottle Preferences > Compatibility > Envrionment variables (add variables below)
 
 Variable Name       Value
