@@ -40,6 +40,7 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 
 
 Bottles: 51.5
+
 #   Download Proton-GE from Preferences > Runners
 #   EA Play: Custom bottle (Runner: GE-Proton-7-48, Architecture: 64-bit)
 #   Bottle Settings > Default settings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
