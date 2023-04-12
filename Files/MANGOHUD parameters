@@ -40,11 +40,26 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 
 
 Bottles: 51.5
-
-#   EA Play: Custom bottle (GE-Proton-7-48; download Proton-GE from Preferences > Runners)
-#   Bottle Settings > Default seetings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
+#   Download Proton-GE from Preferences > Runners
+#   EA Play: Custom bottle (Runner: GE-Proton-7-48, Architecture: 64-bit)
+#   Bottle Settings > Default settings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
 #   Bottle Setiings > Display > Discrete Graphics should be automatically enabled
 #   Installers > Click "EA Launcher" and DO NOT change, edit, add, touch anything until the login window appears
+#   After completion, Programs should list: EA Client, EALauncher, and EAUpdater; all three should be there; if any is missing, delete the bottle and start over
+#   Bottle Setiings > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
+#   Bottle Setiings > Performance > Feral GameMode (check toggle)
+#   Bottle Setiings > Compatibility > Envrionment variables (add variables below)
+#   DO NOT ENABLE Bottle Setiings > Monitor performance
+
+Variable Name       Value
+ENABLE_VKBASALT     1
+MANGOHUD            1
+MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime
+
+#   Ubi Connect: Custom bottle (Runner: GE-Proton-7-53, Architecture: 64-bit)
+#   Bottle Settings > Default settings should be: Runner: (GE-Proton-7-53, DXVK: (select if disabled) dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
+#   Bottle Setiings > Display > Discrete Graphics should be automatically enabled (enable it if not)
+#   Installers > Click "Ubisoft Connect" and DO NOT change, edit, add, touch anything else until the login window appears
 #   After completion, Programs should list: EA Client, EALauncher, and EAUpdater; all three should be there; if any is missing, delete the bottle and start over
 #   Bottle Setiings > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
 #   Bottle Setiings > Performance > Feral GameMode (check toggle)
