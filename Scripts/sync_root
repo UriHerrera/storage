@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source="/home/.nuts/squashfs"
+source="/home/.nuts/squashfs/"
 target="/"
 
 rsync \
