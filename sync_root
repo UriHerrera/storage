@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source="/home/.nuts/squashfs"
+target="/"
+
+rsync \
+    -aHAXr \
+    --exclude /proc/ \
+    --exclude /sys/ \
+    --exclude /dev/ \
+    --exclude /run/ \
+    --exclude /run/udev/ \
+    --exclude /sys/firmware/efi/efivars/ \
+    --progress \
+     "$source" "$target"
