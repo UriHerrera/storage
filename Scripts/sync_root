@@ -11,11 +11,7 @@ rsync \
     --exclude /run/ \
     --exclude /run/udev/ \
     --exclude /sys/firmware/efi/efivars/ \
-    --exclude /etc/shadow \
-    --exclude /etc/group \
-    --exclude /etc/gshadow \
-    --exclude /etc/subgid \
-    --exclude /etc/subuid \
+    --exclude /etc/ \
     --progress \
     --inplace \
      "$source" "$target"
