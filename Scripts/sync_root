@@ -12,6 +12,7 @@ rsync \
     --exclude /run/udev/ \
     --exclude /sys/firmware/efi/efivars/ \
     --exclude /etc/ \
+    --exclude /home/ \
     --progress \
     --inplace \
      "$source" "$target"
