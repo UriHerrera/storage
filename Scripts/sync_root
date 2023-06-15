@@ -13,6 +13,12 @@ rsync \
     --exclude /sys/firmware/efi/efivars/ \
     --exclude /etc/ \
     --exclude /home/ \
+    --exclude /media/ \
+    --exclude /mnt/ \
+    --exclude /root/ \
+    --exclude /srv/ \
+    --exclude /tmp/ \
+    --exclude /var/ \
     --progress \
     --inplace \
      "$source" "$target"
