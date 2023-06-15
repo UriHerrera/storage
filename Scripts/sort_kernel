@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd /boot || exit
+
+sorted_files=$(ls -t1 vmlinuz* initrd.img* System.map* config* 2>/dev/null)
+
+highest_version=$(echo "$sorted_files" | head -n1 | grep -oP '(\d+\.){2}\d+')
+
+for file in $sorted_files; do
+  version=$(echo "$file" | grep -oP '(\d+\.){2}\d+')
+  if [ "$version" != "$highest_version" ]; then
+    rm -f "$file"
+  fi
+done
