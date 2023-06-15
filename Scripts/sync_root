@@ -17,4 +17,5 @@ rsync \
     --exclude /etc/subgid \
     --exclude /etc/subuid \
     --progress \
+    --inplace \
      "$source" "$target"
