@@ -1,67 +1,94 @@
 #!/bin/bash
 
-# Function to print colored output
-print_color() {
-  local color=$1
-  shift
-  echo -e "\e[${color}m$@\e[0m"
-}
-
-# Function to search for firmware directories
-search_firmware() {
-  local vendor=$1
-  local firmware_dir=""
-
-  case $vendor in
-    "Intel Corporation") firmware_dir="/lib/firmware/i915";;
-    "NVIDIA Corporation") firmware_dir="/lib/firmware/nvidia";;
-    "Advanced Micro Devices, Inc. [AMD/ATI]") firmware_dir="/lib/firmware/amdgpu";;
-  esac
-
-  if [ -d "$firmware_dir" ]; then
-    echo "Firmware directory for vendor $vendor: $firmware_dir"
-  else
-    echo "Firmware directory not found for vendor: $vendor"
-  fi
-}
-
-# Enable xtrace if -d flag is provided
-if [ "$1" = "-d" ]; then
-  set -x
-fi
-
-# Execute lshw command and process the output
-lshw_output=$(lshw -c display -json)
-if [ $? -eq 0 ]; then
-  # Extract relevant information from lshw JSON output
-  devices=$(echo "$lshw_output" | jq -c '.[] | select(.class == "display")')
-
-  # Iterate through the devices
-  while IFS= read -r device; do
-    bus_info=$(echo "$device" | jq -r '.businfo')
-    vendor=$(echo "$device" | jq -r '.vendor')
-    product=$(echo "$device" | jq -r '.product' | tr '[:upper:]' '[:lower:]')
-    driver=$(echo "$device" | jq -r '.configuration.driver')
-
-    # Set color based on vendor
-    case $vendor in
-      "Intel Corporation") color_code="34";;
-      "NVIDIA Corporation") color_code="32";;
-      "Advanced Micro Devices, Inc. [AMD/ATI]") color_code="31";;
-      *) color_code="";;
+# Function to colorize text and get corresponding firmware directory
+colorize() {
+    local color=""
+    local firmware_dir=""
+    case "$1" in
+        "Advanced Micro Devices, Inc. [AMD/ATI]:")
+            color="\e[91m"  # Red color
+            firmware_dir="/usr/lib/firmware/amdgpu"
+            ;;
+        "ATI Technologies Inc")
+            color="\e[91m"  # Red color
+            firmware_dir="/usr/lib/firmware/radeon"
+            ;;
+        "Intel Corporation")
+            color="\e[94m"  # Blue color
+            firmware_dir="/usr/lib/firmware/i915"
+            ;;
+        "NVIDIA Corporation")
+            color="\e[92m"  # Green color
+            firmware_dir="/usr/lib/firmware/nvidia"
+            ;;
+        *)
+            color=""  # Default color
+            firmware_dir=""
+            ;;
     esac
+    echo -e "${color}$2\e[0m"
+    echo "$firmware_dir"
+}
 
-    # Print formatted output
-    print_color "$color_code" "Bus Info: $bus_info"
-    print_color "$color_code" "Vendor: $vendor"
-    print_color "$color_code" "Product: $product"
-    print_color "$color_code" "Driver: $driver"
+# Function to match pattern in the firmware directory
+match_pattern() {
+    local pattern="$1"
+    local firmware_dir="$2"
+    local matched_items=()
 
-    # Search for firmware directory
-    search_firmware "$vendor"
+    # Use find command to match the pattern in the firmware directory
+    while IFS= read -r -d '' item; do
+        matched_items+=("$item")
+    done < <(find "$firmware_dir" -type d -iname "*$pattern*" -print0)
+
+    if [[ ${#matched_items[@]} -gt 0 ]]; then
+        for item in "${matched_items[@]}"; do
+            echo "$item"
+        done
+    else
+        if [[ -d $firmware_dir ]]; then
+            echo "$firmware_dir"
+        else
+            echo "Directory does not exist: $firmware_dir"
+        fi
+    fi
+}
+
+
+# Run lshw with display class and store the result in a temporary file
+lshw -C display > lshw_output.txt
+
+# Get the number of display devices
+num_devices=$(grep -c "display" lshw_output.txt)
+
+# Iterate over each display device
+for ((i=0; i<num_devices; i++)); do
+    echo "Display Device $((i+1)):"
+    echo "-------------------"
+
+    # Extract vendor, product, bus info, and driver for the current device
+    vendor=$(awk -F': ' '/vendor:/{print $2}' lshw_output.txt | sed -n "$((i+1))p")
+    product=$(awk -F': ' '/product:/{print $2}' lshw_output.txt | sed -n "$((i+1))p" | awk '{print $1}' | sed 's/^[[:space:]]*//' | sed 's/[[:space:]]*$//')
+    businfo=$(awk -F': ' '/bus info:/{print $2}' lshw_output.txt | sed -n "$((i+1))p")
+    driver=$(awk -v n=$((i+1)) -F': ' '/driver/{gsub(/^[ \t]+|latency=[0-9]+|driver=/,"",$2); if (++c==n) print $2}' lshw_output.txt)
+
+    # Colorize the vendor based on the specified conditions and get the corresponding firmware directory
+    vendor_and_color=$(colorize "$vendor" "$vendor")
+    vendor="${vendor_and_color%$'\n'*}"
+    firmware_dir="${vendor_and_color#*$'\n'}"
+
+    # Print the extracted information for the current device
+    echo "Bus Info: $businfo"
+    echo "Product: $product"
+    echo "Vendor: $vendor"
+    echo "Driver: $driver"
+
+    # Match the pattern in the firmware directory
+    matched_item=$(match_pattern "$product" "$firmware_dir")
+    echo "Matched Item: $matched_item"
 
     echo
-  done <<< "$devices"
-else
-  echo "Error running lshw command"
-fi
+done
+
+# Remove the temporary file
+rm lshw_output.txt
