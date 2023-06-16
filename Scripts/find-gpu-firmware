@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Function to print colored output
+print_color() {
+  local color=$1
+  shift
+  echo -e "\e[${color}m$@\e[0m"
+}
+
+# Function to search for firmware directories
+search_firmware() {
+  local vendor=$1
+  local firmware_dir=""
+
+  case $vendor in
+    "Intel Corporation") firmware_dir="/lib/firmware/i915";;
+    "NVIDIA Corporation") firmware_dir="/lib/firmware/nvidia";;
+    "Advanced Micro Devices, Inc. [AMD/ATI]") firmware_dir="/lib/firmware/amdgpu";;
+  esac
+
+  if [ -d "$firmware_dir" ]; then
+    echo "Firmware directory for vendor $vendor: $firmware_dir"
+  else
+    echo "Firmware directory not found for vendor: $vendor"
+  fi
+}
+
+# Enable xtrace if -d flag is provided
+if [ "$1" = "-d" ]; then
+  set -x
+fi
+
+# Execute lshw command and process the output
+lshw_output=$(lshw -c display -json)
+if [ $? -eq 0 ]; then
+  # Extract relevant information from lshw JSON output
+  devices=$(echo "$lshw_output" | jq -c '.[] | select(.class == "display")')
+
+  # Iterate through the devices
+  while IFS= read -r device; do
+    bus_info=$(echo "$device" | jq -r '.businfo')
+    vendor=$(echo "$device" | jq -r '.vendor')
+    product=$(echo "$device" | jq -r '.product' | tr '[:upper:]' '[:lower:]')
+    driver=$(echo "$device" | jq -r '.configuration.driver')
+
+    # Set color based on vendor
+    case $vendor in
+      "Intel Corporation") color_code="34";;
+      "NVIDIA Corporation") color_code="32";;
+      "Advanced Micro Devices, Inc. [AMD/ATI]") color_code="31";;
+      *) color_code="";;
+    esac
+
+    # Print formatted output
+    print_color "$color_code" "Bus Info: $bus_info"
+    print_color "$color_code" "Vendor: $vendor"
+    print_color "$color_code" "Product: $product"
+    print_color "$color_code" "Driver: $driver"
+
+    # Search for firmware directory
+    search_firmware "$vendor"
+
+    echo
+  done <<< "$devices"
+else
+  echo "Error running lshw command"
+fi
