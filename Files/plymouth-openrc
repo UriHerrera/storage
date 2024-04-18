@@ -1,0 +1,63 @@
+#!/sbin/openrc-run
+
+# Service details
+name="Plymouth"
+description="Manage the Plymouth boot splash screen"
+
+# Configuration and state
+command="/usr/sbin/plymouthd"
+pidfile="/run/plymouth.pid"
+
+depend() {
+    need mountall
+    after bootmisc
+    keyword -shutdown
+}
+
+start_pre() {
+    SPLASH="true"
+    for ARGUMENT in $(cat /proc/cmdline); do
+        case "${ARGUMENT}" in
+            nosplash*|plymouth.enable=0)
+                SPLASH="false"
+                ;;
+        esac
+    done
+
+    if [ "${SPLASH}" = "false" ]; then
+        einfo "Plymouth splash disabled via kernel command line."
+        return 1
+    fi
+
+    if [ ! -x "${command}" ]; then
+        eerror "${command} is not executable"
+        return 1
+    fi
+}
+
+start() {
+    ebegin "Starting Plymouth splash"
+    start-stop-daemon --start --exec ${command} --pidfile ${pidfile} --background
+    eend $?
+}
+
+stop() {
+    ebegin "Stopping Plymouth splash"
+    if plymouth --ping; then
+        /usr/bin/plymouth quit --retain-splash
+    else
+        /usr/sbin/plymouthd --mode=shutdown
+        RUNLEVEL="$(/sbin/runlevel | cut -d " " -f 2)"
+        case "${RUNLEVEL}" in
+            0)
+                TEXT="Shutting down system..."
+                ;;
+            6)
+                TEXT="Restarting system..."
+                ;;
+        esac
+        /usr/bin/plymouth message --text="${TEXT}"
+        /usr/bin/plymouth --show-splash
+    fi
+    eend $?
+}
