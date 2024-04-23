@@ -2,20 +2,22 @@ General:
 
 #   Install Flatpaks
 
-flatpak install -y --user \
-    com.github.tchx84.Flatseal \
-    com.valvesoftware.Steam.Utility.MangoHud \
-    org.freedesktop.Platform.VulkanLayer.MangoHud \
-    com.leinardi.gwe
-
-
+flatpak install -y --user com.valvesoftware.Steam.Utility.MangoHud com.valvesoftware.Steam.Utility.gamescope org.freedesktop.Platform.VulkanLayer.MangoHud org.freedesktop.Platform.VulkanLayer.vkBasalt com.leinardi.gwe
 
 Steam 1.0.0.75:
 
-#   Add to "Launch Options" for each game
-#   Depending on the game use one of the following combinations (the last environment variable is for The Cycle:Frontier but it might be useful for other titles; it does not enable MangoHud though)
+#   Search for "runtime" and download all of them
+#   Add to "Launch Options"; depending on the game use one of the following combinations
 
-MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime %command%
+* Basic MangoHud parameters *
+
+MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,frametime %command%
+
+MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,pci_dev='0000\:03\:00.0' gamemoderun %command%
+
+* Game-specific MangoHud parameters *
+
+MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev='0000\:03\:00.0' %command% --use-d3d11
 
 MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
@@ -23,51 +25,63 @@ WINEDLLOVERRIDES="DXGI.dll=n,b" PROTON_NO_ESYNC=1 MANGOHUD=1 ENABLE_VKBASALT=1 M
 
 PROTON_ENABLE_NVAPI=1 VKD3D_CONFIG=dxr DXVK_ASYNC=1 PROTON_BATTLEYE_RUNTIME="/home/uri/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/Proton BattlEye Runtime" %command% -nointro
 
+WINE_DO_NOT_CREATE_DXGI_DEVICE_MANAGER=1 MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime gamemoderun %command%
 
+****************
+* Heroic 2.8.0 *
+****************
 
-Heroic 2.7.0:
-
-#   Go to Settings > Game defaults and check "Use GameMode"
-#   Go to Settings > Game defaults and add the following environment variables
-#   Use Wine Manager to download Proton-GE and Wine-GE
-#   DO NOT Select "Enable Mangohud" in game options or HGL settings
-
-Variable Name       Value
-ENABLE_VKBASALT     1
-MANGOHUD            1
-MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime
-
-
-
-Bottles: 51.5
-
-#   Download Proton-GE from Preferences > Runners
-#   EA Play: Custom bottle (Runner: GE-Proton-7-48, Architecture: 64-bit)
-#   Bottle Settings > Default settings should be: Runner: (GE-Proton-7-48, DXVK: dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
-#   Bottle Setiings > Display > Discrete Graphics should be automatically enabled
-#   Installers > Click "EA Launcher" and DO NOT change, edit, add, touch anything until the login window appears
-#   After completion, Programs should list: EA Client, EALauncher, and EAUpdater; all three should be there; if any is missing, delete the bottle and start over
-#   Bottle Setiings > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
-#   Bottle Setiings > Performance > Feral GameMode (check toggle)
-#   Bottle Setiings > Compatibility > Envrionment variables (add variables below)
-#   DO NOT ENABLE Bottle Setiings > Monitor performance
+#   Default values for games > Wine: Proton - Proton-GE-Proton-8-6
+#   Default values for games > Check "EasyAntiCheat Runtime"
+#   Default values for games > Check "BattleEye AntiCheat Runtime"
+#   Default values for games > Check "Enable Fsync"
+#   Default values for games > Check "Use GameMode"
+#   Default values for games > DO NOT Select "Enable Mangohud"
+#   Default values for games > Envrionment Variables > Add the variables below:
 
 Variable Name       Value
-ENABLE_VKBASALT     1
 MANGOHUD            1
-MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime
+MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
 
-#   Ubi Connect: Custom bottle (Runner: GE-Proton-7-53, Architecture: 64-bit)
-#   Bottle Settings > Default settings should be: Runner: (GE-Proton-7-53, DXVK: (select if disabled) dxvk-2.1-1-977669c, VK3D: Disabled, DXVK NVAPI: dxvk-nvapi-0.6.2-1)
-#   Bottle Setiings > Display > Discrete Graphics should be automatically enabled (enable it if not)
-#   Installers > Click "Ubisoft Connect" and DO NOT change, edit, add, touch anything else until the login window appears
-#   After completion, Programs should list: Ubisoft Connect
-#   Bottle Setiings > Display > Advanced Display Settings > Fullscreen Mouse Capture (check toggle) > Save
-#   Bottle Setiings > Performance > Feral GameMode (check toggle)
-#   Bottle Setiings > Compatibility > Envrionment variables (add variables below)
-#   DO NOT ENABLE Bottle Setiings > Monitor performance
+**************************************************************
+* Bottles: 51.6 - Plasma Wayland + Nvidia Proprietary Driver *
+**************************************************************
+
+#   EA Play: Gaming (preset)
+#   Installers > Click "EA Launcher" and wait until installation completes and login page appears
+#   Post-Install Settings > Runner: ge-proton8-14 | DXVK: dxvk-2.3 | VK3D: vkd3d-proton-2.9 | DXVK NVAPI: dxvk-nvapi-v0.6.3 | LatencyFlex: Disabled
+#   Bottle Preferences > Disable "Deep Learning Super Sampling" if GPU does not support it
+#   Bottle Preferences > Advanced Display Settings > Fullscreen Mouse Capture (check toggle)
+#   Bottle Preferences > Feral GameMode (check toggle)
+#   Bottle Preferences > Sync: Fsync
+#   Bottle Preferences > DO NOT ENABLE "Monitor Performance" it prevents executables from launching
+#   Bottle Preferences > Environment varaibles > Add the variables below:
 
 Variable Name       Value
-ENABLE_VKBASALT     1
-MANGOHUD            1
-MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime
+MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
+
+#   Steam: Gaming (preset)
+#   Installers > Click "Steam" and wait until installation completes and login page appears
+#   Post-Install Settings > Runner: wine-ge-proton8-14 | DXVK: dxvk-2.3 | VK3D: vkd3d-proton-2.9 | DXVK NVAPI: dxvk-nvapi-v0.6.3 | LatencyFlex: Disabled
+#   Bottle Preferences > Disable "Deep Learning Super Sampling" if GPU does not support it
+#   Bottle Preferences > Advanced Display Settings > Fullscreen Mouse Capture (check toggle)
+#   Bottle Preferences > Feral GameMode (check toggle)
+#   Bottle Preferences > Sync: Fsync
+#   Bottle Preferences > DO NOT ENABLE "Monitor Performance" it prevents executables from launching
+#   Bottle Preferences > Environment varaibles > Add the variables below:
+
+Variable Name       Value
+MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
+
+#   GOG: Gaming (preset)
+#   Installers > Click "GOG" and wait until installation completes and login page appears
+#   Post-Install Settings > Runner: wine-ge-proton8-14 | DXVK: dxvk-2.3 | VK3D: vkd3d-proton-2.9 | DXVK NVAPI: dxvk-nvapi-v0.6.3 | LatencyFlex: Disabled
+#   Bottle Preferences > Disable "Deep Learning Super Sampling" if GPU does not support it
+#   Bottle Preferences > Advanced Display Settings > Fullscreen Mouse Capture (check toggle)
+#   Bottle Preferences > Feral GameMode (check toggle)
+#   Bottle Preferences > Sync: Fsync
+#   Bottle Preferences > DO NOT ENABLE "Monitor Performance" it prevents executables from launching
+#   Bottle Preferences > Environment varaibles > Add the variables below:
+
+Variable Name       Value
+MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
