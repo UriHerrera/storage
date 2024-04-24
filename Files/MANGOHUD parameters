@@ -4,7 +4,9 @@ General:
 
 flatpak install -y --user com.valvesoftware.Steam.Utility.MangoHud com.valvesoftware.Steam.Utility.gamescope org.freedesktop.Platform.VulkanLayer.MangoHud org.freedesktop.Platform.VulkanLayer.vkBasalt com.leinardi.gwe
 
-Steam 1.0.0.75:
+********************
+* Steam 1709846872 *
+********************
 
 #   Search for "runtime" and download all of them
 #   Add to "Launch Options"; depending on the game use one of the following combinations
@@ -13,11 +15,9 @@ Steam 1.0.0.75:
 
 MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,frametime %command%
 
-MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,pci_dev='0000\:03\:00.0' gamemoderun %command%
-
 * Game-specific MangoHud parameters *
 
-MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev='0000\:03\:00.0' %command% --use-d3d11
+MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev='0000\:03\:00.0' gamemoderun %command% --use-d3d11
 
 MANGOHUD=1 ENABLE_VKBASALT=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
@@ -43,6 +43,10 @@ Variable Name       Value
 MANGOHUD            1
 MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
 
+#   Alternative configuration for MangoHud
+MANGOHUD_CONFIG     MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev=0000\:03\:00.0
+
+
 **************************************************************
 * Bottles: 51.6 - Plasma Wayland + Nvidia Proprietary Driver *
 **************************************************************
@@ -60,6 +64,10 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 Variable Name       Value
 MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
 
+#   Alternative configuration for MangoHud
+MANGOHUD_CONFIG     MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev=0000\:03\:00.0
+
+
 #   Steam: Gaming (preset)
 #   Installers > Click "Steam" and wait until installation completes and login page appears
 #   Post-Install Settings > Runner: wine-ge-proton8-14 | DXVK: dxvk-2.3 | VK3D: vkd3d-proton-2.9 | DXVK NVAPI: dxvk-nvapi-v0.6.3 | LatencyFlex: Disabled
@@ -73,6 +81,10 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 Variable Name       Value
 MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
 
+#   Alternative configuration for MangoHud
+MANGOHUD_CONFIG     MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev=0000\:03\:00.0
+
+
 #   GOG: Gaming (preset)
 #   Installers > Click "GOG" and wait until installation completes and login page appears
 #   Post-Install Settings > Runner: wine-ge-proton8-14 | DXVK: dxvk-2.3 | VK3D: vkd3d-proton-2.9 | DXVK NVAPI: dxvk-nvapi-v0.6.3 | LatencyFlex: Disabled
@@ -85,3 +97,7 @@ MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulk
 
 Variable Name       Value
 MANGOHUD_CONFIG     cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime
+
+
+#   Alternative configuration for MangoHud
+MANGOHUD_CONFIG     MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev=0000\:03\:00.0
