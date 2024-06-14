@@ -66,9 +66,9 @@ chartFace=org.kde.ksysguard.linechart
 showTitle=false
 
 [Face-95491140831216][SensorColors]
-gpu/gpu0/temp2=218,38,181
-gpu/gpu0/temp3=218,38,179
-gpu/gpu0/temperature=189,38,218
+gpu/gpu0/temp2=255,85,0
+gpu/gpu0/temp3=255,170,127
+gpu/gpu0/temperature=255,170,0
 
 [Face-95491140831216][Sensors]
 highPrioritySensorIds=["gpu/gpu0/temperature","gpu/gpu0/temp2","gpu/gpu0/temp3"]
