@@ -109,10 +109,11 @@ showTitle=false
 
 [Face-99966058387552][SensorColors]
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free=218,103,38
+disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used=38,115,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=143,38,218
 
 [Face-99966058387552][Sensors]
-highPrioritySensorIds=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent"]
+highPrioritySensorIds=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used"]
 totalSensors=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/name","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/total"]
 
 [Face-99966071418384][Appearance]
