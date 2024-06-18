@@ -64,9 +64,17 @@ disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/freePercent=0,170,127
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/read=218,38,45
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=38,218,198
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/write=38,73,218
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/free=148,38,218
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/freePercent=108,218,38
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/name=218,58,38
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/read=38,198,218
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/usedPercent=255,255,0
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/write=170,255,255
 
 [Face-95491160474704][Sensors]
-highPrioritySensorIds=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/freePercent","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/read","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/write"]
+highPrioritySensorIds=["disk/f1ac1db3-145f-4af0-868c-8016820449ad/freePercent","disk/f1ac1db3-145f-4af0-868c-8016820449ad/usedPercent","disk/f1ac1db3-145f-4af0-868c-8016820449ad/read","disk/f1ac1db3-145f-4af0-868c-8016820449ad/write"]
+lowPrioritySensorIds=[]
+totalSensors=[]
 
 [Face-95491203529280][Appearance]
 chartFace=org.kde.ksysguard.horizontalbars
@@ -111,10 +119,13 @@ showTitle=false
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free=218,103,38
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used=38,115,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=143,38,218
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/free=255,85,127
+disk/f1ac1db3-145f-4af0-868c-8016820449ad/used=170,85,255
 
 [Face-99966058387552][Sensors]
-highPrioritySensorIds=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used"]
-totalSensors=["disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/name","disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/total"]
+highPrioritySensorIds=["disk/f1ac1db3-145f-4af0-868c-8016820449ad/free","disk/f1ac1db3-145f-4af0-868c-8016820449ad/used"]
+lowPrioritySensorIds=[]
+totalSensors=["disk/f1ac1db3-145f-4af0-868c-8016820449ad/name","disk/f1ac1db3-145f-4af0-868c-8016820449ad/total"]
 
 [Face-99966071418384][Appearance]
 chartFace=org.kde.ksysguard.horizontalbars
