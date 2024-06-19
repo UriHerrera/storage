@@ -33,6 +33,12 @@ gpu/gpu0/memoryFrequency=214,38,218
 [Face-95491126365504][Sensors]
 highPrioritySensorIds=["gpu/gpu0/coreFrequency","gpu/gpu0/memoryFrequency"]
 
+[Face-95491126365504][org.kde.ksysguard.linechart][General]
+rangeAutoY=false
+rangeToY=2.6
+rangeToYMultiplier=1000
+rangeToYUnit=303
+
 [Face-95491132347248][Appearance]
 chartFace=org.kde.ksysguard.horizontalbars
 showTitle=false
