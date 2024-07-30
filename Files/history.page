@@ -48,9 +48,10 @@ cpu/cpu6/usage=218,38,141
 cpu/cpu7/usage=38,170,218
 cpu/cpu8/usage=218,38,128
 cpu/cpu9/usage=38,156,218
+cpu/cpu\\d+/usage=218,61,38
 
 [Face-106036407220112][Sensors]
-highPrioritySensorIds=["cpu/all/system","cpu/all/usage","cpu/all/user","cpu/all/wait"]
+highPrioritySensorIds=["cpu/all/system","cpu/all/user","cpu/all/wait"]
 
 [Face-106036414721728][Appearance]
 chartFace=org.kde.ksysguard.piechart
