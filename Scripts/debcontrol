@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -e
+
+# Check if the script is run with the correct number of arguments
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <deb_file>"
+    exit 1
+fi
+
+DEBFILE="$1"
+TMPDIR=$(mktemp -d /tmp/deb.XXXXXXXXXX) || { echo "Failed to create temporary directory."; exit 1; }
+OUTPUT=$(basename "$DEBFILE" .deb).modified.deb
+
+# Check if the input deb file exists
+if [ ! -f "$DEBFILE" ]; then
+    echo "Error: Deb file '$DEBFILE' not found."
+    exit 1
+fi
+
+# Check if the output deb file already exists
+if [ -e "$OUTPUT" ]; then
+  echo "Error: Output file '$OUTPUT' already exists."
+  rm -r "$TMPDIR"
+  exit 1
+fi
+
+# Extract the deb package
+dpkg-deb -x "$DEBFILE" "$TMPDIR"
+dpkg-deb --control "$DEBFILE" "$TMPDIR"/DEBIAN
+
+# Check if the control file was successfully extracted
+if [ ! -e "$TMPDIR"/DEBIAN/control ]; then
+  echo "Error: DEBIAN/control not found."
+  rm -r "$TMPDIR"
+  exit 1
+fi
+
+CONTROL="$TMPDIR"/DEBIAN/control
+
+# Store the modification time of the control file before editing
+MOD=$(stat -c "%y" "$CONTROL")
+
+# Open the control file for editing
+micro "$CONTROL"
+
+# Check if the control file was modified
+if [[ "$MOD" == $(stat -c "%y" "$CONTROL") ]]; then
+  echo "No changes were made."
+else
+  # Build the new deb package
+  echo "Building new deb..."
+  dpkg -b "$TMPDIR" "$OUTPUT"
+  echo "New deb package created: $OUTPUT"
+fi
+
+# Clean up temporary files
+rm -r "$TMPDIR"
