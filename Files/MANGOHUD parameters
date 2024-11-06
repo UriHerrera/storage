@@ -21,7 +21,7 @@ MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vr
 
 MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev='0000\:03\:00.0' gamemoderun %command% --vulkan
 
-ENABLE_VKBASALT=1 VKBASALT_CONFIG_FILE=~/.config/vkBasalt/vkBasalt.conf MANGOHUD=1 MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,gpu_junction_temp,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,gamemode,frametime,background_alpha=0.5,alpha=0.5,pci_dev='0000\:03\:00.0',position=middle-right gamemoderun %command% --use-d3d11
+LD_PRELOAD="/usr/lib/x86_64-linux-gnu/libgamemode.so.0 /usr/lib/x86_64-linux-gnu/libgamemodeauto.so.0" ENABLE_VKBASALT=1 VKBASALT_CONFIG_FILE=~/.config/vkBasalt/vkBasalt.conf MANGOHUD=1 MANGOHUD_CONFIG=alpha=0.5,background_alpha=0.5,cpu_mhz,cpu_power,cpu_temp,engine_version,frametime,gamemode,gpu_core_clock,gpu_fan,gpu_junction_temp,gpu_mem_clock,gpu_power,gpu_temp,pci_dev='0000\:03\:00.0',position=middle-right,ram,vkbasalt,vram,vulkan_driver,wine gamemoderun %command% --use-d3d11
 
 ENABLE_VKBASALT=1 VKBASALT_CONFIG_FILE=~/.config/vkBasalt/vkBasalt.conf MANGOHUD=1  MANGOHUD_CONFIG=cpu_temp,gpu_temp,gpu_core_clock,gpu_mem_clock,ram,vram,vulkan_driver,gpu_name,cpu_power,gpu_power,engine_version,cpu_mhz,vkbasalt,gamemode,frametime gamemoderun PROTON_EAC_RUNTIME=1 %command%
 
