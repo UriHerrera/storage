@@ -30,12 +30,12 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-102692600358080][SensorColors]
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/free=218,38,104
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/used=38,47,218
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free=218,38,104
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/used=38,47,218
 
 [Face-102692600358080][Sensors]
-highPrioritySensorIds=["disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/free","disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/used"]
-totalSensors=["disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/name","disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/total"]
+highPrioritySensorIds=["disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/used"]
+totalSensors=["disk/d6c5d6c2-246d-408b-b81c-79aae649d835/name","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/total"]
 
 [Face-102692627914400][Appearance]
 chartFace=org.kde.ksysguard.linechart
@@ -87,14 +87,14 @@ chartFace=org.kde.ksysguard.horizontalbars
 showTitle=false
 
 [Face-95491203529280][SensorColors]
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/free=218,38,135
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/freePercent=61,218,38
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/read=164,218,38
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/usedPercent=218,165,38
-disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/write=116,218,38
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free=218,38,135
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/freePercent=61,218,38
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/read=164,218,38
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/usedPercent=218,165,38
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/write=116,218,38
 
 [Face-95491203529280][Sensors]
-highPrioritySensorIds=["disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/freePercent","disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/usedPercent","disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/read","disk/d52ca44c-21d0-4d55-bf63-c218f1e1c11c/write"]
+highPrioritySensorIds=["disk/d6c5d6c2-246d-408b-b81c-79aae649d835/freePercent","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/usedPercent","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/read","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/write"]
 
 [Face-95491222971856][Appearance]
 chartFace=org.kde.ksysguard.horizontalbars
