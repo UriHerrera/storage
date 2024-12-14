@@ -16,7 +16,7 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-102692575119056][SensorColors]
-disk/00310e84-1eef-49cd-9f75-53aac5f772b4/free=38,218,141
+disk/00310e84-1eef-49cd-9f75-53aac5f772b4/free=255,170,127
 disk/00310e84-1eef-49cd-9f75-53aac5f772b4/total=171,38,218
 disk/00310e84-1eef-49cd-9f75-53aac5f772b4/used=38,218,196
 
@@ -30,8 +30,8 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-102692600358080][SensorColors]
-disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free=218,38,104
-disk/d6c5d6c2-246d-408b-b81c-79aae649d835/used=38,47,218
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free=38,203,218
+disk/d6c5d6c2-246d-408b-b81c-79aae649d835/used=255,85,127
 
 [Face-102692600358080][Sensors]
 highPrioritySensorIds=["disk/d6c5d6c2-246d-408b-b81c-79aae649d835/free","disk/d6c5d6c2-246d-408b-b81c-79aae649d835/used"]
@@ -60,16 +60,16 @@ chartFace=org.kde.ksysguard.horizontalbars
 showTitle=false
 
 [Face-95491160474704][SensorColors]
+disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/freePercent=0,170,127
+disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/read=218,38,45
+disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=38,218,198
+disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/write=38,73,218
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/free=218,58,38
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/freePercent=148,38,218
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/name=108,218,38
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/read=38,198,218
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/usedPercent=218,152,38
 disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/write=38,195,218
-disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/freePercent=0,170,127
-disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/read=218,38,45
-disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=38,218,198
-disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/write=38,73,218
 disk/f1ac1db3-145f-4af0-868c-8016820449ad/free=148,38,218
 disk/f1ac1db3-145f-4af0-868c-8016820449ad/freePercent=108,218,38
 disk/f1ac1db3-145f-4af0-868c-8016820449ad/name=218,58,38
@@ -122,13 +122,13 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-99966058387552][SensorColors]
-disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/free=38,203,218
-disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/total=218,58,38
-disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/used=38,210,218
-disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/usedPercent=38,198,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free=218,103,38
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used=38,115,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/usedPercent=143,38,218
+disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/free=38,203,218
+disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/total=218,58,38
+disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/used=85,255,0
+disk/f0b8d2e6-7e3c-42ee-8701-b2b7513940d5/usedPercent=38,198,218
 disk/f1ac1db3-145f-4af0-868c-8016820449ad/free=255,85,127
 disk/f1ac1db3-145f-4af0-868c-8016820449ad/used=170,85,255
 
