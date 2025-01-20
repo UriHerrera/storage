@@ -180,7 +180,7 @@ isSeparator=false
 name=section-0
 
 [page][row-2]
-Title=NX_HOME
+Title=NX_ROOT
 heightMode=minimum
 isTitle=true
 name=row-2
@@ -212,7 +212,7 @@ isSeparator=false
 name=section-0
 
 [page][row-4]
-Title=NX_ROOT
+Title=NX_HOME
 heightMode=minimum
 isTitle=true
 name=row-4
