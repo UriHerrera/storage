@@ -1,0 +1,211 @@
+#!/usr/bin/env sh
+
+#############################################################################################################################################################################
+#   The license used for this file and its contents is: BSD-3-Clause                                                                                                        #
+#                                                                                                                                                                           #
+#   Copyright <2025> <Uri Herrera <uri_herrera@nxos.org>>                                                                                                                   #
+#                                                                                                                                                                           #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:                          #
+#                                                                                                                                                                           #
+#    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.                                        #
+#                                                                                                                                                                           #
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer                                      #
+#       in the documentation and/or other materials provided with the distribution.                                                                                         #
+#                                                                                                                                                                           #
+#    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software                    #
+#       without specific prior written permission.                                                                                                                          #
+#                                                                                                                                                                           #
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,                      #
+#    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS                  #
+#    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                 #
+#    GOODS OR SERVICES; LOSS OF USE, DATA,   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,                      #
+#    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   #
+#############################################################################################################################################################################
+
+
+# -- Exit on errors.
+
+set -e
+
+
+# -- Set program name and version.
+
+TOOL_NAME="Install Guix (Binary)"
+GUIX_VERSION="1.4.0"
+
+
+# -- Print informative messages to stderr.
+
+puts_info() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[34mInfo:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print success messages to stderr.
+
+puts_success() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[32mSuccess:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print error messages to stderr.
+
+puts_error() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[31mError:\e[0m %b\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print messages or text using multiple lines to stderr.
+
+print_message() {
+	if [ $# -eq 0 ]; then
+		printf "\n" >&2
+	else
+		printf "%s\n" "$@" >&2
+	fi
+}
+
+
+# -- Print warning messages to stderr.
+
+puts_warning() {
+    if [ -n "$1" ]; then
+        printf "%s: \e[33mWarning:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+    fi
+}
+
+
+# -- Variables.
+
+GUIX_ARCHIVE="guix-binary-${GUIX_VERSION}.x86_64-linux.tar.xz"
+DOWNLOAD_URL="https://ftp.gnu.org/gnu/guix/${GUIX_ARCHIVE}"
+INSTALL_DIR="$HOME/.local/guix"
+GUIX_WRAPPER_PATH="$HOME/.local/bin/guix"
+DAEMON_SOCKET="$HOME/.guix-daemon/socket"
+ZSHRC_FILE="$HOME/.zshrc"
+
+
+#   ====== START ======
+
+# -- Check if proot is installed.
+
+if ! command -v proot >/dev/null 2>&1; then
+	puts_error "proot is required but not installed. Please install it and re-run this script."
+	exit 1
+fi
+
+# -- Check if Guix is already installed.
+
+if [ -d "$INSTALL_DIR/gnu" ]; then
+	puts_warning "Guix appears to already be installed at $INSTALL_DIR — skipping extraction"
+else
+	puts_info "Downloading GNU Guix $GUIX_VERSION"
+
+	[ -f "$GUIX_ARCHIVE" ] || curl -L "$DOWNLOAD_URL" -o "$GUIX_ARCHIVE"
+
+	puts_info "Extracting Guix to $INSTALL_DIR"
+
+	mkdir -p "$INSTALL_DIR"
+	tar -xf "$GUIX_ARCHIVE"
+	mv gnu "$INSTALL_DIR/gnu"
+	mv var "$INSTALL_DIR/var"
+fi
+
+
+# -- Create a user profile for Guix.
+
+puts_info "Creating user profile and symlinks"
+
+mkdir -p "$HOME/.config/guix"
+mkdir -p "$HOME/.guix-profile"
+ln -sf "$INSTALL_DIR/gnu/store" "$HOME/.guix-profile/store"
+
+
+puts_info "Locating extracted Guix binary"
+
+GUIX_BIN="$(find "$INSTALL_DIR/gnu/store" -type f -name guix -executable | grep '/bin/guix$' | head -n1)"
+GUIX_DAEMON_BIN="$(find "$INSTALL_DIR/gnu/store" -type f -name guix-daemon -executable | head -n1)"
+
+if [ -z "$GUIX_BIN" ] || [ -z "$GUIX_DAEMON_BIN" ]; then
+	puts_error "Guix binary or daemon not found after extraction"
+	exit 1
+fi
+
+puts_info "Starting guix-daemon in user mode"
+mkdir -p "$(dirname "$DAEMON_SOCKET")"
+pkill -f "$GUIX_DAEMON_BIN" 2>/dev/null || true
+
+proot -b "$INSTALL_DIR/gnu:/gnu" "$GUIX_DAEMON_BIN" \
+	--disable-chroot \
+	--substitute-urls="https://ci.guix.gnu.org" \
+	--listen="$DAEMON_SOCKET" &
+
+sleep 3
+
+
+puts_info "Running 'guix pull' in proot with custom daemon socket"
+
+GUIX_DAEMON_SOCKET="$DAEMON_SOCKET" \
+GUIX_LOCPATH="$HOME/.guix-profile/lib/locale" \
+proot -b "$INSTALL_DIR/gnu:/gnu" "$GUIX_BIN" pull
+
+
+puts_info "Running 'guix pull' in proot to simulate /gnu mount"
+
+proot -b "$INSTALL_DIR/gnu:/gnu" "$GUIX_BIN" pull
+
+
+# -- Add Guix paths to Zsh profile.
+
+puts_info "Adding Guix to Zsh profile"
+
+if ! grep -q 'guix/current/bin' "$ZSHRC_FILE"; then
+	cat <<EOF >> "$ZSHRC_FILE"
+
+# Guix environment setup
+export PATH="\$HOME/.config/guix/current/bin:\$PATH"
+EOF
+	puts_info "Guix path added to $ZSHRC_FILE"
+else
+	puts_warning "Guix environment block already present in $ZSHRC_FILE"
+fi
+
+
+# -- Create wrapper script.
+
+puts_info "Creating Guix wrapper at $GUIX_WRAPPER_PATH"
+
+mkdir -p "$(dirname "$GUIX_WRAPPER_PATH")"
+
+cat <<'EOF' > "$GUIX_WRAPPER_PATH"
+#!/bin/sh
+export GUIX_DAEMON_SOCKET="$HOME/.guix-daemon/socket"
+export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+exec proot -b "$HOME/.local/guix/gnu:/gnu" "$HOME/.config/guix/current/bin/guix" "$@"
+EOF
+
+chmod +x "$GUIX_WRAPPER_PATH"
+
+
+# -- Ensure ~/.local/bin is in PATH.
+
+if ! grep -q "export PATH=\"\$HOME/.local/bin:\$PATH\"" "$ZSHRC_FILE"; then
+	puts_info "Adding ~/.local/bin to PATH in $ZSHRC_FILE"
+	echo "export PATH=\"\$HOME/.local/bin:\$PATH\"" >> "$ZSHRC_FILE"
+fi
+
+
+# -- Cleanup.
+
+[ -f "$GUIX_ARCHIVE" ] && rm -f "$GUIX_ARCHIVE"
+
+puts_success "Guix is ready at $INSTALL_DIR"
+puts_info "Restarting shell to apply environment variables"
+
+exec zsh

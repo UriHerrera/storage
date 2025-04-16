@@ -1,0 +1,160 @@
+#!/usr/bin/env sh
+
+#############################################################################################################################################################################
+#   The license used for this file and its contents is: BSD-3-Clause                                                                                                        #
+#                                                                                                                                                                           #
+#   Copyright <2025> <Uri Herrera <uri_herrera@nxos.org>>                                                                                                                   #
+#                                                                                                                                                                           #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:                          #
+#                                                                                                                                                                           #
+#    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.                                        #
+#                                                                                                                                                                           #
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer                                      #
+#       in the documentation and/or other materials provided with the distribution.                                                                                         #
+#                                                                                                                                                                           #
+#    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software                    #
+#       without specific prior written permission.                                                                                                                          #
+#                                                                                                                                                                           #
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,                      #
+#    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS                  #
+#    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                 #
+#    GOODS OR SERVICES; LOSS OF USE, DATA,   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,                      #
+#    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   #
+#############################################################################################################################################################################
+
+
+# -- Exit on errors.
+
+set -e
+
+
+# -- Set program name and version.
+
+TOOL_NAME="Uninstall Guix (Binary)"
+
+
+# -- Print informative messages to stderr.
+
+puts_info() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[34mInfo:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print success messages to stderr.
+
+puts_success() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[32mSuccess:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print error messages to stderr.
+
+puts_error() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[31mError:\e[0m %b\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print messages or text using multiple lines to stderr.
+
+print_message() {
+	if [ $# -eq 0 ]; then
+		printf "\n" >&2
+	else
+		printf "%s\n" "$@" >&2
+	fi
+}
+
+
+# -- Print warning messages to stderr.
+
+puts_warning() {
+    if [ -n "$1" ]; then
+        printf "%s: \e[33mWarning:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+    fi
+}
+
+
+# -- Functions
+
+remove_dir() {
+	TARGET="$1"
+	if [ -d "$TARGET" ]; then
+		puts_info "Removing $TARGET"
+		rm -rf "$TARGET" 2>/dev/null || sudo rm -rf "$TARGET" || puts_warning "Failed to remove $TARGET"
+	fi
+}
+
+
+# -- Variables
+
+ZSHRC_FILE="$HOME/.zshrc"
+GUIX_WRAPPER_PATH="$HOME/.local/bin/guix"
+
+
+#   ====== START ======
+
+
+# -- Stop user-mode guix-daemon
+
+puts_info "Stopping any running guix-daemon processes"
+pkill -f guix-daemon 2>/dev/null || true
+
+
+# -- Remove Guix directories
+
+remove_dir "$HOME/.local/guix"
+remove_dir "$HOME/.guix-profile"
+remove_dir "$HOME/.config/guix"
+remove_dir "$HOME/.guix-daemon"
+
+
+# -- Remove PATH export block for ~/.config/guix/current/bin
+
+puts_info "Removing Guix PATH entry from $ZSHRC_FILE"
+if grep -q '# Guix environment setup' "$ZSHRC_FILE"; then
+	sed -i '/# Guix environment setup/,+2d' "$ZSHRC_FILE"
+	puts_info "Guix PATH entry removed from $ZSHRC_FILE"
+else
+	puts_warning "Guix PATH entry not found in $ZSHRC_FILE"
+fi
+
+# -- Remove wrapper
+
+puts_info "Removing Guix wrapper script"
+
+if [ -f "$GUIX_WRAPPER_PATH" ]; then
+	rm -f "$GUIX_WRAPPER_PATH"
+	puts_info "Removed $GUIX_WRAPPER_PATH"
+else
+	puts_warning "Wrapper script not found"
+fi
+
+
+# -- Remove ~/.local/bin PATH entry if present
+
+puts_info "Removing ~/.local/bin PATH entry from $ZSHRC_FILE"
+
+if grep -q "export PATH=\"\$HOME/.local/bin:\$PATH\"" "$ZSHRC_FILE"; then
+	sed -i "/export PATH=\"\\\$HOME\/.local\/bin:\\\$PATH\"/d" "$ZSHRC_FILE"
+	puts_info "Removed ~/.local/bin PATH entry"
+else
+	puts_warning "$HOME/.local/bin PATH entry not found"
+fi
+
+
+# -- Remove leftover Guix archive
+
+puts_info "Cleaning up any leftover archive files"
+
+rm -f guix-binary-*.tar.xz
+
+puts_success "Guix has been uninstalled from your user environment."
+puts_info "Restarting shell to apply environment variables"
+
+exec zsh
