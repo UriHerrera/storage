@@ -1,0 +1,77 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: index
+  version: 4.0.0+p22.04+vstable+git20241108.0240-0
+  binarypath: /usr/bin/index
+  distrorepo:
+    - distro: ubuntu
+      release: jammy
+      arch: amd64
+      components:
+          - main
+          - universe
+    - distro: kde-neon
+      release: jammy
+      arch: amd64
+  deps:
+    - index
+    - kf6-kcoreaddons
+    - kf6-ki18n
+    - kf6-kio
+    - libmauikit
+    - libmauikitfilebrowsing4
+    - qml6-module-org-mauikit-accounts
+    - qml6-module-org-mauikit-documents
+    - qml6-module-org-mauikit-filebrowsing
+    - qml6-module-org-mauikit-texteditor
+    - qt6-base
+    - qt6-declarative
+    - qml6-module-org-maui-mauikit
+    - kf6-solid
+    - kf6-kconfig
+    - kf6-kservice
+    - kf6-kwindowsystem
+    - kf6-kcrash
+    - kf6-kauth
+    - libmauiman
+    - kf6-knotifications
+    - libopengl0
+    - libmd4c0
+    - libicu70
+    - kf6-kitemviews
+    - qt6-5compat
+    - kf6-kiconthemes
+    - kf6-kbookmarks
+    - kf6-kcompletion
+    - kf6-kconfigwidgets
+    - kf6-kcolorscheme
+    - kf6-kguiaddons
+    - kf6-kwidgetsaddons
+    - libimobiledevice6
+    - libplist3
+    - libxcb-res0
+    - libxcb-keysyms1
+  runtime: uruntime
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/index"
+  envvars:
+    QT_QPA_PLATFORM: "wayland;xcb"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
+    SESSION_MANAGER: ""
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+  prebuild_commands:
+    - "rm -f $APPDIR/usr/share/metainfo/org.kde.index.appdata.xml"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui
