@@ -39,6 +39,7 @@ buildinfo:
     - kf6-ki18n
     - kf6-kiconthemes
     - kf6-kio
+    - kf6-kirigami
     - kf6-kitemviews
     - kf6-kjobwidgets
     - kf6-knotifications
@@ -51,7 +52,10 @@ buildinfo:
     - kf6-kxmlgui
     - kf6-purpose
     - kf6-solid
+    - libasound2
+    - libasyncns0
     - libcanberra0
+    - libflac8
     - libicu70
     - libimobiledevice6
     - libkirigami6
@@ -68,8 +72,10 @@ buildinfo:
     - libmauiman
     - libmd4c0
     - libogg0
+    - libogg0
     - libopengl0
     - libplist3
+    - libpulse0
     - libqca-qt6-2
     - libqca-qt6-2-plugins
     - libqca-qt6-plugins
@@ -100,6 +106,7 @@ buildinfo:
     - libqt6widgets6
     - libqt6wlshellintegration6
     - libqt6xml6
+    - libsndfile1
     - libtdb1
     - libusbmuxd6
     - libvorbis0a
@@ -110,20 +117,6 @@ buildinfo:
     - libxcb-keysyms1
     - libxcb-res0
     - qml6-module-org-kde-kaccounts
-    - qml6-module-qt-labs-folderlistmodel
-    - qml6-module-qt-labs-platform
-    - qml6-module-qt-labs-qmlmodels
-    - qml6-module-qt-labs-settings
-    - qml6-module-qt5compat-graphicaleffects
-    - qml6-module-qtqml
-    - qml6-module-qtqml-models
-    - qml6-module-qtquick
-    - qml6-module-qtquick-controls
-    - qml6-module-qtquick-dialogs
-    - qml6-module-qtquick-layouts
-    - qml6-module-qtquick-particles
-    - qml6-module-qtquick-templates
-    - qml6-module-qtquick-window
     - qml6-module-org-kde-kirigami
     - qml6-module-org-kde-sonnet
     - qml6-module-org-maui-mauikit
@@ -132,33 +125,40 @@ buildinfo:
     - qml6-module-org-mauikit-documents
     - qml6-module-org-mauikit-filebrowsing
     - qml6-module-org-mauikit-texteditor
+    - qml6-module-qt-labs-folderlistmodel
+    - qml6-module-qt-labs-platform
+    - qml6-module-qt-labs-qmlmodels
+    - qml6-module-qt-labs-settings
+    - qml6-module-qt5compat-graphicaleffects
     - qml6-module-qtcore
     - qml6-module-qtqml
+    - qml6-module-qtqml
+    - qml6-module-qtqml-models
     - qml6-module-qtqml-workerscript
+    - qml6-module-qtquick
     - qml6-module-qtquick-controls
+    - qml6-module-qtquick-controls
+    - qml6-module-qtquick-dialogs
     - qml6-module-qtquick-effects
     - qml6-module-qtquick-layouts
+    - qml6-module-qtquick-layouts
+    - qml6-module-qtquick-particles
     - qml6-module-qtquick-shapes
     - qml6-module-qtquick-templates
+    - qml6-module-qtquick-templates
     - qml6-module-qtquick-tooling
+    - qml6-module-qtquick-window
     - qml6-module-qtquick-window
     - qt6-5compat
     - qt6-base
     - qt6-declarative
     - qt6-gtk-platformtheme
+    - qt6-multimedia
     - qt6-qpa-plugins
     - qt6-shadertools
     - qt6-svg
     - qt6-wayland
     - xkb-data
-    - kf6-kirigami
-    - qt6-multimedia
-    - libasound2
-    - libpulse0
-    - libsndfile1
-    - libasyncns0
-    - libflac8
-    - libogg0
   runtime: uruntime
 
 apprunconf:
