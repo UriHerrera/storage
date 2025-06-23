@@ -62,7 +62,6 @@ buildinfo:
     - libdeflate0
     - libdouble-conversion3
     - libduktape207
-    - libegl-mesa0
     - libevent-2.1-7
     - libflac8
     - libfontconfig1
@@ -86,7 +85,6 @@ buildinfo:
     - libminizip1
     - libmpg123-0
     - libogg0
-    - libopengl0
     - libopus0
     - libpcre2-16-0
     - libplist3
