@@ -85,6 +85,7 @@ buildinfo:
     - libogg0
     - libopengl0
     - libopus0
+    - libpcre2-16-0
     - libplist3
     - libpng16-16
     - libpulse0
