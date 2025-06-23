@@ -6,7 +6,7 @@ buildinfo:
   version: 4.0.0+p22.04+vstable+git20241108.0240-0
   binarypath: /usr/bin/index
   distrorepo:
-    - distro: ubuntu
+    - distro: ubuntu-ports
       release: jammy
       arch: arm64
       components:
