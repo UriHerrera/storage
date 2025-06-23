@@ -109,6 +109,7 @@ buildinfo:
     - libtdb1
     - libusbmuxd6
     - libvorbis0a
+    - libvorbisenc2
     - libvorbisfile3
     - libwayland-client0
     - libwayland-cursor0
