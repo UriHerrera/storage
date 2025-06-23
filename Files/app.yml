@@ -65,6 +65,9 @@ buildinfo:
     - libegl-mesa0
     - libevent-2.1-7
     - libflac8
+    - libfontconfig1
+    - libfreetype6
+    - libgomp1
     - libicu70
     - libimobiledevice6
     - libkirigami6
@@ -88,6 +91,7 @@ buildinfo:
     - libpcre2-16-0
     - libplist3
     - libpng16-16
+    - libproxy1v5
     - libpulse0
     - libqca-qt6-2
     - libqca-qt6-2-plugins
@@ -120,6 +124,7 @@ buildinfo:
     - libqt6wlshellintegration6
     - libqt6xml6
     - libsndfile1
+    - libssh-4
     - libssh2-1
     - libtdb1
     - libusbmuxd6
