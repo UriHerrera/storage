@@ -55,6 +55,7 @@ buildinfo:
     - libasound2
     - libasyncns0
     - libcanberra0
+    - libegl-mesa0
     - libflac8
     - libicu70
     - libimobiledevice6
@@ -106,6 +107,7 @@ buildinfo:
     - libqt6widgets6
     - libqt6wlshellintegration6
     - libqt6xml6
+    - libsndfile1
     - libtdb1
     - libusbmuxd6
     - libvorbis0a
@@ -114,9 +116,17 @@ buildinfo:
     - libwayland-client0
     - libwayland-cursor0
     - libwayland-egl1
-    - libsndfile1
+    - libwayland-server0
+    - libx11-xcb1
+    - libxcb-dri2-0
+    - libxcb-dri3-0
     - libxcb-keysyms1
+    - libxcb-present0
     - libxcb-res0
+    - libxcb-sync1
+    - libxcb-xfixes0
+    - libxcb1
+    - libxshmfence1
     - qml6-module-org-kde-kaccounts
     - qml6-module-org-kde-kirigami
     - qml6-module-org-kde-sonnet
