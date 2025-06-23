@@ -54,8 +54,16 @@ buildinfo:
     - kf6-solid
     - libasound2
     - libasyncns0
+    - libb2-1
+    - libboost-filesystem1.74.0
+    - libbz2-1.0
     - libcanberra0
+    - libcurl3-gnutls
+    - libdeflate0
+    - libdouble-conversion3
+    - libduktape207
     - libegl-mesa0
+    - libevent-2.1-7
     - libflac8
     - libicu70
     - libimobiledevice6
@@ -72,10 +80,13 @@ buildinfo:
     - libmauikitfilebrowsing4
     - libmauiman
     - libmd4c0
+    - libminizip1
+    - libmpg123-0
     - libogg0
     - libopengl0
     - libopus0
     - libplist3
+    - libpng16-16
     - libpulse0
     - libqca-qt6-2
     - libqca-qt6-2-plugins
@@ -108,6 +119,7 @@ buildinfo:
     - libqt6wlshellintegration6
     - libqt6xml6
     - libsndfile1
+    - libssh2-1
     - libtdb1
     - libusbmuxd6
     - libvorbis0a
@@ -116,17 +128,17 @@ buildinfo:
     - libwayland-client0
     - libwayland-cursor0
     - libwayland-egl1
-    - libwayland-server0
-    - libx11-xcb1
-    - libxcb-dri2-0
-    - libxcb-dri3-0
     - libxcb-keysyms1
     - libxcb-present0
     - libxcb-res0
     - libxcb-sync1
     - libxcb-xfixes0
-    - libxcb1
-    - libxshmfence1
+    - libxcomposite1
+    - libxdamage1
+    - libxfixes3
+    - libxkbcommon0
+    - libxkbfile1
+    - libxml2
     - qml6-module-org-kde-kaccounts
     - qml6-module-org-kde-kirigami
     - qml6-module-org-kde-sonnet
