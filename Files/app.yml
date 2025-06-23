@@ -134,11 +134,13 @@ buildinfo:
     - libwayland-client0
     - libwayland-cursor0
     - libwayland-egl1
+    - libxcb-cursor0
     - libxcb-keysyms1
     - libxcb-present0
     - libxcb-res0
     - libxcb-sync1
     - libxcb-xfixes0
+    - libxcb-xinput0
     - libxcomposite1
     - libxdamage1
     - libxfixes3
@@ -183,8 +185,6 @@ buildinfo:
     - qt6-svg
     - qt6-wayland
     - xkb-data
-    - libxcb-cursor0
-    - libxcb-xinput0
   runtime: uruntime
 
 apprunconf:
