@@ -183,6 +183,8 @@ buildinfo:
     - qt6-svg
     - qt6-wayland
     - xkb-data
+    - libxcb-cursor0
+    - libxcb-xinput0
   runtime: uruntime
 
 apprunconf:
