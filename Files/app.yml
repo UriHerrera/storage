@@ -17,42 +17,105 @@ buildinfo:
       arch: amd64
   deps:
     - index
+    - kf6-kauth
+    - kf6-kbookmarks
+    - kf6-kcolorscheme
+    - kf6-kcompletion
+    - kf6-kconfig
+    - kf6-kconfigwidgets
     - kf6-kcoreaddons
+    - kf6-kcrash
+    - kf6-kguiaddons
     - kf6-ki18n
+    - kf6-kiconthemes
     - kf6-kio
+    - kf6-kirigami
+    - kf6-kitemviews
+    - kf6-knotifications
+    - kf6-kservice
+    - kf6-kwidgetsaddons
+    - kf6-kwindowsystem
+    - kf6-solid
+    - libicu70
+    - libimobiledevice6
     - libmauikit
+    - libmauikitaccounts4
+    - libmauikitarchiver4
     - libmauikitfilebrowsing4
+    - libmauikittexteditor4
+    - libmauiman
+    - libmd4c0
+    - libopengl0
+    - libplist3
+    - libpulse0
+    - libqt6core5compat6
+    - libqt6core6
+    - libqt6dbus6
+    - libqt6gui6
+    - libqt6multimedia6
+    - libqt6network6
+    - libqt6opengl6
+    - libqt6positioning6
+    - libqt6printsupport6
+    - libqt6qml6
+    - libqt6qmlmeta6
+    - libqt6qmlmodels6
+    - libqt6qmlworkerscript6
+    - libqt6quick6
+    - libqt6quickcontrols2-6
+    - libqt6quickshapes6
+    - libqt6quicktemplates2-6
+    - libqt6quickwidgets6
+    - libqt6sql6
+    - libqt6sql6-sqlite
+    - libqt6svg6
+    - libqt6texttospeech6
+    - libqt6waylandclient6
+    - libqt6waylandcompositor6
+    - libqt6widgets6
+    - libqt6wlshellintegration6
+    - libqt6xml6
+    - libvorbis0
+    - libvorbis0a
+    - libvorbisenc2
+    - libvorbisfile3
+    - libxcb-keysyms1
+    - libxcb-res0
+    - mauiman
+    - qml6-module-org-kde-kirigami
+    - qml6-module-org-kde-sonnet
+    - qml6-module-org-maui-mauikit
     - qml6-module-org-mauikit-accounts
+    - qml6-module-org-mauikit-archiver
     - qml6-module-org-mauikit-documents
     - qml6-module-org-mauikit-filebrowsing
     - qml6-module-org-mauikit-texteditor
+    - qml6-module-qtcore
+    - qml6-module-qtqml
+    - qml6-module-qtqml-workerscript
+    - qml6-module-qtquick-controls
+    - qml6-module-qtquick-effects
+    - qml6-module-qtquick-layouts
+    - qml6-module-qtquick-shapes
+    - qml6-module-qtquick-templates
+    - qml6-module-qtquick-tooling
+    - qml6-module-qtquick-window
+    - qt6-5compat
     - qt6-base
     - qt6-declarative
-    - qml6-module-org-maui-mauikit
-    - kf6-solid
-    - kf6-kconfig
-    - kf6-kservice
-    - kf6-kwindowsystem
-    - kf6-kcrash
-    - kf6-kauth
-    - libmauiman
-    - kf6-knotifications
-    - libopengl0
-    - libmd4c0
-    - libicu70
-    - kf6-kitemviews
-    - qt6-5compat
-    - kf6-kiconthemes
-    - kf6-kbookmarks
-    - kf6-kcompletion
-    - kf6-kconfigwidgets
-    - kf6-kcolorscheme
-    - kf6-kguiaddons
-    - kf6-kwidgetsaddons
-    - libimobiledevice6
-    - libplist3
-    - libxcb-res0
-    - libxcb-keysyms1
+    - qt6-gtk-platformtheme
+    - qt6-multimedia
+    - xkb-data
+    - libwayland-client0
+    - libwayland-cursor0
+    - libwayland-egl1
+    - libsndfile1
+    - libxcomposite1
+    - libxdamage1
+    - libxfixes3
+    - libxkbcommon0
+    - libxkbfile1
+    - libxml2
   runtime: uruntime
 
 apprunconf:
