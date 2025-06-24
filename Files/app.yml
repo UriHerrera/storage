@@ -67,6 +67,7 @@ buildinfo:
     - libpcre2-16-0
     - libplist3
     - libproxy1v5
+    - libsm6
     - libsndfile1
     - libtdb1
     - libusbmuxd6
@@ -98,7 +99,6 @@ buildinfo:
     - qt6-multimedia
     - qt6-wayland
     - xkb-data
-    - libsm6
   runtime: go
 
 apprunconf:
