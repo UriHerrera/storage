@@ -142,6 +142,7 @@ buildinfo:
     - libxkbcommon0
     - libxkbfile1
     - libxml2
+    - plasma5support
     - qml6-module-org-kde-kaccounts
     - qml6-module-org-kde-kirigami
     - qml6-module-org-kde-sonnet
@@ -187,7 +188,7 @@ apprunconf:
   setlibpath: "/usr/lib"
   exec: "/usr/bin/index"
   envvars:
-    QT_QPA_PLATFORM: "wayland;xcb"
+    QT_QPA_PLATFORM: "xcb"
     QT_PLUGIN_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/plugins"
     QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
     QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
