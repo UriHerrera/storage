@@ -1,0 +1,41 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: index
+  version: 4.0.0+p22.04+vstable+git20241108.0240-0
+  binarypath: /usr/bin/index
+  distrorepo:
+    - distro: ubuntu-ports
+      release: jammy
+      arch: arm64
+      components:
+          - main
+          - universe
+    - distro: kde-neon
+      release: jammy
+      arch: arm64
+  deps:
+    - index
+  runtime: go
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/index"
+  envvars:
+    QT_QPA_PLATFORM: "wayland"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml"
+    SESSION_MANAGER: ""
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+  prebuild_commands:
+    - "rm -f $APPDIR/usr/share/metainfo/org.kde.index.appdata.xml"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui
