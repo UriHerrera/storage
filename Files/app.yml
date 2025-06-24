@@ -6,17 +6,82 @@ buildinfo:
   version: 4.0.0+p22.04+vstable+git20241108.0240-0
   binarypath: /usr/bin/index
   distrorepo:
-    - distro: ubuntu-ports
+    - distro: ubuntu
       release: jammy
-      arch: arm64
+      arch: amd64
       components:
           - main
           - universe
     - distro: kde-neon
       release: jammy
-      arch: arm64
+      arch: amd64
   deps:
     - index
+    - kf6-breeze-icon-theme
+    - kf6-karchive
+    - kf6-kauth
+    - kf6-kbookmarks
+    - kf6-kcodecs
+    - kf6-kcolorscheme
+    - kf6-kcompletion
+    - kf6-kconfig
+    - kf6-kconfigwidgets
+    - kf6-kcoreaddons
+    - kf6-kcrash
+    - kf6-kdbusaddons
+    - kf6-kfilemetadata
+    - kf6-kguiaddons
+    - kf6-ki18n
+    - kf6-kiconthemes
+    - kf6-kio
+    - kf6-kirigami
+    - kf6-kitemviews
+    - kf6-kjobwidgets
+    - kf6-knotifications
+    - kf6-kservice
+    - kf6-kstatusnotifieritem
+    - kf6-kwidgetsaddons
+    - kf6-kwindowsystem
+    - kf6-solid
+    - libasound2
+    - libasyncns0
+    - libb2-1
+    - libflac8
+    - libgomp1
+    - libicu70
+    - libimobiledevice6
+    - libmauikit
+    - libmauikitaccounts4
+    - libmauikitarchiver4
+    - libmauikitfilebrowsing4
+    - libmauikitimagetools4
+    - libmauikitterminal4
+    - libmauiman
+    - libmd4c0
+    - libogg0
+    - libopus0
+    - libpcre2-16-0
+    - libplist3
+    - libsndfile1
+    - libusbmuxd6
+    - libvorbis0a
+    - libxcb-cursor0
+    - libxcb-keysyms1
+    - libxcb-res0
+    - libxkbcommon0
+    - mauiman
+    - qml6-module-org-maui-mauikit
+    - qml6-module-org-mauikit-accounts
+    - qml6-module-org-mauikit-archiver
+    - qml6-module-org-mauikit-filebrowsing
+    - qml6-module-org-mauikit-imagetools
+    - qml6-module-org-mauikit-terminal
+    - qt6-5compat
+    - qt6-base
+    - qt6-declarative
+    - qt6-gtk-platformtheme
+    - qt6-multimedia
+    - xkb-data
   runtime: go
 
 apprunconf:
@@ -24,11 +89,11 @@ apprunconf:
   setlibpath: "/usr/lib"
   exec: "/usr/bin/index"
   envvars:
-    QT_QPA_PLATFORM: "wayland"
-    QT_PLUGIN_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/plugins"
-    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
-    QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"
-    QML2_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml"
+    QT_QPA_PLATFORM: "xcb"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
     SESSION_MANAGER: ""
     XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
   prebuild_commands:
