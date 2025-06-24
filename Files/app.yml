@@ -46,10 +46,14 @@ buildinfo:
     - libasound2
     - libasyncns0
     - libb2-1
+    - libcanberra0
+    - libdouble-conversion3
+    - libduktape207
     - libflac8
     - libgomp1
     - libicu70
     - libimobiledevice6
+    - libltdl7
     - libmauikit
     - libmauikitaccounts4
     - libmauikitarchiver4
@@ -63,8 +67,11 @@ buildinfo:
     - libpcre2-16-0
     - libplist3
     - libsndfile1
+    - libtdb1
     - libusbmuxd6
     - libvorbis0a
+    - libvorbisenc2
+    - libvorbisfile3
     - libxcb-cursor0
     - libxcb-keysyms1
     - libxcb-res0
@@ -81,6 +88,7 @@ buildinfo:
     - qt6-declarative
     - qt6-gtk-platformtheme
     - qt6-multimedia
+    - qt6-wayland
     - xkb-data
   runtime: go
 
