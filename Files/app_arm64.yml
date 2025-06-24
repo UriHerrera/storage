@@ -129,9 +129,6 @@ buildinfo:
     - libvorbis0a
     - libvorbisenc2
     - libvorbisfile3
-    - libwayland-client0
-    - libwayland-cursor0
-    - libwayland-egl1
     - libxcb-cursor0
     - libxcb-keysyms1
     - libxcb-present0
@@ -183,7 +180,7 @@ buildinfo:
     - qt6-svg
     - qt6-wayland
     - xkb-data
-  runtime: uruntime
+  runtime: go
 
 apprunconf:
   setpath: "/usr/bin"
