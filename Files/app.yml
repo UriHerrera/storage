@@ -66,6 +66,7 @@ buildinfo:
     - libopus0
     - libpcre2-16-0
     - libplist3
+    - libproxy1v5
     - libsndfile1
     - libtdb1
     - libusbmuxd6
@@ -76,8 +77,10 @@ buildinfo:
     - libxcb-icccm4
     - libxcb-image0
     - libxcb-keysyms1
+    - libxcb-render-util0
     - libxcb-res0
     - libxcb-shape0
+    - libxcb-util1
     - libxcb-xinput0
     - libxcb-xkb1
     - libxkbcommon0
@@ -95,6 +98,7 @@ buildinfo:
     - qt6-multimedia
     - qt6-wayland
     - xkb-data
+    - libsm6
   runtime: go
 
 apprunconf:
