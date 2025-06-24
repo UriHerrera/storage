@@ -73,8 +73,13 @@ buildinfo:
     - libvorbisenc2
     - libvorbisfile3
     - libxcb-cursor0
+    - libxcb-icccm4
+    - libxcb-image0
     - libxcb-keysyms1
     - libxcb-res0
+    - libxcb-shape0
+    - libxcb-xinput0
+    - libxcb-xkb1
     - libxkbcommon0
     - mauiman
     - qml6-module-org-maui-mauikit
