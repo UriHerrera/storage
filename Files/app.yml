@@ -51,6 +51,7 @@ buildinfo:
     - libarchive13
     - libasound2
     - libassimp5
+    - libassuan0
     - libasyncns0
     - libavcodec-extra58
     - libavcodec58
@@ -64,7 +65,9 @@ buildinfo:
     - libcodec2-1.0
     - libdav1d5
     - libdouble-conversion3
+    - libdraco4
     - libduktape207
+    - libdw1
     - libepub0
     - libevdev2
     - libexiv2-27
@@ -73,6 +76,7 @@ buildinfo:
     - libgif7
     - libgme0
     - libgomp1
+    - libgpgme11
     - libgpgmepp6
     - libgsm1
     - libgstreamer-gl1.0-0
@@ -87,6 +91,7 @@ buildinfo:
     - libldap-2.5-0
     - liblept5
     - libltdl7
+    - liblzo2-2
     - libmauikit
     - libmauikitaccounts4
     - libmauikitarchiver4
@@ -96,9 +101,15 @@ buildinfo:
     - libmauiman
     - libmd4c0
     - libmfx1
+    - libminizip1
     - libmp3lame0
+    - libmpg123-0
     - libmtdev1
     - libmysqlclient21
+    - libnorm1
+    - libnspr4
+    - libnss3
+    - libnuma1
     - libodbc2
     - libogg0
     - libopenjp2-7
@@ -106,7 +117,9 @@ buildinfo:
     - libopus0
     - liborc-0.4-0
     - libpcre2-16-0
+    - libpgm-5.3-0
     - libplist3
+    - libpolkit-agent-1-0
     - libpolkit-gobject-1-0
     - libpolkit-qt6-1-1
     - libpoppler-qt6-3
@@ -121,6 +134,7 @@ buildinfo:
     - libsm6
     - libsnappy1v5
     - libsndfile1
+    - libsodium23
     - libsoxr0
     - libspeex1
     - libsquashfuse0
@@ -136,6 +150,8 @@ buildinfo:
     - libtommath1
     - libts0
     - libtwolame0
+    - libudfread0
+    - libunwind8
     - libusbmuxd6
     - libva-drm2
     - libva-x11-2
