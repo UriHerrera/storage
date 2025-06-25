@@ -52,6 +52,7 @@ buildinfo:
     - libqt5xdgiconloader3
     - libqt5xml5
     - libregexp-ipv6-perl
+    - libsm6
     - liburi-perl
     - libwacom-common
     - libwacom9
@@ -71,7 +72,6 @@ buildinfo:
     - lxqt-sudo
     - pcmanfm-qt
     - xkb-data
-    - libsm6
   runtime: go
 
 apprunconf:
