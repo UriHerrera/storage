@@ -84,6 +84,7 @@ buildinfo:
     - libgstreamer-plugins-good1.0-0
     - libgstreamer1.0-0
     - libgudev-1.0-0
+    - libice6
     - libicu70
     - libimobiledevice6
     - libinput10
