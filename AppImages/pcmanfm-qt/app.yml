@@ -1,0 +1,90 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: pcmanfm-qt
+  version: 1.2.1-1
+  binarypath: /usr/bin/pcmanfm-qt
+  distrorepo:
+    - distro: debian
+      release: stable
+      arch: amd64
+  deps:
+    - desktop-file-utils
+    - file
+    - libdouble-conversion3
+    - libencode-locale-perl
+    - libexif12
+    - libfdisk1
+    - libfile-basedir-perl
+    - libfile-desktopentry-perl
+    - libfile-mimeinfo-perl
+    - libfm-extra4
+    - libfm-qt12
+    - libglib2.0-bin
+    - libgudev-1.0-0
+    - libinput-bin
+    - libinput10
+    - libip4tc2
+    - libipc-system-simple-perl
+    - libjson-c5
+    - libkf5windowsystem-data
+    - libkf5windowsystem5
+    - liblxqt1
+    - libmagic-mgc
+    - libmagic1
+    - libmd4c0
+    - libmenu-cache-bin
+    - libmenu-cache3
+    - libmtdev1
+    - libpam-systemd
+    - libpcre2-16-0
+    - libqt5core5a
+    - libqt5dbus5
+    - libqt5gui5
+    - libqt5network5
+    - libqt5svg5
+    - libqt5widgets5
+    - libqt5x11extras5
+    - libqt5xdg3
+    - libqt5xdgiconloader3
+    - libqt5xml5
+    - libregexp-ipv6-perl
+    - liburi-perl
+    - libwacom-common
+    - libwacom9
+    - libxcb-icccm4
+    - libxcb-image0
+    - libxcb-keysyms1
+    - libxcb-render-util0
+    - libxcb-res0
+    - libxcb-shape0
+    - libxcb-util1
+    - libxcb-xinerama0
+    - libxcb-xinput0
+    - libxcb-xkb1
+    - libxkbcommon-x11-0
+    - libxkbcommon0
+    - lxqt-sudo
+    - pcmanfm-qt
+    - xkb-data
+  runtime: go
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/pcmanfm-qt"
+  envvars:
+    QT_QPA_PLATFORM: "xcb"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
+    SESSION_MANAGER: ""
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui
