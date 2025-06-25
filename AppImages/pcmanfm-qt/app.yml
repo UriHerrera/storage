@@ -14,6 +14,7 @@ buildinfo:
     - file
     - libdouble-conversion3
     - libencode-locale-perl
+    - libevdev2
     - libexif12
     - libfdisk1
     - libfile-basedir-perl
@@ -23,6 +24,7 @@ buildinfo:
     - libfm-qt12
     - libglib2.0-bin
     - libgudev-1.0-0
+    - libicu72
     - libinput-bin
     - libinput10
     - libip4tc2
@@ -65,9 +67,11 @@ buildinfo:
     - libxcb-xkb1
     - libxkbcommon-x11-0
     - libxkbcommon0
+    - libxss1
     - lxqt-sudo
     - pcmanfm-qt
     - xkb-data
+    - libsm6
   runtime: go
 
 apprunconf:
