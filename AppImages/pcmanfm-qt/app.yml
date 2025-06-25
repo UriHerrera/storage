@@ -22,7 +22,6 @@ buildinfo:
     - libfile-mimeinfo-perl
     - libfm-extra4
     - libfm-qt12
-    - libglib2.0-bin
     - libgudev-1.0-0
     - libicu72
     - libinput-bin
@@ -44,6 +43,7 @@ buildinfo:
     - libqt5core5a
     - libqt5dbus5
     - libqt5gui5
+    - libqt5gui5-gles
     - libqt5network5
     - libqt5svg5
     - libqt5widgets5
