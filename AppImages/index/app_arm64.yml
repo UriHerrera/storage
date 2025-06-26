@@ -208,6 +208,7 @@ apprunconf:
   setlibpath: "/usr/lib"
   exec: "/usr/bin/index"
   envvars:
+    QT_QUICK_CONTROLS_STYLE: "org.mauikit.style"
     QT_QPA_PLATFORM: "xcb"
     QT_PLUGIN_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/plugins"
     QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/aarch64-linux-gnu/qt5/qml:$APPDIR/usr/lib/aarch64-linux-gnu/qt6/qml"

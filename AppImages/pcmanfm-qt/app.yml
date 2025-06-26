@@ -10,6 +10,7 @@ buildinfo:
       release: stable
       arch: amd64
   deps:
+    - breeze-icon-theme
     - desktop-file-utils
     - file
     - libdouble-conversion3
