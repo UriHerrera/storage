@@ -23,6 +23,7 @@ buildinfo:
     - libfm-extra4
     - libfm-qt12
     - libgudev-1.0-0
+    - libice6
     - libicu72
     - libinput-bin
     - libinput10
