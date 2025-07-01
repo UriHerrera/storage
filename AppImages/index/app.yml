@@ -15,6 +15,9 @@ buildinfo:
     - distro: kde-neon
       release: jammy
       arch: amd64
+    - distro: nitrux
+      release: bookworm
+      arch: amd64
   deps:
     - index
     - kf6-breeze-icon-theme
@@ -93,13 +96,6 @@ buildinfo:
     - liblept5
     - libltdl7
     - liblzo2-2
-    - libmauikit
-    - libmauikitaccounts4
-    - libmauikitarchiver4
-    - libmauikitfilebrowsing4
-    - libmauikitimagetools4
-    - libmauikitterminal4
-    - libmauiman
     - libmd4c0
     - libmfx1
     - libminizip1
@@ -183,14 +179,13 @@ buildinfo:
     - libzip4
     - libzmq5
     - libzvbi0
-    - mauiman
+    - maui-manager
+    - mauikit
+    - mauikit-archiver
+    - mauikit-filebrowsing
+    - mauikit-imagetools
+    - mauikit-terminal
     - ocl-icd-libopencl1
-    - qml6-module-org-maui-mauikit
-    - qml6-module-org-mauikit-accounts
-    - qml6-module-org-mauikit-archiver
-    - qml6-module-org-mauikit-filebrowsing
-    - qml6-module-org-mauikit-imagetools
-    - qml6-module-org-mauikit-terminal
     - qt6-5compat
     - qt6-base
     - qt6-declarative
@@ -210,6 +205,7 @@ apprunconf:
   exec: "/usr/bin/index"
   envvars:
     QT_QUICK_CONTROLS_STYLE: "org.mauikit.style"
+    QT_QUICK_CONTROLS_MOBILE: "1"
     QT_QPA_PLATFORM: "xcb"
     QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
     QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
