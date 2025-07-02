@@ -20,6 +20,12 @@ buildinfo:
       arch: amd64
   deps:
     - index
+    - maui-manager
+    - mauikit
+    - mauikit-archiver
+    - mauikit-filebrowsing
+    - mauikit-imagetools
+    - mauikit-terminal
     - kf6-breeze-icon-theme
     - kf6-karchive
     - kf6-kauth
@@ -179,12 +185,6 @@ buildinfo:
     - libzip4
     - libzmq5
     - libzvbi0
-    - maui-manager
-    - mauikit
-    - mauikit-archiver
-    - mauikit-filebrowsing
-    - mauikit-imagetools
-    - mauikit-terminal
     - ocl-icd-libopencl1
     - qt6-5compat
     - qt6-base
@@ -214,6 +214,11 @@ apprunconf:
     SESSION_MANAGER: ""
     XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
   prebuild_commands:
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.1 libMauiKit4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.1 libMauiMan4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitFileBrowsing4.so.4.0.1 libMauiKitFileBrowsing4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTerminal4.so.4.0.1 libMauiKitTerminal4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTextEditor4.so.4.0.1 libMauiKitTextEditor4.so.4 && cd -"
     - "rm -f $APPDIR/usr/share/metainfo/org.kde.index.appdata.xml"
 
 sandbox:
