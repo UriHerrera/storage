@@ -3,7 +3,7 @@
 
 buildinfo:
   name: index
-  version: 4.0.0+p22.04+vstable+git20241108.0240-0
+  version: 4.0.1-1
   binarypath: /usr/bin/index
   distrorepo:
     - distro: ubuntu
@@ -15,7 +15,7 @@ buildinfo:
     - distro: kde-neon
       release: jammy
       arch: amd64
-    - distro: nitrux
+    - distro: zbkit
       release: bookworm
       arch: amd64
   deps:
