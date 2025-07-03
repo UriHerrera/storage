@@ -20,12 +20,6 @@ buildinfo:
       arch: amd64
   deps:
     - index
-    - maui-manager
-    - mauikit
-    - mauikit-archiver
-    - mauikit-filebrowsing
-    - mauikit-imagetools
-    - mauikit-terminal
     - kf6-breeze-icon-theme
     - kf6-karchive
     - kf6-kauth
@@ -185,6 +179,12 @@ buildinfo:
     - libzip4
     - libzmq5
     - libzvbi0
+    - maui-manager
+    - mauikit
+    - mauikit-archiver
+    - mauikit-filebrowsing
+    - mauikit-imagetools
+    - mauikit-terminal
     - ocl-icd-libopencl1
     - qt6-5compat
     - qt6-base
