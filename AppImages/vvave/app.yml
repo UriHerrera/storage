@@ -3,7 +3,7 @@
 
 buildinfo:
   name: vvave
-  version: 3.1.0+p22.04+vstable+git20240819.0557-0
+  version: 4.0.1-1
   binarypath: /usr/bin/vvave
   distrorepo:
     - distro: ubuntu
@@ -15,8 +15,10 @@ buildinfo:
     - distro: kde-neon
       release: jammy
       arch: amd64
+    - distro: zbkit
+      release: bookworm
+      arch: amd64
   deps:
-    - vvave
     - kf6-breeze-icon-theme
     - kf6-karchive
     - kf6-kauth
@@ -93,12 +95,6 @@ buildinfo:
     - liblept5
     - libltdl7
     - liblzo2-2
-    - libmauikit
-    - libmauikitaccounts4
-    - libmauikitfilebrowsing4
-    - libmauikitimagetools4
-    - libmauikitterminal4
-    - libmauiman
     - libmd4c0
     - libmfx1
     - libminizip1
@@ -182,13 +178,11 @@ buildinfo:
     - libzip4
     - libzmq5
     - libzvbi0
-    - mauiman
+    - maui-manager
+    - mauikit
+    - mauikit-archiver
+    - mauikit-filebrowsing
     - ocl-icd-libopencl1
-    - qml6-module-org-maui-mauikit
-    - qml6-module-org-mauikit-accounts
-    - qml6-module-org-mauikit-filebrowsing
-    - qml6-module-org-mauikit-imagetools
-    - qml6-module-org-mauikit-terminal
     - qt6-5compat
     - qt6-base
     - qt6-declarative
@@ -200,6 +194,7 @@ buildinfo:
     - qt6-svg
     - qt6-wayland
     - xkb-data
+    - vvave
   runtime: go
 
 apprunconf:
@@ -208,6 +203,7 @@ apprunconf:
   exec: "/usr/bin/vvave"
   envvars:
     QT_QUICK_CONTROLS_STYLE: "org.mauikit.style"
+    QT_QUICK_CONTROLS_MOBILE: "1"
     QT_QPA_PLATFORM: "xcb"
     QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
     QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
@@ -216,6 +212,9 @@ apprunconf:
     SESSION_MANAGER: ""
     XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
   prebuild_commands:
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.1 libMauiKit4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.1 libMauiMan4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitFileBrowsing4.so.4.0.1 libMauiKitFileBrowsing4.so.4 && cd -"
     - "rm -f $APPDIR/usr/share/metainfo/org.kde.vvave.appdata.xml"
 
 sandbox:
