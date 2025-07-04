@@ -3,7 +3,7 @@
 
 buildinfo:
   name: index
-  version: 4.0.0+p22.04+vstable+git20241108.0240-0
+  version: 4.0.1-1
   binarypath: /usr/bin/index
   distrorepo:
     - distro: ubuntu-ports
@@ -97,7 +97,6 @@ buildinfo:
     - libltdl7
     - liblzo2-2
     - libmd4c0
-    - libmfx1
     - libminizip1
     - libmp3lame0
     - libmpg123-0
