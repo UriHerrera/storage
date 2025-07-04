@@ -6,7 +6,7 @@ buildinfo:
   version: 4.0.1-1
   binarypath: /usr/bin/vvave
   distrorepo:
-    - distro: ubuntu
+    - distro: ubuntu-ports
       release: jammy
       arch: arm64
       components:
@@ -96,7 +96,6 @@ buildinfo:
     - libltdl7
     - liblzo2-2
     - libmd4c0
-    - libmfx1
     - libminizip1
     - libmp3lame0
     - libmpg123-0
