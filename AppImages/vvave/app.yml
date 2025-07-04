@@ -85,12 +85,14 @@ buildinfo:
     - libgstreamer-plugins-base1.0-0
     - libgstreamer-plugins-good1.0-0
     - libgstreamer1.0-0
+    - libgtk-3-0
     - libgudev-1.0-0
     - libice6
     - libicu70
     - libimobiledevice6
     - libinput10
     - libjpeg-turbo8
+    - liblcms2-2
     - libldap-2.5-0
     - liblept5
     - libltdl7
@@ -193,8 +195,8 @@ buildinfo:
     - qt6-shadertools
     - qt6-svg
     - qt6-wayland
-    - xkb-data
     - vvave
+    - xkb-data
   runtime: go
 
 apprunconf:
