@@ -1,0 +1,125 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: inkscape
+  version: 1:1.4.2+202505120737+ebf0e940d0~ubuntu24.10.1 
+  binarypath: /usr/bin/inkscape
+  distrorepo:
+    base:
+      - distro: ubuntu
+        release: oracular
+        arch: amd64
+        components: [main, universe]
+    ppas:
+      - id: inkscape-dev
+        ppa: inkscape.dev/stable
+        distro: ubuntu
+        release: oracular
+        arch: amd64
+  deps:
+    - name: inkscape
+      repo: inkscape-dev
+    - adwaita-icon-theme
+    - adwaita-icon-theme-legacy
+    - lib2geom1.2.0t64
+    - libatk-bridge2.0-0t64
+    - libatk1.0-0t64
+    - libatkmm-1.6-1v5
+    - libatspi2.0-0t64
+    - libboost-filesystem1.83.0
+    - libbz2-1.0
+    - libcairo-gobject2
+    - libcairo2
+    - libcairomm-1.0-1v5
+    - libcdr-0.1-1
+    - libcurl3t64-gnutls
+    - libdatrie1
+    - libdeflate0
+    - libdouble-conversion3
+    - libenchant-2-2
+    - libepoxy0
+    - libfftw3-double3
+    - libfontconfig1
+    - libfreetype6
+    - libfribidi0
+    - libgc1
+    - libgdk-pixbuf-2.0-0
+    - libglibmm-2.4-1t64
+    - libgomp1
+    - libgraphite2-3
+    - libgsl28
+    - libgslcblas0
+    - libgspell-1-2
+    - libgtk-3-0t64
+    - libgtk-3-bin
+    - libgtkmm-3.0-1t64
+    - libgtksourceview-4-0
+    - libharfbuzz0b
+    - libicu74
+    - libjbig0
+    - libjpeg-turbo8
+    - libjpeg8
+    - liblcms2-2
+    - libldap2
+    - liblerc4
+    - liblqr-1-0
+    - libltdl7
+    - libmagick++-6.q16-9t64
+    - libmagickcore-6.q16-7t64
+    - libmagickwand-6.q16-7t64
+    - libnspr4
+    - libnss3
+    - libopenjp2-7
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libpangomm-1.4-1v5
+    - libpixman-1-0
+    - libpng16-16t64
+    - libpoppler-glib8t64
+    - libpoppler140
+    - libpotrace0
+    - librevenge-0.0-0
+    - librsvg2-2
+    - librtmp1
+    - libsasl2-2
+    - libsharpyuv0
+    - libsigc++-2.0-0v5
+    - libssh2-1t64
+    - libthai0
+    - libtiff6
+    - libvisio-0.1-1
+    - libwayland-client0
+    - libwayland-cursor0
+    - libwayland-egl1
+    - libwebp7
+    - libwpd-0.10-10
+    - libwpg-0.3-3
+    - libxcomposite1
+    - libxcursor1
+    - libxdamage1
+    - libxfixes3
+    - libxi6
+    - libxinerama1
+    - libxkbcommon0
+    - libxrandr2
+    - libxrender1
+    - libxslt1.1
+    - xkb-data
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/inkscape"
+  envvars:
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+    FONTCONFIG_PATH: "$APPDIR/etc/fonts"
+  prebuild_commands:
+    - "rm -f $APPDIR/usr/share/metainfo/org.inkscape.Inkscape.appdata.xml"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui
