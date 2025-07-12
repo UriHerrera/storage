@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+
+#############################################################################################################################################################################
+#   The license used for this file and its contents is: BSD-3-Clause                                                                                                        #
+#                                                                                                                                                                           #
+#   Copyright <2025> <Uri Herrera <uri_herrera@nxos.org>>                                                                                                                   #
+#                                                                                                                                                                           #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:                          #
+#                                                                                                                                                                           #
+#    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.                                        #
+#                                                                                                                                                                           #
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer                                      #
+#       in the documentation and/or other materials provided with the distribution.                                                                                         #
+#                                                                                                                                                                           #
+#    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software                    #
+#       without specific prior written permission.                                                                                                                          #
+#                                                                                                                                                                           #
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,                      #
+#    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS                  #
+#    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                 #
+#    GOODS OR SERVICES; LOSS OF USE, DATA,   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,                      #
+#    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   #
+#############################################################################################################################################################################
+
+
+# -- Exit on errors.
+
+set -eu
+
+
+# -- Require lz4 for processing compressed Packages files.
+
+if ! command -v lz4 >/dev/null 2>&1; then
+    echo "Error: 'lz4' command not found. Please install it first (e.g., 'sudo apt install lz4')." >&2
+    exit 1
+fi
+
+
+# == START ==
+
+SUDO=${SUDO:-sudo}
+
+case "$(uname -m)" in
+    x86_64) ARCHITECTURE="amd64" ;;
+    aarch64) ARCHITECTURE="arm64" ;;
+    armv7l) ARCHITECTURE="armhf" ;;
+    i386|i686) ARCHITECTURE="i386" ;;
+    riscv64) ARCHITECTURE="riscv64" ;;
+    *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+esac
+
+display_help() {
+    echo "Usage: $0 [options]"
+    echo ""
+    echo "Options:"
+    echo "  -u <URL>          Repository base URL (e.g., http://deb.debian.org/debian, https://archive.ubuntu.com/ubuntu)"
+    echo "  -s <SUITE>        Repository suite (e.g., stable, testing, bookworm)"
+    echo "  -c <COMPONENTS>   Comma-separated list of components (e.g., main, universe, non-free)"
+    echo "  -a <ARCH>         Architecture (default: autodetected)"
+    echo "  -o <FILE>         Write package list to output file"
+    echo "  -h                Display this help message"
+    echo ""
+    echo "Example: $0 -u http://deb.debian.org/debian -s main -c main,universe -a amd64"
+    exit 0
+}
+
+while getopts "u:s:c:a:o:h" opt; do
+    case ${opt} in
+        u ) REPO_URL="${OPTARG}" ;;
+        s ) REPO_SUITE="${OPTARG}" ;;
+        c ) COMPONENTS_STR="${OPTARG}" ;;
+        a ) ARCHITECTURE="${OPTARG}" ;;
+        o ) OUTPUT_FILE="${OPTARG}" ;;
+        h ) display_help ;;
+        \? ) echo "Invalid option: -${OPTARG}" >&2; display_help ;;
+        : ) echo "Option -${OPTARG} requires an argument." >&2; display_help ;;
+    esac
+done
+shift $((OPTIND -1))
+
+if [ -z "${REPO_URL:-}" ]; then
+    read -r -p "Enter Repository URL (e.g., http://deb.debian.org/debian, https://archive.ubuntu.com/ubuntu): " REPO_URL
+fi
+if [ -z "${REPO_SUITE:-}" ]; then
+    read -r -p "Enter Repository Suite (e.g., stable, testing, bookworm): " REPO_SUITE
+fi
+if [ -z "${COMPONENTS_STR:-}" ]; then
+    read -r -p "Enter Comma-separated Components (e.g., main, universe, non-free): " COMPONENTS_STR
+fi
+
+IFS=',' read -r -a COMPONENTS_ARRAY <<< "$COMPONENTS_STR"
+
+if [ -z "$REPO_URL" ] || [ -z "$REPO_SUITE" ] || [ ${#COMPONENTS_ARRAY[@]} -eq 0 ]; then
+    echo "Error: Repository URL, Suite, and at least one Component are required."
+    display_help
+fi
+
+echo "Ensuring APT package lists are up-to-date..."
+$SUDO apt update || { echo "Error: apt update failed. Please resolve and try again."; exit 1; }
+
+echo ""
+echo "--- Searching for packages from:"
+echo "    Repository: $REPO_URL"
+echo "    Suite:      $REPO_SUITE"
+echo "    Components: ${COMPONENTS_ARRAY[*]}"
+echo "    Architecture: $ARCHITECTURE"
+echo "-----------------------------------"
+
+ALL_PACKAGES=()
+FOUND_FILES=0
+REPO_HOST=$(echo "$REPO_URL" | sed -E 's#^https?://##; s#/$##' | tr '/' '_')
+
+for COMPONENT in "${COMPONENTS_ARRAY[@]}"; do
+    PACKAGE_FILE_PATH="/var/lib/apt/lists/${REPO_HOST}_dists_${REPO_SUITE}_${COMPONENT}_binary-${ARCHITECTURE}_Packages"
+
+    if [ -f "${PACKAGE_FILE_PATH}.lz4" ]; then
+        FOUND_FILES=$((FOUND_FILES + 1))
+        echo ""
+        echo "Processing: ${PACKAGE_FILE_PATH}.lz4"
+        while read -r pkg; do
+            ALL_PACKAGES+=("$pkg")
+        done < <(lz4 -d < "${PACKAGE_FILE_PATH}.lz4" | awk '/^Package: / { print $2 }')
+    elif [ -f "$PACKAGE_FILE_PATH" ]; then
+        FOUND_FILES=$((FOUND_FILES + 1))
+        echo "Processing: $PACKAGE_FILE_PATH"
+        while read -r pkg; do
+            ALL_PACKAGES+=("$pkg")
+        done < <(awk '/^Package: / { print $2 }' "$PACKAGE_FILE_PATH")
+    else
+        echo "Warning: No Packages file found for component '$COMPONENT' at expected path:"
+        echo "         ${PACKAGE_FILE_PATH}[.lz4]"
+        echo "         Please ensure the component name is correct and 'sudo apt update' has run."
+        echo "         Manually inspect '/var/lib/apt/lists/' to confirm file names if issues persist."
+    fi
+done
+
+echo ""
+
+if [ ${#ALL_PACKAGES[@]} -eq 0 ]; then
+    echo "No packages found in the specified components."
+    exit 0
+fi
+
+echo "--- Unique Sorted Package Names ---"
+echo ""
+
+if [ -n "${OUTPUT_FILE:-}" ]; then
+    printf "%s\n" "${ALL_PACKAGES[@]}" | sort -u > "$OUTPUT_FILE"
+    echo ""
+    echo "Output written to $OUTPUT_FILE"
+else
+    printf "%s\n" "${ALL_PACKAGES[@]}" | sort -u
+    echo ""
+fi
+
+echo "-----------------------------------"
+echo ""
+echo "Total unique packages found: $(printf "%s\n" "${ALL_PACKAGES[@]}" | sort -u | wc -l)"
+
+exit 0
+
+# == END ==
