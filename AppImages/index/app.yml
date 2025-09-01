@@ -3,7 +3,7 @@
 
 buildinfo:
   name: index
-  version: 4.0.1-1
+  version: 4.0.2-1
   binarypath: /usr/bin/index
   distrorepo:
     - distro: ubuntu
@@ -214,11 +214,11 @@ apprunconf:
     SESSION_MANAGER: ""
     XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
   prebuild_commands:
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.1 libMauiKit4.so.4 && cd -"
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.1 libMauiMan4.so.4 && cd -"
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitFileBrowsing4.so.4.0.1 libMauiKitFileBrowsing4.so.4 && cd -"
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTerminal4.so.4.0.1 libMauiKitTerminal4.so.4 && cd -"
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTextEditor4.so.4.0.1 libMauiKitTextEditor4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.2 libMauiKit4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.2 libMauiMan4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitFileBrowsing4.so.4.0.2 libMauiKitFileBrowsing4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTerminal4.so.4.0.2 libMauiKitTerminal4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitTextEditor4.so.4.0.2 libMauiKitTextEditor4.so.4 && cd -"
     - "rm -f $APPDIR/usr/share/metainfo/org.kde.index.appdata.xml"
 
 sandbox:
