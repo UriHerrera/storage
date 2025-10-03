@@ -98,7 +98,6 @@ buildinfo:
     - libltdl7
     - liblzo2-2
     - libmd4c0
-    - libmfx1
     - libminizip1
     - libmp3lame0
     - libmpg123-0
