@@ -1,0 +1,191 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: clementine
+  version: 1.4.0~rc1+git867-g9ef681b0e+dfsg-1
+  binarypath: /usr/bin/clementine
+  distrorepo:
+    - distro: debian
+      release: bookworm
+      arch: amd64
+      components:
+        - main
+  deps:
+    - clementine
+    - gstreamer1.0-plugins-base
+    - gstreamer1.0-plugins-good
+    - gstreamer1.0-plugins-ugly
+    - liba52-0.7.4
+    - libaa1
+    - libaom3
+    - libargon2-1
+    - libasound2
+    - libasound2-data
+    - libasyncns0
+    - libavc1394-0
+    - libavcodec59
+    - libavutil57
+    - libcaca0
+    - libcdio19
+    - libcdparanoia0
+    - libchromaprint1
+    - libcodec2-1.0
+    - libcryptsetup12
+    - libdav1d6
+    - libdconf1
+    - libdevmapper1.02.1
+    - libdouble-conversion3
+    - libdv4
+    - libdvdread8
+    - libdw1
+    - libevdev2
+    - libfdisk1
+    - libfftw3-double3
+    - libflac12
+    - libgomp1
+    - libgpod4
+    - libgsm1
+    - libgstreamer-plugins-base1.0-0
+    - libgstreamer1.0-0
+    - libgudev-1.0-0
+    - libhwy1
+    - libice6
+    - libicu72
+    - libiec61883-0
+    - libimobiledevice6
+    - libinput-bin
+    - libinput10
+    - libip4tc2
+    - libjack-jackd2-0
+    - libjson-c5
+    - libjxl0.7
+    - libkmod2
+    - liblastfm5-1
+    - liblcms2-2
+    - libmd4c0
+    - libmfx1
+    - libmp3lame0
+    - libmpeg2-4
+    - libmpg123-0
+    - libmtdev1
+    - libmtp-common
+    - libmtp9
+    - libmygpo-qt5-1
+    - libncurses6
+    - libnuma1
+    - libogg0
+    - libopencore-amrnb0
+    - libopencore-amrwb0
+    - libopenjp2-7
+    - libopus0
+    - liborc-0.4-0
+    - libpam-systemd
+    - libpcre2-16-0
+    - libplist3
+    - libprotobuf32
+    - libproxy1v5
+    - libpulse0
+    - libqt5concurrent5
+    - libqt5core5a
+    - libqt5dbus5
+    - libqt5gui5
+    - libqt5network5
+    - libqt5qml5
+    - libqt5qmlmodels5
+    - libqt5quick5
+    - libqt5sql5
+    - libqt5sql5-sqlite
+    - libqt5waylandclient5
+    - libqt5waylandcompositor5
+    - libqt5widgets5
+    - libqt5x11extras5
+    - libqt5xml5
+    - librav1e0
+    - libraw1394-11
+    - libsamplerate0
+    - libshine3
+    - libshout3
+    - libsidplay1v5
+    - libslang2
+    - libsm6
+    - libsnappy1v5
+    - libsndfile1
+    - libsoup2.4-1
+    - libsoup2.4-common
+    - libsoxr0
+    - libspeex1
+    - libsqlite3-0
+    - libsvtav1enc1
+    - libswresample4
+    - libsystemd-shared
+    - libtag1v5
+    - libtag1v5-vanilla
+    - libtheora0
+    - libtwolame0
+    - libunwind8
+    - libusb-1.0-0
+    - libusbmuxd6
+    - libv4l-0
+    - libv4lconvert0
+    - libva-drm2
+    - libva-x11-2
+    - libva2
+    - libvdpau1
+    - libvisual-0.4-0
+    - libvorbis0a
+    - libvorbisenc2
+    - libvpx7
+    - libwacom-common
+    - libwacom9
+    - libwavpack1
+    - libwebpmux3
+    - libx11-6
+    - libx264-164
+    - libx265-199
+    - libxcb-icccm4
+    - libxcb-image0
+    - libxcb-keysyms1
+    - libxcb-render-util0
+    - libxcb-shape0
+    - libxcb-util1
+    - libxcb-xinerama0
+    - libxcb-xinput0
+    - libxcb-xkb1
+    - libxkbcommon-x11-0
+    - libxkbcommon0
+    - libxml2
+    - libxvidcore4
+    - libzvbi-common
+    - libzvbi0
+    - ocl-icd-libopencl1
+    - qtwayland5
+    - x11-common
+    - xkb-data
+    - zlib1g
+  runtime: go
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/clementine"
+  envvars:
+    QT_QPA_PLATFORM: "wayland;xcb"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
+    SESSION_MANAGER: ""
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+    LD_LIBRARY_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/libproxy:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio"
+  extra_rpaths:
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/libproxy"
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/pulseaudio"
+  prebuild_commands:
+    - "rm -f $APPDIR/usr/share/metainfo/org.clementine_player.Clementine.appdata.xml"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui
