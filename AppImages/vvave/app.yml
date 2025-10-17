@@ -3,7 +3,7 @@
 
 buildinfo:
   name: vvave
-  version: 4.0.2-1
+  version: 4.0.3-1
   binarypath: /usr/bin/vvave
   distrorepo:
     - distro: ubuntu
@@ -12,11 +12,12 @@ buildinfo:
       components:
           - main
           - universe
+          - multiverse
     - distro: kde-neon
       release: jammy
       arch: amd64
     - distro: zbkit
-      release: bookworm
+      release: bullseye
       arch: amd64
   deps:
     - kf6-breeze-icon-theme
@@ -51,18 +52,31 @@ buildinfo:
     - libaom3
     - libappimage1.0
     - libarchive13
+    - libaribb24-0
     - libasound2
+    - libass9
     - libassimp5
     - libassuan0
     - libasyncns0
+    - libasyncns0 
+    - libavc1394-0
     - libavcodec-extra58
     - libavcodec58
+    - libavdevice58
+    - libavfilter7
     - libavformat58
     - libavutil56
     - libb2-1
+    - libblas3
     - libbluray2
     - libboost-filesystem1.74.0
+    - libbs2b0
+    - libcaca0
     - libcanberra0
+    - libcddb2
+    - libcdio-cdda2
+    - libcdio-paranoia2
+    - libcdio19
     - libchromaprint1
     - libcodec2-1.0
     - libdav1d5
@@ -73,8 +87,11 @@ buildinfo:
     - libepub0
     - libevdev2
     - libexiv2-27
+    - libfaac0
     - libfbclient2
+    - libfdk-aac2
     - libflac8
+    - libflite1
     - libgif7
     - libgme0
     - libgomp1
@@ -89,19 +106,27 @@ buildinfo:
     - libgudev-1.0-0
     - libice6
     - libicu70
+    - libiec61883-0
     - libimobiledevice6
     - libinput10
+    - libjack0
     - libjpeg-turbo8
+    - liblapack3
     - liblcms2-2
     - libldap-2.5-0
     - liblept5
+    - liblilv-0-0
     - libltdl7
     - liblzo2-2
+    - libmad0
     - libmd4c0
+    - libmfx1
     - libminizip1
     - libmp3lame0
+    - libmpcdec6
     - libmpg123-0
     - libmtdev1
+    - libmysofa1
     - libmysqlclient21
     - libnorm1
     - libnspr4
@@ -109,31 +134,44 @@ buildinfo:
     - libnuma1
     - libodbc2
     - libogg0
+    - libopencore-amrnb0
     - libopenjp2-7
     - libopenmpt0
     - libopus0
+    - libopusfile0
     - liborc-0.4-0
     - libpcre2-16-0
     - libpgm-5.3-0
+    - libpipewire-0.3-0
     - libplist3
+    - libpocketsphinx3
     - libpolkit-agent-1-0
     - libpolkit-gobject-1-0
     - libpolkit-qt6-1-1
     - libpoppler-qt6-3
     - libpoppler134
+    - libpostproc55
     - libpq5
     - libproxy1v5
     - libpulse0
     - libqca-qt6-2
     - libqmobipocket6-2
     - librabbitmq4
+    - libraw1394-11
+    - librubberband2
     - libshine3
+    - libshout3
+    - libsidplayfp6
     - libsm6
     - libsnappy1v5
     - libsndfile1
+    - libsndio7.0
     - libsodium23
     - libsoxr0
+    - libspa-0.2-jack
+    - libspa-0.2-modules
     - libspeex1
+    - libsphinxbase3
     - libsquashfuse0
     - libsrt1.4-gnutls
     - libssh-gcrypt-4
@@ -159,7 +197,12 @@ buildinfo:
     - libvorbisfile3
     - libvpx7
     - libwacom9
+    - libwavpack1
     - libwebpmux3
+    - libwebrtc-audio-processing1
+    - libwildmidi2
+    - libx11-6
+    - libx11-xcb1
     - libx264-163
     - libx265-199
     - libxcb-cursor0
@@ -172,16 +215,21 @@ buildinfo:
     - libxcb-util1
     - libxcb-xinput0
     - libxcb-xkb1
+    - libxcb1
     - libxkbcommon-x11-0
     - libxkbcommon0
+    - libxml2
+    - libxmp4
     - libxslt1.1
+    - libxv1
     - libxvidcore4
+    - libzimg2
     - libzip4
     - libzmq5
     - libzvbi0
     - maui-manager
     - mauikit
-    - mauikit-archiver
+    - mauikit-audio
     - mauikit-filebrowsing
     - ocl-icd-libopencl1
     - qt6-5compat
@@ -195,6 +243,7 @@ buildinfo:
     - qt6-svg
     - qt6-wayland
     - vvave
+    - wavpack
     - xkb-data
   runtime: go
 
@@ -212,10 +261,20 @@ apprunconf:
     QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
     SESSION_MANAGER: ""
     XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+    VVAVE_DEFAULT_OUTPUT: "qtmultimedia"
+    MAUIKITAUDIO_PLUGIN_DIR: "$APPDIR/usr/lib/x86_64-linux-gnu/MauiKitAudio"
+    LD_LIBRARY_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/libproxy:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio"
+  extra_rpaths:
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/libproxy"
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/pulseaudio"
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/spa-0.2"
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/ts0"
+    - "$ORIGIN/../../../usr/lib/x86_64-linux-gnu/vdpau"
   prebuild_commands:
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.2 libMauiKit4.so.4 && cd -"
-    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.2 libMauiMan4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKit4.so.4.0.3 libMauiKit4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiMan4.so.4.0.3 libMauiMan4.so.4 && cd -"
     - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitFileBrowsing4.so.4.0.2 libMauiKitFileBrowsing4.so.4 && cd -"
+    - "cd $APPDIR/usr/lib/x86_64-linux-gnu && ln -sv libMauiKitAudio4.so.4.0.3 libMauiKitAudio4.so.4 && cd -"
     - "rm -f $APPDIR/usr/share/metainfo/org.kde.vvave.appdata.xml"
 
 sandbox:
