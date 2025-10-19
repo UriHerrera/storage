@@ -109,7 +109,6 @@ buildinfo:
     - libiec61883-0
     - libimobiledevice6
     - libinput10
-    - libjack0
     - libjpeg-turbo8
     - liblapack3
     - liblcms2-2
