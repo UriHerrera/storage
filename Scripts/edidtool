@@ -32,7 +32,7 @@ app = typer.Typer(
     help=(
         "EDIDTool — build and install EDID overrides that advertise VESA Adaptive-Sync.\n\n"
         "Typical use:\n"
-        "  1. ./edidtool list                     → show all DRM connectors\n"
+        "  1. ./edidtool list                     → show DP connectors on the discrete GPU\n"
         "  2. ./edidtool dump --card card0 --connector DP-2\n"
         "  3. ./edidtool build --card card0 --connector DP-2 --out mi27-as.bin\n"
         "  4. sudo ./edidtool install --file mi27-as.bin --connector DP-2\n"
@@ -40,10 +40,14 @@ app = typer.Typer(
     ),
     rich_markup_mode="markdown"
 )
-__version__ = "1.1.1"
+__version__ = "1.2.0"
 
-# ─────────────────────────── Core helpers ───────────────────────────
-def rb(p: Path) -> bytes: return p.read_bytes()
+AMD_VENDOR = "0x1002"
+AMD_IGPU_IDS = {"0x164e", "0x164c", "0x1648", "0x1506", "0x1507"}
+
+def rb(p: Path) -> bytes:
+    return p.read_bytes()
+
 def wb(p: Path, b: bytes) -> None:
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_bytes(b)
@@ -53,20 +57,21 @@ def split_blocks(edid: bytes) -> list[bytes]:
         raise RuntimeError("Invalid EDID size")
     return [edid[i:i+128] for i in range(0, len(edid), 128)]
 
-def checksum128(b: bytes) -> int: return (-sum(b[:-1])) & 0xFF
+def checksum128(b: bytes) -> int:
+    return (-sum(b[:-1])) & 0xFF
+
 def fix128(b: bytes) -> bytes:
-    x = bytearray(b); x[-1] = 0; x[-1] = checksum128(bytes(x)); return bytes(x)
+    x = bytearray(b)
+    x[-1] = 0
+    x[-1] = checksum128(bytes(x))
+    return bytes(x)
 
 def make_displayid_as_ext(vmin: int, vmax: int) -> bytes:
-    """Create a minimal DisplayID 1.3 block advertising Adaptive-Sync (48–165 Hz)."""
     ext = bytearray(128)
     ext[0:4] = bytes([0x70, 0x13, 0x00, 0x00])
-    off = 4
-    db = bytearray([0x12, 0x00, 0x0A, vmin & 0xFF, vmax & 0xFF,
-                    0x00, 0x00, 0x00, 0x00, 0x01])
-    ext[off:off + len(db)] = db
-    ext = bytearray(fix128(bytes(ext)))
-    return bytes(ext)
+    db = bytearray([0x12, 0x00, 0x0A, vmin & 0xFF, vmax & 0xFF, 0x00, 0x00, 0x00, 0x00, 0x01])
+    ext[4:4 + len(db)] = db
+    return fix128(bytes(ext))
 
 def append_ext(base: bytes, ext: bytes) -> bytes:
     blocks = split_blocks(base)
@@ -76,22 +81,54 @@ def append_ext(base: bytes, ext: bytes) -> bytes:
     blocks.append(ext)
     return b"".join(blocks)
 
-# ─────────────────────────── DRM connector helpers ───────────────────────────
-def detect_connectors() -> list[dict]:
+def pci_paths_for_card(card: str) -> Path:
+    p = Path(f"/sys/class/drm/{card}/device")
+    if not p.exists():
+        raise RuntimeError(f"Card not found: {card}")
+    return p
+
+def read_pci_attr(card: str, name: str) -> str:
+    dev = pci_paths_for_card(card)
+    f = dev / name
+    return f.read_text().strip() if f.exists() else ""
+
+def is_amd_igpu(card: str) -> bool:
+    vendor = read_pci_attr(card, "vendor")
+    device = read_pci_attr(card, "device")
+    return vendor == AMD_VENDOR and device in AMD_IGPU_IDS
+
+def is_dp_connector(name: str) -> bool:
+    parts = name.split("-")
+    return len(parts) > 1 and parts[1].startswith("DP")
+
+def detect_connectors(only_dp: bool, exclude_igpu: bool) -> list[dict]:
     root = Path("/sys/class/drm")
     items = []
     for p in root.glob("card*-*"):
+        name = p.name
+        card = name.split("-")[0]
+        connector = "-".join(name.split("-")[1:])
+        if exclude_igpu and is_amd_igpu(card):
+            continue
+        if only_dp and not is_dp_connector(name):
+            continue
         st = (p / "status").read_text().strip() if (p / "status").exists() else "unknown"
         items.append({
             "path": str(p),
-            "card": p.name.split("-")[0],
-            "connector": "-".join(p.name.split("-")[1:]),
+            "card": card,
+            "connector": connector,
             "status": st,
-            "has_edid": (p / "edid").exists()
+            "has_edid": (p / "edid").exists(),
+            "gpu_vendor": read_pci_attr(card, "vendor"),
+            "gpu_device": read_pci_attr(card, "device")
         })
     return sorted(items, key=lambda x: (x["card"], x["connector"]))
 
-def pick_connector(card: str, connector: str) -> Path:
+def pick_connector(card: str, connector: str, only_dp: bool, exclude_igpu: bool, allow_non_dp: bool, include_igpu: bool) -> Path:
+    if exclude_igpu and not include_igpu and is_amd_igpu(card):
+        raise RuntimeError(f"Refusing iGPU card by default: {card}. Pass --include-igpu to override.")
+    if only_dp and not allow_non_dp and not is_dp_connector(f"{card}-{connector}"):
+        raise RuntimeError(f"Refusing non-DisplayPort connector by default: {connector}. Pass --allow-non-dp to override.")
     p = Path(f"/sys/class/drm/{card}-{connector}")
     if not p.exists():
         raise RuntimeError(f"Connector not found: {card}-{connector}")
@@ -99,18 +136,20 @@ def pick_connector(card: str, connector: str) -> Path:
         raise RuntimeError(f"No EDID at {card}-{connector}")
     return p
 
-# ─────────────────────────── Commands ───────────────────────────
-@app.command(help="List all DRM connectors and whether an EDID is present.")
-def list():
-    typer.echo(json.dumps(detect_connectors(), indent=2))
+@app.command(help="List DisplayPort connectors on the discrete GPU by default. Use --all to include non-DP, --include-igpu to include iGPU.")
+def list(all: bool = typer.Option(False, "--all", help="Include non-DisplayPort connectors"), include_igpu: bool = typer.Option(False, "--include-igpu", help="Include AMD iGPU cards")):
+    conns = detect_connectors(only_dp=not all, exclude_igpu=not include_igpu)
+    typer.echo(json.dumps(conns, indent=2))
 
 @app.command(help="Dump the raw EDID from a connector to a file (default: ./edid.bin).")
 def dump(
     card: str = typer.Option(..., help="Card name, e.g. card0"),
     connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
-    out: Path = typer.Option(Path("./edid.bin"), help="Destination path for EDID dump")
+    out: Path = typer.Option(Path("./edid.bin"), help="Destination path for EDID dump"),
+    allow_non_dp: bool = typer.Option(False, help="Allow non-DisplayPort connector"),
+    include_igpu: bool = typer.Option(False, help="Allow AMD iGPU card")
 ):
-    base = rb(pick_connector(card, connector) / "edid")
+    base = rb(pick_connector(card, connector, only_dp=True, exclude_igpu=True, allow_non_dp=allow_non_dp, include_igpu=include_igpu) / "edid")
     wb(out, base)
     typer.echo(f"Saved EDID to {out}")
 
@@ -120,9 +159,11 @@ def build(
     connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
     out: Path = typer.Option(Path("./edid-as.bin"), help="Output file name"),
     vmin: int = typer.Option(48, help="Minimum VRR vertical frequency (Hz)"),
-    vmax: int = typer.Option(165, help="Maximum VRR vertical frequency (Hz)")
+    vmax: int = typer.Option(165, help="Maximum VRR vertical frequency (Hz)"),
+    allow_non_dp: bool = typer.Option(False, help="Allow non-DisplayPort connector"),
+    include_igpu: bool = typer.Option(False, help="Allow AMD iGPU card")
 ):
-    base = rb(pick_connector(card, connector) / "edid")
+    base = rb(pick_connector(card, connector, only_dp=True, exclude_igpu=True, allow_non_dp=allow_non_dp, include_igpu=include_igpu) / "edid")
     ext = make_displayid_as_ext(vmin, vmax)
     ov = append_ext(base, ext)
     wb(out, ov)
@@ -139,7 +180,7 @@ def info(file: Path = typer.Option(..., help="Path to EDID file")):
 def install(
     file: Path = typer.Option(..., help="EDID file to install"),
     connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
-    fwdir: Path = typer.Option(Path("/usr/lib/firmware/edid"), help="Firmware directory (default: /usr/lib/firmware/edid)"),
+    fwdir: Path = typer.Option(Path("/usr/lib/firmware/edid"), help="Firmware directory"),
     print_kernel_params: bool = typer.Option(True, help="Show boot parameters to enable override")
 ):
     data = rb(file)
@@ -153,9 +194,7 @@ def install(
     typer.echo(f"Installed {target}")
 
 @app.callback()
-def version_callback(
-    version: bool = typer.Option(None, "--version", help="Show version and exit.", is_eager=True)
-):
+def version_callback(version: bool = typer.Option(None, "--version", help="Show version and exit.", is_eager=True)):
     if version:
         typer.echo(f"EDIDTool {__version__}")
         raise typer.Exit()
