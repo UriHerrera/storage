@@ -3,7 +3,7 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-102692568166032][SensorColors]
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/name=75,38,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/name=75,38,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/free=218,38,200
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used=218,74,38
 
@@ -16,14 +16,14 @@ chartFace=org.kde.ksysguard.piechart
 showTitle=false
 
 [Face-102692575119056][SensorColors]
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/free=255,170,127
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/total=171,38,218
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/used=38,218,196
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/free=255,170,127
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/total=171,38,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/used=38,218,196
 
 [Face-102692575119056][Sensors]
-highPrioritySensorIds=["disk/fa5e306a-dcc4-45df-96ed-302659433bdb/free","disk/fa5e306a-dcc4-45df-96ed-302659433bdb/used"]
+highPrioritySensorIds=["disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/free","disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/used"]
 lowPrioritySensorIds=[]
-totalSensors=["disk/fa5e306a-dcc4-45df-96ed-302659433bdb/name","disk/fa5e306a-dcc4-45df-96ed-302659433bdb/total"]
+totalSensors=["disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/name","disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/total"]
 
 [Face-102692600358080][Appearance]
 chartFace=org.kde.ksysguard.piechart
@@ -101,13 +101,13 @@ chartFace=org.kde.ksysguard.horizontalbars
 showTitle=false
 
 [Face-95491222971856][SensorColors]
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/free=218,119,38
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/freePercent=0,170,255
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/read=38,218,191
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/total=124,38,218
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/used=110,218,38
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/usedPercent=85,170,0
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/write=255,85,127
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/free=218,119,38
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/freePercent=0,170,255
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/read=38,218,191
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/total=124,38,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/used=110,218,38
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/usedPercent=85,170,0
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/write=255,85,127
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/freePercent=38,218,140
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/read=38,133,218
 disk/a52e4f7e-f9ac-407e-9dca-4ee2f534894f/used=213,218,38
@@ -142,13 +142,13 @@ chartFace=org.kde.ksysguard.horizontalbars
 showTitle=false
 
 [Face-99966071418384][SensorColors]
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/freePercent=218,38,78
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/read=38,102,218
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/usedPercent=215,38,218
-disk/fa5e306a-dcc4-45df-96ed-302659433bdb/write=38,99,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/freePercent=218,38,78
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/read=38,102,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/usedPercent=215,38,218
+disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/write=38,99,218
 
 [Face-99966071418384][Sensors]
-highPrioritySensorIds=["disk/fa5e306a-dcc4-45df-96ed-302659433bdb/freePercent","disk/fa5e306a-dcc4-45df-96ed-302659433bdb/usedPercent","disk/fa5e306a-dcc4-45df-96ed-302659433bdb/read","disk/fa5e306a-dcc4-45df-96ed-302659433bdb/write"]
+highPrioritySensorIds=["disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/freePercent","disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/usedPercent","disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/read","disk/0eb48d12-316a-47ae-ba43-e63e1c7e501b/write"]
 
 [page]
 Title=Almacenamiento
