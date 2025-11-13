@@ -68,9 +68,44 @@ def fix128(b: bytes) -> bytes:
 
 def make_displayid_as_ext(vmin: int, vmax: int) -> bytes:
     ext = bytearray(128)
-    ext[0:4] = bytes([0x70, 0x13, 0x00, 0x00])
-    db = bytearray([0x12, 0x00, 0x0A, vmin & 0xFF, vmax & 0xFF, 0x00, 0x00, 0x00, 0x00, 0x01])
-    ext[4:4 + len(db)] = db
+
+    # 1. Define the Data Block (payload)
+    # DisplayID 2.0, Adaptive-Sync Data Block (Tag 0x2B)
+    max_h_freq = 242 # 0x00F2, from your monitor's Block 0 range
+    db = bytearray([
+        0x2B, 0x00, 0x05,           # Tag, Rev, Len=5
+        vmin & 0xFF, vmax & 0xFF,  # 0x30, 0xA5
+        max_h_freq & 0xFF, (max_h_freq >> 8) & 0xFF, # 0xF2, 0x00
+        0x01                      # Flags (Adaptive-Sync support)
+    ])
+    payload_len = len(db) # This is 8
+
+    # 2. Define the DisplayID 2.0 Header (5 bytes)
+    # [Tag, Version, PayloadLength, Checksum, DisplayType]
+    ext[0] = 0x70             # Tag
+    ext[1] = 0x20             # Version
+    ext[2] = payload_len      # N = 8
+    ext[3] = 0x00             # Checksum (placeholder)
+    ext[4] = 0x00             # Display Type
+
+    # 3. Place the payload (starts at byte 5)
+    ext[5 : 5 + payload_len] = db
+
+    # 4. Calculate the internal DisplayID checksum (at ext[3])
+    # The sum of bytes [1, 2] + [4, ... end of payload]
+    # must be 0 mod 256.
+    
+    # Sum bytes 1 and 2
+    partial_sum = sum(ext[1:3]) # ext[1] + ext[2]
+    
+    # Sum bytes 4 through the end of the payload
+    struct_end = 5 + payload_len # 5 + 8 = 13
+    partial_sum += sum(ext[4:struct_end]) # ext[4] + payload
+
+    # The checksum at ext[3] is the value that makes the total sum 0
+    ext[3] = (-partial_sum) & 0xFF
+
+    # 5. Calculate the 128-byte EDID block checksum
     return fix128(bytes(ext))
 
 def append_ext(base: bytes, ext: bytes) -> bytes:
