@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+#############################################################################################################################################################################
+#   The license used for this file and its contents is: BSD-3-Clause                                                                                                        #
+#                                                                                                                                                                           #
+#   Copyright <2025> <Uri Herrera <uri_herrera@nxos.org>>                                                                                                                   #
+#                                                                                                                                                                           #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:                          #
+#                                                                                                                                                                           #
+#    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.                                        #
+#                                                                                                                                                                           #
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer                                      #
+#       in the documentation and/or other materials provided with the distribution.                                                                                         #
+#                                                                                                                                                                           #
+#    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software                    #
+#       without specific prior written permission.                                                                                                                          #
+#                                                                                                                                                                           #
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,                      #
+#    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS                  #
+#    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                 #
+#    GOODS OR SERVICES; LOSS OF USE, DATA,   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,                      #
+#    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   #
+#############################################################################################################################################################################
+
+
+# -- Exit on errors.
+
+set -euo pipefail
+
+
+# -- Functions.
+
+die() { printf 'Error: %s\n' "$*" >&2; exit 1; }
+need() { command -v "$1" >/dev/null 2>&1 || die "Missing dependency: $1"; }
+
+
+# -- Check dependencies.
+
+for dep in curl unzip fc-cache jq; do need "$dep"; done
+
+FONT="${1:-}"
+[ -z "$FONT" ] && die "Usage: ${0##*/} <FontName> [--mono|--propo] [--tag <tag>]"
+
+VARIANT=""
+TAG="latest"
+shift || true
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --mono)  VARIANT="Mono"; shift ;;
+    --propo) VARIANT="Propo"; shift ;;
+    --tag)   TAG="${2:-}"; [[ -n "$TAG" ]] || die "Missing value for --tag"; shift 2 ;;
+    -h|--help) printf 'Usage: %s <FontName> [--mono|--propo] [--tag <tag>]\n' "${0##*/}"; exit 0 ;;
+    *) die "Unknown argument: $1" ;;
+  esac
+done
+
+ASSET="${FONT}${VARIANT}.zip"
+API_BASE="https://api.github.com/repos/ryanoasis/nerd-fonts/releases"
+ENDPOINT=$([[ "$TAG" == "latest" ]] && echo "latest" || echo "tags/$TAG")
+
+
+# -- Extraction.
+
+URL=$(curl -fsSL --compressed "$API_BASE/$ENDPOINT" | \
+      jq -r ".assets[] | select(.name == \"$ASSET\") | .browser_download_url")
+
+[[ -n "$URL" && "$URL" != "null" ]] || die "Asset not found: $ASSET (check font name/variant/tag)"
+
+DEST_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/fonts/NerdFonts/$FONT"
+TMP_DIR=$(mktemp -d)
+trap 'rm -rf "$TMP_DIR"' EXIT INT TERM
+
+ZIP_PATH="$TMP_DIR/$ASSET"
+curl -fL --retry 3 --retry-delay 2 -o "$ZIP_PATH" "$URL"
+
+mkdir -p "$DEST_DIR"
+unzip -oq "$ZIP_PATH" -d "$DEST_DIR"
+
+
+# -- Cleaunp.
+
+find "$DEST_DIR" -type f ! \( -name "*.[o|t]tf" -o -name "*.woff*" \) -delete
+
+
+# -- Update font cache.
+
+fc-cache -f "$DEST_DIR" >/dev/null 2>&1
+
+printf 'Successfully installed: %s\n' "$ASSET"
