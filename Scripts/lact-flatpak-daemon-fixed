@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+# Resolve the absolute path of the directory containing this script
+SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
+FLATBOX_BIN="${SCRIPT_DIR}/flatbox"
+
+# Navigate up 7 levels to reach the flatpak root from .../files/bin
+# Using realpath with relative navigation is cleaner than multiple dirname calls
+FLATPAK_USER_DIR=$(realpath "$SCRIPT_DIR/../../../../../../..")
+
+export LACT_DAEMON_SOCKET_PATH="/run/host/root/run/lactd.sock"
+export LACT_DAEMON_CONFIG_DIR="/run/host/root/etc/lact"
+
+exec "$FLATBOX_BIN" run \
+    --flatpak-install-path "$FLATPAK_USER_DIR" \
+    --app io.github.ilya_zlobintsev.LACT \
+    --apparmor-unconfined \
+    lact daemon
