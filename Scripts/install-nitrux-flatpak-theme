@@ -266,7 +266,7 @@ mkdir -p -- "$artifact_root"
 
 note "Creating the GTK 3 Flatpak runtime"
 build_dir="${work_dir}/build"
-mkdir -p -- "${build_dir}/usr"
+mkdir -p -- "${build_dir}/files" "${build_dir}/usr"
 cp -aL -- "${gtk3_dir}/." "${build_dir}/usr/"
 
 [[ -s "${build_dir}/usr/gtk.css" ]] || die "the staged GTK 3 gtk.css is missing or empty"
@@ -295,7 +295,9 @@ installed_location="$(flatpak info --user --show-location "$runtime_ref")"
 [[ -s "${installed_location}/files/gtk.css" ]] \
     || die "installed runtime is missing files/gtk.css"
 
-if ! flatpak list --user --runtime --columns=ref | grep -Fxq "runtime/${runtime_ref}"; then
+runtime_list="$(flatpak list --user --runtime --columns=ref)"
+if ! grep -Fxq "$runtime_ref" <<<"$runtime_list" \
+    && ! grep -Fxq "runtime/${runtime_ref}" <<<"$runtime_list"; then
     die "the runtime is absent from the per-user Flatpak runtime list"
 fi
 
@@ -331,7 +333,7 @@ if $install_gtk4; then
 
     for entry in gtk.css gtk-dark.css assets; do
         if [[ -e "${gtk4_target}/${entry}" || -L "${gtk4_target}/${entry}" ]]; then
-            cp -aL -- "${gtk4_target}/${entry}" "$backup_dir/"
+            cp -a -- "${gtk4_target}/${entry}" "$backup_dir/"
         fi
     done
 
