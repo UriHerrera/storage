@@ -1,0 +1,401 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: BSD-3-Clause
+
+set -Eeuo pipefail
+
+THEME_NAME="nitrux-dark"
+RUNTIME_ID="org.gtk.Gtk3theme.${THEME_NAME}"
+RUNTIME_BRANCH="3.22"
+
+theme_source="/Users/uri/GitHub/Nitrux/nitrux-gtk-theme"
+gtk3_dir=""
+gtk4_dir=""
+verify_app=""
+install_gtk4=true
+
+usage()
+{
+    cat <<EOF
+Usage: $(basename -- "$0") [OPTIONS]
+
+Build, install, and verify the Nitrux GTK theme for Flatpak applications.
+
+Options:
+  --source DIR       Theme repository or installed theme directory.
+                     Default: ${theme_source}
+  --gtk3-dir DIR     Explicit directory containing GTK 3 gtk.css.
+  --gtk4-dir DIR     Explicit directory containing GTK 4 gtk.css.
+  --app APP_ID       Flatpak application to use for sandbox verification.
+  --skip-gtk4        Do not install/expose the GTK 4 user CSS.
+  -h, --help         Show this help.
+
+GTK 3 is installed as ${RUNTIME_ID}.
+GTK 4 has no standard Gtk4theme Flatpak extension point, so its CSS is copied
+to the user GTK 4 configuration and exposed read-only to Flatpak sandboxes.
+EOF
+}
+
+die()
+{
+    printf 'error: %s\n' "$*" >&2
+    exit 1
+}
+
+note()
+{
+    printf '\n==> %s\n' "$*"
+}
+
+warn()
+{
+    printf 'warning: %s\n' "$*" >&2
+}
+
+require_command()
+{
+    command -v "$1" >/dev/null 2>&1 || die "required command not found: $1"
+}
+
+remove_scoped_tree()
+{
+    local target="$1"
+    local allowed_parent="$2"
+
+    [[ -n "$target" && -n "$allowed_parent" ]] || die "refusing an empty cleanup path"
+    case "$target" in
+        "$allowed_parent"/*) ;;
+        *) die "refusing to remove path outside ${allowed_parent}: ${target}" ;;
+    esac
+
+    if [[ -e "$target" || -L "$target" ]]; then
+        rm -rf -- "$target"
+    fi
+}
+
+find_theme_dir()
+{
+    local version="$1"
+    local explicit_dir="$2"
+    local -a matches=()
+
+    if [[ -n "$explicit_dir" ]]; then
+        [[ -f "${explicit_dir}/gtk.css" ]] \
+            || die "${explicit_dir} does not contain gtk.css"
+        realpath -e -- "$explicit_dir"
+        return
+    fi
+
+    while IFS= read -r -d '' css; do
+        matches+=("$(dirname -- "$css")")
+    done < <(find -L "$theme_source" -type f -path "*/gtk-${version}/gtk.css" -print0)
+
+    if ((${#matches[@]} == 0)); then
+        return 1
+    fi
+    if ((${#matches[@]} > 1)); then
+        local -a named_matches=()
+        local match
+        for match in "${matches[@]}"; do
+            if [[ "$(basename -- "$(dirname -- "$match")")" == "$THEME_NAME" ]]; then
+                named_matches+=("$match")
+            fi
+        done
+        if ((${#named_matches[@]} == 1)); then
+            realpath -e -- "${named_matches[0]}"
+            return
+        fi
+
+        printf 'Multiple GTK %s theme directories were found:\n' "$version" >&2
+        printf '  %s\n' "${matches[@]}" >&2
+        die "select one with --gtk${version%%.*}-dir"
+    fi
+
+    realpath -e -- "${matches[0]}"
+}
+
+generate_source_theme()
+{
+    local source_dir="${theme_source}/src/${THEME_NAME}"
+    local output_dir="${work_dir}/generated/${THEME_NAME}"
+    local asset_id
+
+    [[ -d "$source_dir" ]] || return 1
+    [[ -f "${source_dir}/scss/gtk.scss" ]] || return 1
+    [[ -f "${source_dir}/scss/gtk4.scss" ]] || return 1
+    [[ -f "${source_dir}/img.svg" ]] || return 1
+    [[ -f "${source_dir}/index" ]] || return 1
+
+    require_command inkscape
+    require_command sassc
+
+    mkdir -p -- "${output_dir}/gtk-3.0/img" "${output_dir}/gtk-4.0"
+
+    while IFS= read -r asset_id; do
+        [[ -n "$asset_id" ]] || continue
+        inkscape "${source_dir}/img.svg" \
+            --export-id="$asset_id" \
+            --export-id-only \
+            --export-filename="${output_dir}/gtk-3.0/img/${asset_id}.png" >&2
+        inkscape "${source_dir}/img.svg" \
+            --export-id="$asset_id" \
+            --export-id-only \
+            --export-dpi=192 \
+            --export-filename="${output_dir}/gtk-3.0/img/${asset_id}@2.png" >&2
+    done <"${source_dir}/index"
+
+    sassc -t compressed "${source_dir}/scss/gtk.scss" \
+        "${output_dir}/gtk-3.0/gtk.css" >&2
+    sassc -t compressed "${source_dir}/scss/gtk4.scss" \
+        "${output_dir}/gtk-4.0/gtk.css" >&2
+    cp -a -- "${output_dir}/gtk-4.0/gtk.css" \
+        "${output_dir}/gtk-4.0/gtk-dark.css"
+
+    printf '%s\n' "$output_dir"
+}
+
+while (($#)); do
+    case "$1" in
+        --source)
+            (($# >= 2)) || die "--source requires a directory"
+            theme_source="$2"
+            shift 2
+            ;;
+        --gtk3-dir)
+            (($# >= 2)) || die "--gtk3-dir requires a directory"
+            gtk3_dir="$2"
+            shift 2
+            ;;
+        --gtk4-dir)
+            (($# >= 2)) || die "--gtk4-dir requires a directory"
+            gtk4_dir="$2"
+            shift 2
+            ;;
+        --app)
+            (($# >= 2)) || die "--app requires a Flatpak application ID"
+            verify_app="$2"
+            shift 2
+            ;;
+        --skip-gtk4)
+            install_gtk4=false
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            die "unknown option: $1"
+            ;;
+    esac
+done
+
+require_command flatpak
+require_command find
+require_command grep
+require_command realpath
+
+[[ -d "$theme_source" ]] || die "theme source does not exist: ${theme_source}"
+theme_source="$(realpath -e -- "$theme_source")"
+
+work_dir="$(mktemp -d "${TMPDIR:-/tmp}/nitrux-flatpak-theme.XXXXXXXX")"
+cleanup_work_dir()
+{
+    remove_scoped_tree "$work_dir" "${TMPDIR:-/tmp}"
+}
+trap cleanup_work_dir EXIT
+
+gtk3_found=true
+gtk3_dir="$(find_theme_dir 3.0 "$gtk3_dir")" || gtk3_found=false
+
+if ! $gtk3_found && [[ -f "/usr/share/themes/${THEME_NAME}/gtk-3.0/gtk.css" ]]; then
+    gtk3_dir="/usr/share/themes/${THEME_NAME}/gtk-3.0"
+    gtk3_found=true
+fi
+
+gtk4_found=true
+if $install_gtk4; then
+    gtk4_dir="$(find_theme_dir 4.0 "$gtk4_dir")" || gtk4_found=false
+    if ! $gtk4_found && [[ -f "/usr/share/themes/${THEME_NAME}/gtk-4.0/gtk.css" ]]; then
+        gtk4_dir="/usr/share/themes/${THEME_NAME}/gtk-4.0"
+        gtk4_found=true
+    fi
+fi
+
+if ! $gtk3_found || { $install_gtk4 && ! $gtk4_found; }; then
+    note "Compiled theme files not found; generating them from SCSS"
+    generated_theme="$(generate_source_theme)" \
+        || die "compiled CSS is absent and the ${THEME_NAME} SCSS source layout is incomplete"
+    if ! $gtk3_found; then
+        gtk3_dir="${generated_theme}/gtk-3.0"
+    fi
+    if $install_gtk4 && ! $gtk4_found; then
+        gtk4_dir="${generated_theme}/gtk-4.0"
+    fi
+fi
+
+arch="$(flatpak --default-arch)"
+[[ -n "$arch" ]] || die "Flatpak did not report a default architecture"
+runtime_ref="${RUNTIME_ID}/${arch}/${RUNTIME_BRANCH}"
+
+data_home="${XDG_DATA_HOME:-${HOME}/.local/share}"
+config_home="${XDG_CONFIG_HOME:-${HOME}/.config}"
+state_home="${XDG_STATE_HOME:-${HOME}/.local/state}"
+artifact_root="${data_home}/nitrux-flatpak-theme"
+repo_dir="${artifact_root}/repo"
+bundle_file="${artifact_root}/${RUNTIME_ID}-${arch}-${RUNTIME_BRANCH}.flatpak"
+unmaintained_dir="${data_home}/flatpak/extension/${RUNTIME_ID}/${arch}/${RUNTIME_BRANCH}"
+gtk4_target="${config_home}/gtk-4.0"
+gtk4_state="${state_home}/nitrux-flatpak-theme"
+
+note "Validated sources"
+printf 'GTK 3: %s\n' "$gtk3_dir"
+if $install_gtk4; then
+    printf 'GTK 4: %s\n' "$gtk4_dir"
+fi
+printf 'Runtime: %s\n' "$runtime_ref"
+
+note "Cleaning previous Nitrux theme attempts"
+remove_scoped_tree "$unmaintained_dir" "${data_home}/flatpak/extension/${RUNTIME_ID}/${arch}"
+
+if flatpak info --user "$runtime_ref" >/dev/null 2>&1; then
+    flatpak uninstall --user --noninteractive -y "$runtime_ref"
+fi
+
+remove_scoped_tree "$artifact_root" "$data_home"
+mkdir -p -- "$artifact_root"
+
+note "Creating the GTK 3 Flatpak runtime"
+build_dir="${work_dir}/build"
+mkdir -p -- "${build_dir}/usr"
+cp -aL -- "${gtk3_dir}/." "${build_dir}/usr/"
+
+[[ -s "${build_dir}/usr/gtk.css" ]] || die "the staged GTK 3 gtk.css is missing or empty"
+
+printf '%s\n' \
+    '[Runtime]' \
+    "name=${RUNTIME_ID}" \
+    "runtime=${runtime_ref}" \
+    "sdk=${runtime_ref}" >"${build_dir}/metadata"
+
+flatpak build-export --runtime "$repo_dir" "$build_dir" "$RUNTIME_BRANCH"
+flatpak build-bundle --runtime --arch="$arch" \
+    "$repo_dir" "$bundle_file" "$RUNTIME_ID" "$RUNTIME_BRANCH"
+
+[[ -s "$bundle_file" ]] || die "Flatpak bundle was not created: ${bundle_file}"
+
+note "Installing the GTK 3 runtime for the current user"
+flatpak install --user --noninteractive -y "$bundle_file"
+
+note "Verifying the installed GTK 3 runtime"
+flatpak info --user "$runtime_ref" >/dev/null \
+    || die "the installed runtime cannot be queried"
+
+installed_location="$(flatpak info --user --show-location "$runtime_ref")"
+[[ -d "$installed_location" ]] || die "invalid installed runtime location: ${installed_location}"
+[[ -s "${installed_location}/files/gtk.css" ]] \
+    || die "installed runtime is missing files/gtk.css"
+
+if ! flatpak list --user --runtime --columns=ref | grep -Fxq "runtime/${runtime_ref}"; then
+    die "the runtime is absent from the per-user Flatpak runtime list"
+fi
+
+printf 'Installed ref: %s\n' "$runtime_ref"
+printf 'Installed at:  %s\n' "$installed_location"
+printf 'Bundle:        %s\n' "$bundle_file"
+
+note "Activating the theme name"
+if command -v gsettings >/dev/null 2>&1; then
+    gsettings set org.gnome.desktop.interface gtk-theme "$THEME_NAME"
+    active_theme="$(gsettings get org.gnome.desktop.interface gtk-theme | tr -d "'")"
+    [[ "$active_theme" == "$THEME_NAME" ]] \
+        || die "GSettings reports ${active_theme}, expected ${THEME_NAME}"
+else
+    warn "gsettings is unavailable; verify that the active GTK theme is ${THEME_NAME}"
+fi
+
+if command -v gdbus >/dev/null 2>&1; then
+    portal_values="$(gdbus call --session \
+        --dest org.freedesktop.portal.Desktop \
+        --object-path /org/freedesktop/portal/desktop \
+        --method org.freedesktop.portal.Settings.ReadAll \
+        "['org.gnome.desktop.interface']")"
+    if ! grep -Fq "'gtk-theme': <'${THEME_NAME}'>" <<<"$portal_values"; then
+        die "the public Settings portal does not report gtk-theme=${THEME_NAME}"
+    fi
+fi
+
+if $install_gtk4; then
+    note "Installing and exposing the GTK 4 CSS"
+    mkdir -p -- "$gtk4_state"
+    backup_dir="$(mktemp -d "${gtk4_state}/backup-$(date -u +%Y%m%dT%H%M%SZ).XXXXXX")"
+
+    for entry in gtk.css gtk-dark.css assets; do
+        if [[ -e "${gtk4_target}/${entry}" || -L "${gtk4_target}/${entry}" ]]; then
+            cp -aL -- "${gtk4_target}/${entry}" "$backup_dir/"
+        fi
+    done
+
+    mkdir -p -- "$gtk4_target"
+    rm -f -- "${gtk4_target}/gtk.css" "${gtk4_target}/gtk-dark.css"
+    remove_scoped_tree "${gtk4_target}/assets" "$gtk4_target"
+
+    cp -aL -- "${gtk4_dir}/gtk.css" "${gtk4_target}/gtk.css"
+    if [[ -f "${gtk4_dir}/gtk-dark.css" ]]; then
+        cp -aL -- "${gtk4_dir}/gtk-dark.css" "${gtk4_target}/gtk-dark.css"
+    fi
+    if [[ -d "${gtk4_dir}/assets" ]]; then
+        cp -aL -- "${gtk4_dir}/assets" "${gtk4_target}/assets"
+    fi
+
+    printf '%s\n' "$gtk4_dir" >"${gtk4_target}/.nitrux-flatpak-theme-source"
+    flatpak override --user --filesystem=xdg-config/gtk-4.0:ro
+
+    [[ -s "${gtk4_target}/gtk.css" ]] || die "GTK 4 gtk.css was not installed"
+    if ! flatpak override --user --show | grep -Fq 'xdg-config/gtk-4.0'; then
+        die "the GTK 4 Flatpak filesystem override was not recorded"
+    fi
+
+    printf 'GTK 4 CSS:    %s\n' "${gtk4_target}/gtk.css"
+    printf 'GTK 4 backup: %s\n' "$backup_dir"
+fi
+
+if [[ -n "$verify_app" ]]; then
+    flatpak info "$verify_app" >/dev/null 2>&1 \
+        || die "Flatpak application is not installed: ${verify_app}"
+else
+    while IFS= read -r app_id; do
+        [[ -n "$app_id" ]] || continue
+        if flatpak info --show-extensions "$app_id" 2>/dev/null \
+            | grep -Fq "$RUNTIME_ID"; then
+            verify_app="$app_id"
+            break
+        fi
+    done < <(flatpak list --app --columns=application)
+fi
+
+note "Verifying availability to Flatpak applications"
+if [[ -n "$verify_app" ]]; then
+    printf 'Test application: %s\n' "$verify_app"
+    flatpak info --show-extensions "$verify_app" | grep -F "$RUNTIME_ID" \
+        || warn "${verify_app} does not declare a compatible GTK 3 theme extension point"
+
+    if flatpak run --command=sh "$verify_app" -c \
+        "test -s /usr/share/runtime/share/themes/${THEME_NAME}/gtk-3.0/gtk.css"; then
+        printf 'GTK 3 runtime is mounted inside %s.\n' "$verify_app"
+    else
+        warn "GTK 3 runtime is not mounted inside ${verify_app}; it may be a GTK 4-only application"
+    fi
+
+    if $install_gtk4; then
+        if flatpak run --command=sh "$verify_app" -c \
+            'test -s "$HOME/.config/gtk-4.0/gtk.css"'; then
+            printf 'GTK 4 CSS is visible inside %s.\n' "$verify_app"
+        else
+            die "GTK 4 CSS is not visible inside ${verify_app}"
+        fi
+    fi
+else
+    warn "no installed application advertises the GTK 3 theme extension; runtime installation itself passed"
+fi
+
+note "All requested installation checks completed"
