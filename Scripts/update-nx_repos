@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2023-2025 <Nitrux Latinoamericana S.C. <hello@nxos.org>>
+
+
+# -- Exit on errors.
+
+set -xe
+
+
+# -- Target directory.
+
+TARGET_DIR=~/GitHub/Nitrux
+
+
+# -- Loop through all subdirectories.
+
+for repo in "$TARGET_DIR"/*/; do
+    if [ -d "${repo}.git" ]; then
+        echo "Updating $repo"
+        git -C "$repo" pull &
+    fi
+done
+
+
+# -- Wait for all background processes to finish.
+
+wait
+echo "All repositories updated successfully."
