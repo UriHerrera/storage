@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+container=mauikit-dev
+
+podman start "$container" >/dev/null 2>&1 || true
+
+podman exec --user 0 "$container" sh -ec '
+    [ ! -e /etc/sudo.conf ] ||
+        chown 0:0 /etc/sudo.conf
+
+    [ ! -e /usr/bin/sudo ] ||
+        {
+            chown 0:0 /usr/bin/sudo
+            chmod 4755 /usr/bin/sudo
+        }
+
+    stat -c "%u:%g %a %n" /etc/sudo.conf /usr/bin/sudo
+'
