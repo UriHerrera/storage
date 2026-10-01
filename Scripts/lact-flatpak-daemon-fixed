@@ -23,6 +23,20 @@ FLATPAK_USER_DIR=$(realpath "$SCRIPT_DIR/../../../../../../..")
 export LACT_DAEMON_SOCKET_PATH="/run/host/root/run/lactd.sock"
 export LACT_DAEMON_CONFIG_DIR="/run/host/root/etc/lact"
 
+if [[ -S "$LACT_DAEMON_SOCKET_PATH" ]]; then
+    if ! command -v ss >/dev/null 2>&1; then
+        echo "Cannot determine whether $LACT_DAEMON_SOCKET_PATH is in use: ss is unavailable." >&2
+        exit 1
+    fi
+
+    if ss -xl 2>/dev/null | grep -Fq -- "$LACT_DAEMON_SOCKET_PATH"; then
+        echo "LACT daemon is already listening on $LACT_DAEMON_SOCKET_PATH."
+        exit 0
+    fi
+
+    rm -f -- "$LACT_DAEMON_SOCKET_PATH"
+fi
+
 exec "$FLATBOX_BIN" run \
     --flatpak-install-path "$FLATPAK_USER_DIR" \
     --app io.github.ilya_zlobintsev.LACT \
