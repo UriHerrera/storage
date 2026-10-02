@@ -59,8 +59,7 @@ class Rewrite extends FreeRewrite {
     public function rules() {
         $base = $this->get_base_slug();
 
-        // Call parent first so the single-doc rule (^docs/([^/]+)/?$→ docs=$matches[1]&post_type=docs)
-        // is registered at 'top' before the MKB KB-archive rule below.
+        // Call parent first so the single-doc rule is registered at 'top' before the MKB archive rule below.
         // This ensures docs/[slug] resolves to a single doc, not a knowledge_base archive,
         // whenever the slug matches a doc post name.
         parent::rules();
