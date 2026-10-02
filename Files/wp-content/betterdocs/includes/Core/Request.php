@@ -81,7 +81,7 @@ class Request extends Base {
             'is_docs_feed'     => ['doc_category'],
             'is_docs_category' => ['doc_category'],
             'is_docs_tag'      => ['doc_tag'],
-            'is_single_docs'   => ['name', 'docs', 'post_type'],
+            'is_single_docs'   => ['name', 'docs', 'post_type', 'pagename', 'page_id'],
             'is_docs_author'   => ['post_type', 'author']
         ];
 
@@ -238,7 +238,8 @@ class Request extends Base {
 			$post_name = $wp_query->query_vars['name'];
 
 			// Get the post
-			$post = get_page_by_path( $post_name, OBJECT, 'docs' );
+			$post_id = ! empty( $wp_query->query_vars['p'] ) ? absint( $wp_query->query_vars['p'] ) : 0;
+			$post = $post_id > 0 ? get_post( $post_id ) : get_page_by_path( $post_name, OBJECT, 'docs' );
 			
 			if ( ! $post ) {
 				return false; // Post doesn't exist, show 404
@@ -356,8 +357,9 @@ class Request extends Base {
 			$doc_category = $wp_query->query_vars['doc_category'];
 			$post_name = $wp_query->query_vars['name'];
 
-			// Get the post
-			$post = get_page_by_path( $post_name, OBJECT, 'docs' );
+			// Get the post selected during request parsing when available.
+			$post_id = ! empty( $wp_query->query_vars['p'] ) ? absint( $wp_query->query_vars['p'] ) : 0;
+			$post = $post_id > 0 ? get_post( $post_id ) : get_page_by_path( $post_name, OBJECT, 'docs' );
 
 			if ( ! $post ) {
 				$wp_query->set_404();
@@ -1229,7 +1231,7 @@ class Request extends Base {
         return isset( $query_vars['author'] ) ? true : false;
     }
 
-    protected function is_single_docs( $query_vars ) {
+    protected function is_single_docs( &$query_vars ) {
         // Check for both 'name' and 'docs' query variables
         if ( ! isset( $query_vars['name'] ) && ! isset( $query_vars['docs'] ) ) {
             return false;
@@ -1669,6 +1671,11 @@ class Request extends Base {
 				}
 				// If post has no KB terms → allow it (not assigned to any KB explicitly).
 			}
+		}
+
+		if ( $_post_id > 0 ) {
+			// Preserve the post selected with the requested category/KB so WordPress cannot resolve a duplicate slug to another document.
+			$query_vars['p'] = $_post_id;
 		}
 
 		return $_post_id > 0;
