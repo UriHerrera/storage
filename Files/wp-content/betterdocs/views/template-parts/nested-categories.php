@@ -66,9 +66,13 @@ if ( $bd_is_outermost ) {
 	$bd_is_single = is_singular( 'docs' ) ? 1 : 0;
 	$bd_version   = betterdocs()->database->get_cache_version( 'betterdocs_term_counts' );
 	$bd_icon_disc  = md5( wp_json_encode( isset( $list_icon_name ) ? $list_icon_name : "" ) );
+	$bd_nested_icon_disc = md5( wp_json_encode( array(
+		betterdocs()->settings->get( 'category_grid_nested_collapsed_icon', array() ),
+		betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() )
+	) ) );
 	$bd_show_icon  = ( isset( $show_list_icon ) && $show_list_icon === false ) ? 0 : 1;
 	$bd_order_disc = md5( wp_json_encode( array( isset( $nested_terms_query ) ? $nested_terms_query : array(), isset( $nested_docs_query_args ) ? $nested_docs_query_args : array() ) ) );
-	$bd_cache_key = 'bd_nested_frag_' . md5( "v{$bd_version}_term{$term_id}_m{$bd_multi_kb}_k{$bd_kb_slug}_p{$bd_can_priv}_i{$bd_cat_icon}_q{$bd_queried}_s{$bd_is_single}_ic{$bd_icon_disc}_si{$bd_show_icon}_o{$bd_order_disc}" );
+	$bd_cache_key = 'bd_nested_frag_' . md5( "v{$bd_version}_term{$term_id}_m{$bd_multi_kb}_k{$bd_kb_slug}_p{$bd_can_priv}_i{$bd_cat_icon}_q{$bd_queried}_s{$bd_is_single}_ic{$bd_icon_disc}_ni{$bd_nested_icon_disc}_si{$bd_show_icon}_o{$bd_order_disc}" );
 
 	$bd_cached = get_transient( $bd_cache_key );
 	if ( false !== $bd_cached ) {
@@ -101,6 +105,15 @@ if ( isset( $show_list_icon ) && $show_list_icon === false ) {
 }
 
 $_icon = $_show_list_icon ? betterdocs()->template_helper->icon( isset( $list_icon_name ) ? $list_icon_name : 'list' ) : '';
+
+$_nested_collapsed_icon = '';
+$_nested_expanded_icon  = '';
+if ( isset( $widget_type ) && 'category-grid' === $widget_type ) {
+	$_nested_collapsed_icon = betterdocs()->settings->get( 'category_grid_nested_collapsed_icon', array() );
+	$_nested_expanded_icon  = betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() );
+	$_nested_collapsed_icon = is_array( $_nested_collapsed_icon ) && ! empty( $_nested_collapsed_icon['url'] ) ? $_nested_collapsed_icon['url'] : ( is_array( $_nested_collapsed_icon ) && isset( $_nested_collapsed_icon['value'] ) && is_array( $_nested_collapsed_icon['value'] ) && ! empty( $_nested_collapsed_icon['value']['url'] ) ? $_nested_collapsed_icon['value']['url'] : '' );
+	$_nested_expanded_icon  = is_array( $_nested_expanded_icon ) && ! empty( $_nested_expanded_icon['url'] ) ? $_nested_expanded_icon['url'] : ( is_array( $_nested_expanded_icon ) && isset( $_nested_expanded_icon['value'] ) && is_array( $_nested_expanded_icon['value'] ) && ! empty( $_nested_expanded_icon['value']['url'] ) ? $_nested_expanded_icon['value']['url'] : '' );
+}
 
 // Active-branch detection (mirrors master). Used to set .active class +
 // display:block on each nested-category-list <ul> that's in the user's
@@ -175,8 +188,16 @@ foreach ( $_nested_categories as $_nested_category ) :
 				betterdocs()->template_helper->icon( 'folder', true );
 				betterdocs()->template_helper->icon( 'folder-open', true );
 			} else {
-				betterdocs()->template_helper->icon( 'arrow-right', true );
-				betterdocs()->template_helper->icon( 'arrow-down', true );
+				if ( ! empty( $_nested_collapsed_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'toggle-arrow', 'arrow-right' ] );
+				} else {
+					betterdocs()->template_helper->icon( 'arrow-right', true );
+				}
+				if ( ! empty( $_nested_expanded_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, true, [ 'toggle-arrow', 'arrow-down' ] );
+				} else {
+					betterdocs()->template_helper->icon( 'arrow-down', true );
+				}
 			}
 			?>
 			<a href="#"><?php echo esc_html( $_nested_category->name ); ?></a>
