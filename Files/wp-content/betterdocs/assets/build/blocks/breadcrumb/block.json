@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Breadcrumb",
+	"name": "betterdocs/breadcrumb",
+	"category": "betterdocs",
+	"description": "Ensure a well-structured knowledge base to guide users effectively.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

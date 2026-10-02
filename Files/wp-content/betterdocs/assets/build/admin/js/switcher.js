@@ -1,0 +1,1 @@
+!function(e){"use strict";e(document).ready((function(){var t=window.betterdocsSwitcher;if(t&&t.page){var i=t.url||"admin.php?page="+t.page;e(".wp-heading-inline").first().after('<a href="'+i+'" class="page-title-action betterdocs-ui-switch">'+(t.menu_title||"Switch to BetterDocs UI")+"</a>")}}))}(jQuery);

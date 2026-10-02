@@ -1,0 +1,16 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Slate Layout",
+    "name": "betterdocs/category-slate-layout",
+    "category": "widgets",
+    "description": "Display knowledge base categories with modern slate-style layout.",
+    "textdomain": "betterdocs",
+    "editorStyle": [
+        "betterdocs-blocks-category-slate-layout"
+    ],
+    "style": [
+        "betterdocs-blocks-category-slate-layout"
+    ],
+    "editorScript": "betterdocs-blocks-editor"
+}

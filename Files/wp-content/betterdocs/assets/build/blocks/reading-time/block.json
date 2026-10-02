@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Reading Time",
+    "name": "betterdocs/reading-time",
+    "category": "betterdocs",
+    "description": "Reading Time Block For Single Docs",
+    "textdomain": "betterdocs",
+    "editorScript": "betterdocs-blocks-editor"
+}

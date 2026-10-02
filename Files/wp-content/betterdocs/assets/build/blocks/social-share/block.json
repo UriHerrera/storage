@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Social Share",
+	"name": "betterdocs/social-share",
+	"category": "betterdocs",
+	"description": "Enable users to instantly share docs on social media platforms with ease.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

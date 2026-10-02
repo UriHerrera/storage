@@ -1,0 +1,1 @@
+(()=>{var t;t=jQuery,wp.customize.bind("ready",(function(){var n=this;t.each(["#CONTROLNAME01#","#CONTROLNAME02#"],(function(t,o){n(o,(function(t){var i=n.control(o).container.find(".customize-control-title");i.toggleClass("disabled-control-title",!t.get()),t.bind((function(n){i.toggleClass("disabled-control-title",!t.get())}))}))}))}))})();

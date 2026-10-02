@@ -1,0 +1,13 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Category Box",
+    "name": "betterdocs/categorybox",
+    "category": "betterdocs",
+    "description": "Highlight documentation categories with eye-catching boxes.",
+    "textdomain": "betterdocs",
+    "editorStyle": [
+        "file:./default.css"
+    ],
+    "editorScript": "betterdocs-blocks-editor"
+}

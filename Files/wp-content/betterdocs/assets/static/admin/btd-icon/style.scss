@@ -1,0 +1,105 @@
+@import "variables";
+
+@font-face {
+  font-family: '#{$icomoon-font-family}';
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?59skm4');
+  src:  url('#{$icomoon-font-path}/#{$icomoon-font-family}.eot?59skm4#iefix') format('embedded-opentype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?59skm4') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?59skm4') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?59skm4##{$icomoon-font-family}') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.btd-icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: '#{$icomoon-font-family}' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btd-add-line {
+  &:before {
+    content: $btd-add-line; 
+  }
+}
+.btd-close-fill {
+  &:before {
+    content: $btd-close-fill; 
+  }
+}
+.btd-copy {
+  &:before {
+    content: $btd-copy; 
+  }
+}
+.btd-moon {
+  &:before {
+    content: $btd-moon; 
+  }
+}
+.btd-search {
+  &:before {
+    content: $btd-search; 
+  }
+}
+.btd-sun {
+  &:before {
+    content: $btd-sun; 
+  }
+}
+.btd-crown {
+  &:before {
+    content: $btd-crown; 
+  }
+}
+.btd-lock {
+  &:before {
+    content: $btd-lock; 
+  }
+}
+.btd-delete {
+  &:before {
+    content: $btd-delete; 
+  }
+}
+.btd-upload {
+  &:before {
+    content: $btd-upload; 
+  }
+}
+.btd-tick {
+  &:before {
+    content: $btd-tick; 
+  }
+}
+.btd-duplicate {
+  &:before {
+    content: $btd-duplicate; 
+  }
+}
+.btd-lock-open {
+  &:before {
+    content: $btd-lock-open; 
+  }
+}
+.btd-key {
+  &:before {
+    content: $btd-key; 
+  }
+}
+.btd-arrow-up {
+  &:before {
+    content: $btd-arrow-up; 
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Category Grid",
+    "name": "betterdocs/categorygrid",
+    "category": "widgets",
+    "description": "Represent knowledge base categories with amazing grid view.",
+    "textdomain": "betterdocs",
+    "editorStyle": [
+        "betterdocs-category-grid",
+        "file:./default.css"
+    ],
+    "editorScript": "betterdocs-blocks-editor"
+}

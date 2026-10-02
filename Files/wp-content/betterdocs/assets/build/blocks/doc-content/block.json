@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Single Doc Content",
+	"name": "betterdocs/single-doc-content",
+	"category": "betterdocs",
+	"description": "Add content to your documentation with this block.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

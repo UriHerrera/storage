@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Encyclopedia Description",
+	"name": "betterdocs/betterdocs-encyclopedia-description",
+	"category": "betterdocs",
+	"description": "Ensure a well-defined description for encyclopedia.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

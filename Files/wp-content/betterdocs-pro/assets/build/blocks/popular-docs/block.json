@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Popular Docs",
+    "name": "betterdocs/popular-docs",
+    "category": "betterdocs",
+    "description": "Display your popular docs",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-pro-blocks-editor"
+}

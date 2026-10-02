@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs FAQ",
+    "name": "betterdocs/faq",
+    "category": "widgets",
+    "description": "Use the FAQ block to easily create a knowledge base section of frequently asked questions.",
+    "textdomain": "betterdocs",
+    "editorStyle": [
+        "betterdocs-faq",
+        "file:./default.css"
+    ],
+    "editorScript": "betterdocs-blocks-editor"
+}

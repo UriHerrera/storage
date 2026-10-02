@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Table Of Contents",
+	"name": "betterdocs/table-of-contents",
+	"category": "betterdocs",
+	"description": "Display well-structured Table of Contents for your Documentation with lots of styling options.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

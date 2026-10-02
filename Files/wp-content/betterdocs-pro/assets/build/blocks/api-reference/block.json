@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs API Reference",
+	"name": "betterdocs/api-reference",
+	"category": "betterdocs",
+	"description": "Embed a BetterDocs API Reference's introduction and a link to the full reference.",
+	"textdomain": "betterdocs-pro",
+	"editorScript": "betterdocs-pro-blocks-editor"
+}

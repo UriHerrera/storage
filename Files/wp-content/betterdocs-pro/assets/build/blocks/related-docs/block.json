@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Related Docs",
+    "name": "betterdocs/related-docs",
+    "category": "betterdocs",
+    "description": "Add relevant docs related to any particular doc and show it on your Single Docs page with the Related Docs block.",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-pro-blocks-editor"
+}

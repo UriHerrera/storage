@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Category Handbook",
+    "name": "betterdocs/categoryhandbook",
+    "category": "widgets",
+    "description": "Display your Knowledgebase in an amazing Handbook layout and style it any way you want.",
+    "textdomain": "betterdocs",
+    "editorStyle": [
+        "betterdocs-category-handbook",
+        "file:./default.css"
+    ],
+    "editorScript": "betterdocs-pro-blocks-editor"
+}

@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Doc Author",
+    "name": "betterdocs/doc-author",
+    "category": "betterdocs",
+    "description": "Doc Author Block For Single Docs",
+    "textdomain": "betterdocs",
+    "editorScript": "betterdocs-blocks-editor"
+}

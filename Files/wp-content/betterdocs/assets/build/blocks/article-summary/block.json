@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "AI Doc Summarizer",
+    "name": "betterdocs/article-summary",
+    "category": "betterdocs",
+    "description": "Display AI-powered article summaries for your documentation with customizable styling options.",
+    "textdomain": "betterdocs",
+    "editorScript": "betterdocs-blocks-editor"
+}

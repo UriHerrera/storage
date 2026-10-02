@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs API Try-it",
+	"name": "betterdocs/api-tryit",
+	"category": "betterdocs",
+	"description": "The API endpoint Try-it banner — method + path + the interactive Try-it button.",
+	"keywords": [ "api", "try it", "endpoint", "betterdocs" ],
+	"textdomain": "betterdocs-pro",
+	"attributes": {
+		"method": { "type": "string", "default": "get" },
+		"path": { "type": "string", "default": "" },
+		"refId": { "type": "number", "default": 0 },
+		"label": { "type": "string", "default": "" },
+		"accentColor": { "type": "string", "default": "" },
+		"accentTextColor": { "type": "string", "default": "" }
+	},
+	"supports": { "html": false },
+	"editorScript": "betterdocs-pro-blocks-editor"
+}
