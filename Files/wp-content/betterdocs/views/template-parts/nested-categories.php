@@ -66,10 +66,15 @@ if ( $bd_is_outermost ) {
 	$bd_is_single = is_singular( 'docs' ) ? 1 : 0;
 	$bd_version   = betterdocs()->database->get_cache_version( 'betterdocs_term_counts' );
 	$bd_icon_disc  = md5( wp_json_encode( isset( $list_icon_name ) ? $list_icon_name : "" ) );
+	$bd_nested_category_icons = array();
+	foreach ( $_nested_term_ids as $bd_nested_term_id ) {
+		$bd_nested_category_icons[ $bd_nested_term_id ] = get_term_meta( $bd_nested_term_id, 'doc_category_image-id', true );
+	}
 	$bd_nested_icon_disc = md5( wp_json_encode( array(
 		betterdocs()->settings->get( 'category_grid_default_icon', array() ),
 		betterdocs()->settings->get( 'category_grid_nested_collapsed_icon', array() ),
-		betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() )
+		betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() ),
+		$bd_nested_category_icons
 	) ) );
 	$bd_show_icon  = ( isset( $show_list_icon ) && $show_list_icon === false ) ? 0 : 1;
 	$bd_order_disc = md5( wp_json_encode( array( isset( $nested_terms_query ) ? $nested_terms_query : array(), isset( $nested_docs_query_args ) ? $nested_docs_query_args : array() ) ) );
@@ -184,22 +189,27 @@ foreach ( $_nested_categories as $_nested_category ) :
 		continue;
 	}
 
+	$_nested_category_icon = '';
+	$_nested_category_icon_id = get_term_meta( $_nested_category->term_id, 'doc_category_image-id', true );
+	if ( $_nested_category_icon_id ) {
+		$_nested_category_icon = wp_get_attachment_image_url( $_nested_category_icon_id, 'thumbnail' );
+	}
+	if ( empty( $_nested_category_icon ) ) {
+		$_nested_category_icon = $_nested_default_icon;
+	}
+
 	?>
 	<li class="betterdocs-nested-category-wrapper" data-bd-term-id="<?php echo (int) $_nested_category->term_id; ?>">
 		<span class="betterdocs-nested-category-title">
 			<?php
 			if ( isset( $category_icon ) && $category_icon == 'folder' ) {
-				if ( ! empty( $_nested_collapsed_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
-				} elseif ( ! empty( $_nested_default_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_default_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
+				if ( ! empty( $_nested_category_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_category_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
 				} else {
 					betterdocs()->template_helper->icon( 'folder', true );
 				}
-				if ( ! empty( $_nested_expanded_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
-				} elseif ( ! empty( $_nested_default_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_default_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
+				if ( ! empty( $_nested_category_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_category_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
 				} else {
 					betterdocs()->template_helper->icon( 'folder-open', true );
 				}
