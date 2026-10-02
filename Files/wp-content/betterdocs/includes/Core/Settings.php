@@ -268,6 +268,7 @@ class Settings extends Base {
             'category_grid_count_background' => '#528ffe1a',
             'category_grid_count_inner_background' => '#528ffe33',
             'category_grid_count_color' => '#528ffe',
+            'category_grid_default_icon' => array(),
             'category_grid_button_background' => '#ffffff',
             'category_grid_button_color' => '#528ffe',
             'category_grid_button_border_color' => '#528ffe',
@@ -611,47 +612,55 @@ class Settings extends Base {
                 'default' => '#528ffe',
                 'priority' => 20
             ),
+            'category_grid_default_icon' => array(
+                'name' => 'category_grid_default_icon',
+                'type' => 'media',
+                'value' => '',
+                'label' => __( 'Default Category Icon', 'betterdocs' ),
+                'label_subtitle' => __( 'Upload the icon used when a category does not have its own icon.', 'betterdocs' ),
+                'priority' => 21
+            ),
             'category_grid_button_background' => array(
                 'name' => 'category_grid_button_background',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Background', 'betterdocs' ),
                 'default' => '#ffffff',
-                'priority' => 21
+                'priority' => 22
             ),
             'category_grid_button_color' => array(
                 'name' => 'category_grid_button_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Text Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 22
+                'priority' => 23
             ),
             'category_grid_button_border_color' => array(
                 'name' => 'category_grid_button_border_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Border Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 23
+                'priority' => 24
             ),
             'category_grid_button_hover_background' => array(
                 'name' => 'category_grid_button_hover_background',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Background', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 24
+                'priority' => 25
             ),
             'category_grid_button_hover_color' => array(
                 'name' => 'category_grid_button_hover_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Text Color', 'betterdocs' ),
                 'default' => '#ffffff',
-                'priority' => 25
+                'priority' => 26
             ),
             'category_grid_button_hover_border_color' => array(
                 'name' => 'category_grid_button_hover_border_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Border Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 26
+                'priority' => 27
             ),
             'category_grid_button_border_radius' => array(
                 'name' => 'category_grid_button_border_radius',
@@ -659,7 +668,7 @@ class Settings extends Base {
                 'label' => __( 'Explore More Border Radius', 'betterdocs' ),
                 'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
                 'default' => 50,
-                'priority' => 27
+                'priority' => 28
             ),
             'category_grid_button_font_size' => array(
                 'name' => 'category_grid_button_font_size',
@@ -667,7 +676,7 @@ class Settings extends Base {
                 'label' => __( 'Explore More Font Size', 'betterdocs' ),
                 'label_subtitle' => __( 'Enter the size in pixels.', 'betterdocs' ),
                 'default' => 16,
-                'priority' => 28
+                'priority' => 29
             )
         );
     }
