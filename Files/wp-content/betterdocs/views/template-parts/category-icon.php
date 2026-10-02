@@ -10,10 +10,11 @@ if ( ! $show_icon ) {
 
 	$category_icon_meta_key = empty( $term_icon_meta_key ) ? 'doc_category_image-id' : $term_icon_meta_key;
 	$cat_icon_id            = get_term_meta( $term_id, $category_icon_meta_key, true );
+	$is_folder_icon         = isset( $category_icon ) && in_array( $category_icon, [ 'folder', 'folder-open' ], true );
 
 	$attr['alt'] = 'betterdocs-category-icon';
 
-if ( isset( $cat_icon_id ) && ( isset( $category_icon ) && ( $category_icon == 'folder' || $category_icon == 'folder-open' ) ) ) {
+if ( $is_folder_icon ) {
 	$attr['class'] = [ 'betterdocs-category-folder-img' ];
 } else {
 	$attr['class'] = [ 'betterdocs-category-icon-img' ];
@@ -34,21 +35,13 @@ if ( $cat_icon_id ) {
 
 <div class="betterdocs-category-icon">
 	<?php
-	if ( isset( $category_icon ) && $category_icon == 'folder' ) {
-		if ( $cat_icon_id ) {
+	if ( $is_folder_icon ) {
+		if ( $cat_icon_id || ! empty( $default_icon ) ) {
 			echo '<span class="betterdocs-folder-icon">';
 			echo wp_kses_post( '<img ' . $image_attributes . ' />' );
 			echo '</span>';
 		} else {
-			betterdocs()->template_helper->icon( 'folder', true );
-		}
-	} elseif ( isset( $category_icon ) && $category_icon == 'folder-open' ) {
-		if ( $cat_icon_id ) {
-			echo '<span class="betterdocs-folder-icon">';
-			echo wp_kses_post( '<img ' . $image_attributes . ' />' );
-			echo '</span>';
-		} else {
-			betterdocs()->template_helper->icon( 'folder-open', true );
+			betterdocs()->template_helper->icon( $category_icon, true );
 		}
 	} else {
 		echo wp_kses_post( '<img ' . $image_attributes . ' />' );
