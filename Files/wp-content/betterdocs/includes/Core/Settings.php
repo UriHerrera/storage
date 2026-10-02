@@ -280,6 +280,7 @@ class Settings extends Base {
             'category_grid_button_hover_border_color' => '#528ffe',
             'category_grid_button_border_radius' => 50,
             'category_grid_button_font_size' => 16,
+            'single_doc_layout_width' => 'boxed',
             'docs_list_icon' => array(),
             'category_title_link' => false,
             'terms_orderby' => 'betterdocs_order',
@@ -711,12 +712,34 @@ class Settings extends Base {
     public function design_tab() {
         $settings = array();
 
+        $settings[ 'single_doc_design' ] = array(
+            'name' => 'single_doc_design',
+            'type' => 'section',
+            'label' => __( 'Single Documents', 'betterdocs' ),
+            'label_subtitle' => __( 'Choose whether single documents use the standard boxed width or the full available responsive width.', 'betterdocs' ),
+            'priority' => 1,
+            'fields' => array(
+                'single_doc_layout_width' => array(
+                    'name' => 'single_doc_layout_width',
+                    'type' => 'select',
+                    'label' => __( 'Single Document Width', 'betterdocs' ),
+                    'label_subtitle' => __( 'The wide layout removes the default maximum width from single-document content.', 'betterdocs' ),
+                    'default' => 'boxed',
+                    'priority' => 1,
+                    'options' => $this->normalize_options( array(
+                        'boxed' => __( 'Boxed', 'betterdocs' ),
+                        'wide' => __( 'Wide and Responsive', 'betterdocs' )
+                    ) )
+                )
+            )
+        );
+
         $settings[ 'category_grid_design' ] = array(
             'name' => 'category_grid_design',
             'type' => 'section',
             'label' => __( 'Category Grid', 'betterdocs' ),
             'label_subtitle' => __( 'Control the category grid appearance directly from BetterDocs. These settings also apply to category-grid shortcodes used with WPBakery.', 'betterdocs' ),
-            'priority' => 1,
+            'priority' => 2,
             'fields' => $this->category_grid_design_fields()
         );
 
