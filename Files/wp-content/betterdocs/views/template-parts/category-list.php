@@ -156,7 +156,7 @@ use WPDeveloper\BetterDocs\Utils\Helper;
                 ),
                 $_params
             );
-            if ( 'widget' == $layout_type || 'block' == $layout_type ) {
+            if ( 'widget' == $layout_type || 'block' == $layout_type || ( isset( $widget_type ) && 'category-grid' == $widget_type ) ) {
                 $_params[ 'list_icon_name' ] = $list_icon_name;
             }
             $view_object->get( 'template-parts/nested-categories', $_params );
