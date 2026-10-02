@@ -67,6 +67,7 @@ if ( $bd_is_outermost ) {
 	$bd_version   = betterdocs()->database->get_cache_version( 'betterdocs_term_counts' );
 	$bd_icon_disc  = md5( wp_json_encode( isset( $list_icon_name ) ? $list_icon_name : "" ) );
 	$bd_nested_icon_disc = md5( wp_json_encode( array(
+		betterdocs()->settings->get( 'category_grid_default_icon', array() ),
 		betterdocs()->settings->get( 'category_grid_nested_collapsed_icon', array() ),
 		betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() )
 	) ) );
@@ -108,9 +109,12 @@ $_icon = $_show_list_icon ? betterdocs()->template_helper->icon( isset( $list_ic
 
 $_nested_collapsed_icon = '';
 $_nested_expanded_icon  = '';
+$_nested_default_icon   = '';
 if ( isset( $widget_type ) && 'category-grid' === $widget_type ) {
+	$_nested_default_icon = betterdocs()->settings->get( 'category_grid_default_icon', array() );
 	$_nested_collapsed_icon = betterdocs()->settings->get( 'category_grid_nested_collapsed_icon', array() );
 	$_nested_expanded_icon  = betterdocs()->settings->get( 'category_grid_nested_expanded_icon', array() );
+	$_nested_default_icon   = is_array( $_nested_default_icon ) && ! empty( $_nested_default_icon['url'] ) ? $_nested_default_icon['url'] : ( is_array( $_nested_default_icon ) && isset( $_nested_default_icon['value'] ) && is_array( $_nested_default_icon['value'] ) && ! empty( $_nested_default_icon['value']['url'] ) ? $_nested_default_icon['value']['url'] : ( is_string( $_nested_default_icon ) ? $_nested_default_icon : '' ) );
 	$_nested_collapsed_icon = is_array( $_nested_collapsed_icon ) && ! empty( $_nested_collapsed_icon['url'] ) ? $_nested_collapsed_icon['url'] : ( is_array( $_nested_collapsed_icon ) && isset( $_nested_collapsed_icon['value'] ) && is_array( $_nested_collapsed_icon['value'] ) && ! empty( $_nested_collapsed_icon['value']['url'] ) ? $_nested_collapsed_icon['value']['url'] : '' );
 	$_nested_expanded_icon  = is_array( $_nested_expanded_icon ) && ! empty( $_nested_expanded_icon['url'] ) ? $_nested_expanded_icon['url'] : ( is_array( $_nested_expanded_icon ) && isset( $_nested_expanded_icon['value'] ) && is_array( $_nested_expanded_icon['value'] ) && ! empty( $_nested_expanded_icon['value']['url'] ) ? $_nested_expanded_icon['value']['url'] : '' );
 }
@@ -187,11 +191,15 @@ foreach ( $_nested_categories as $_nested_category ) :
 			if ( isset( $category_icon ) && $category_icon == 'folder' ) {
 				if ( ! empty( $_nested_collapsed_icon ) ) {
 					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
+				} elseif ( ! empty( $_nested_default_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_default_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
 				} else {
 					betterdocs()->template_helper->icon( 'folder', true );
 				}
 				if ( ! empty( $_nested_expanded_icon ) ) {
 					betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
+				} elseif ( ! empty( $_nested_default_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_default_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
 				} else {
 					betterdocs()->template_helper->icon( 'folder-open', true );
 				}
