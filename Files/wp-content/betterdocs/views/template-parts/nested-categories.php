@@ -185,8 +185,16 @@ foreach ( $_nested_categories as $_nested_category ) :
 		<span class="betterdocs-nested-category-title">
 			<?php
 			if ( isset( $category_icon ) && $category_icon == 'folder' ) {
-				betterdocs()->template_helper->icon( 'folder', true );
-				betterdocs()->template_helper->icon( 'folder-open', true );
+				if ( ! empty( $_nested_collapsed_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
+				} else {
+					betterdocs()->template_helper->icon( 'folder', true );
+				}
+				if ( ! empty( $_nested_expanded_icon ) ) {
+					betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
+				} else {
+					betterdocs()->template_helper->icon( 'folder-open', true );
+				}
 			} else {
 				if ( ! empty( $_nested_collapsed_icon ) ) {
 					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'toggle-arrow', 'arrow-right' ] );
