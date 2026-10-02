@@ -1,5 +1,9 @@
+<?php $betterdocs_layout = get_theme_mod( 'betterdocs_single_layout_select', 'layout-8' ); ?>
 <aside id="betterdocs-sidebar-right"  class="betterdocs-sidebar betterdocs-full-sidebar-right right-sidebar-toc-wrap">
-	<div data-simplebar class="layout3-toc-container right-sidebar-toc-container">
+	<div <?php echo in_array( $betterdocs_layout, array( 'layout-8', 'layout-10' ), true ) ? '' : 'data-simplebar'; ?> class="layout3-toc-container right-sidebar-toc-container">
+		<?php if ( in_array( $betterdocs_layout, array( 'layout-8', 'layout-10' ), true ) ) : ?>
+		<div class="simplebar-content">
+		<?php endif; ?>
 		<?php
 // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- view template receives variables via extract(); prefixing is impractical.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -63,6 +67,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 			}
 			} // End password protection check
 			?>
+		<?php if ( in_array( $betterdocs_layout, array( 'layout-8', 'layout-10' ), true ) ) : ?>
+		</div>
+		<?php endif; ?>
 	</div>
 	<?php
 	/**
