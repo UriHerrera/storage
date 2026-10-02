@@ -560,12 +560,23 @@ class TemplateTags extends Base {
 		}
 
 		$term = $params['term'];
+		$default_icon = '';
+		if ( isset( $params['widget_type'] ) && 'category-grid' === $params['widget_type'] ) {
+			$configured_icon = $this->settings->get( 'category_grid_default_icon', array() );
+			if ( is_array( $configured_icon ) ) {
+				$default_icon = isset( $configured_icon['url'] ) ? $configured_icon['url'] : '';
+				if ( empty( $default_icon ) && isset( $configured_icon['value']['url'] ) ) {
+					$default_icon = $configured_icon['value']['url'];
+				}
+			}
+		}
 
 		$this->views->get(
 			'template-parts/category-icon',
 			[
-				'show_icon' => $params['show_icon'],
-				'term_id'   => $term->term_id
+				'show_icon'    => $params['show_icon'],
+				'term_id'      => $term->term_id,
+				'default_icon' => $default_icon
 			]
 		);
 	}
