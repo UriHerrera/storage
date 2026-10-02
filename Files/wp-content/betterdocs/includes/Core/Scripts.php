@@ -58,8 +58,6 @@ class Scripts extends Base {
 		$assets->register( 'betterdocs-category-grid', 'public/css/category-grid.css', [ 'simplebar' ] );
 		$assets->register( 'betterdocs-category-box', 'public/css/category-box.css' );
 		$assets->register( 'betterdocs-category-grid-list', 'public/css/category-grid-list.css' );
-		wp_register_style( 'betterdocs-category-grid-design', false );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_category_grid_design_styles' ], 20 );
 		$this->add_category_grid_design_styles();
 
 		// JS
@@ -179,10 +177,6 @@ class Scripts extends Base {
 		return min( $value, $maximum );
 	}
 
-	public function enqueue_category_grid_design_styles() {
-		wp_enqueue_style( 'betterdocs-category-grid-design' );
-	}
-
 	private function add_category_grid_design_styles() {
 		$grid_roots = [
 			'.betterdocs-category-grid-wrapper .betterdocs-category-grid-inner-wrapper',
@@ -194,6 +188,8 @@ class Scripts extends Base {
 			'root'              => [],
 			'card'              => [],
 			'card_parts'        => [],
+			'icon'              => [],
+			'icon_image'        => [],
 			'title'             => [],
 			'title_hover'       => [],
 			'article'           => [],
@@ -212,6 +208,8 @@ class Scripts extends Base {
 			$selectors['card_parts'][] = $root . ' > .betterdocs-single-category-wrapper .betterdocs-single-category-inner .betterdocs-category-header';
 			$selectors['card_parts'][] = $root . ' > .betterdocs-single-category-wrapper .betterdocs-single-category-inner .betterdocs-body';
 			$selectors['card_parts'][] = $root . ' > .betterdocs-single-category-wrapper .betterdocs-single-category-inner .betterdocs-footer';
+			$selectors['icon'][] = $root . ' .betterdocs-category-icon';
+			$selectors['icon_image'][] = $root . ' .betterdocs-category-icon .betterdocs-category-icon-img';
 			$selectors['title'][] = $root . ' .betterdocs-category-title';
 			$selectors['title'][] = $root . ' .betterdocs-category-title a';
 			$selectors['title_hover'][] = $root . ' .betterdocs-category-title:hover';
@@ -285,8 +283,10 @@ class Scripts extends Base {
 		$css .= sprintf( "%s { color: %s; }\n", implode( ",\n", $selectors['title_hover'] ), $title_hover_color );
 		$css .= sprintf( "%s { color: %s; font-size: %dpx; }\n", implode( ",\n", $selectors['article'] ), $article_color, $article_font_size );
 		$css .= sprintf( "%s { color: %s; }\n", implode( ",\n", $selectors['article_hover'] ), $article_hover_color );
-		$css .= sprintf( "%s { background-color: %s; }\n", implode( ",\n", $selectors['count'] ), $count_background );
-		$css .= sprintf( "%s { background-color: %s; color: %s; }\n", implode( ",\n", $selectors['count_inner'] ), $count_inner_background, $count_color );
+		$css .= sprintf( "%s { align-items: center; display: inline-flex; height: 47px; justify-content: center; width: 47px; }\n", implode( ",\n", $selectors['icon'] ) );
+		$css .= sprintf( "%s { margin: 0; }\n", implode( ",\n", $selectors['icon_image'] ) );
+		$css .= sprintf( "%s { background-color: %s !important; }\n", implode( ",\n", $selectors['count'] ), $count_background );
+		$css .= sprintf( "%s { background-color: %s !important; color: %s !important; }\n", implode( ",\n", $selectors['count_inner'] ), $count_inner_background, $count_color );
 		$css .= sprintf(
 			"%s { background-color: %s; border-color: %s; border-radius: %dpx; color: %s; font-size: %dpx; }\n",
 			implode( ",\n", $selectors['button'] ),
@@ -314,7 +314,7 @@ class Scripts extends Base {
 			$header_border_width
 		);
 
-		wp_add_inline_style( 'betterdocs-category-grid-design', $css );
+		wp_add_inline_style( 'betterdocs-category-grid', $css );
 	}
 
 
