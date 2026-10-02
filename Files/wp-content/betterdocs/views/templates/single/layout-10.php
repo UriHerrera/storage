@@ -125,8 +125,6 @@ if ( $enable_sidebar_cat_list == 1 && $enable_toc == 1 ) {
 						 */
 						do_action( 'betterdocs_docs_before_social' );
 
-						$view_object->get( 'templates/parts/social-2' );
-
 						/**
 						 * Feedback Form
 						 */
