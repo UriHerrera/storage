@@ -222,6 +222,8 @@ class Scripts extends Base {
 			$selectors['article_hover'][] = $root . ' .betterdocs-entry-body li a:hover';
 			$selectors['count'][] = $root . ' .betterdocs-category-items-counts';
 			$selectors['count_inner'][] = $root . ' .betterdocs-category-items-counts span';
+			$selectors['count'][] = $root . ' .betterdocs-category-grid-inner-wrapper > :not(.betterdocs-grid-top-row-wrapper) .betterdocs-category-items-counts';
+			$selectors['count_inner'][] = $root . ' .betterdocs-category-grid-inner-wrapper > :not(.betterdocs-grid-top-row-wrapper) .betterdocs-category-items-counts span';
 			$selectors['button'][] = $root . ' .betterdocs-footer a';
 			$selectors['button'][] = $root . ' .betterdocs-footer button';
 			$selectors['button_hover'][] = $root . ' .betterdocs-footer a:hover';
