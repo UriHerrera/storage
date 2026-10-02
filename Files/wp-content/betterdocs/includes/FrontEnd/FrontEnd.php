@@ -261,7 +261,7 @@ class FrontEnd extends Base {
 			wp_enqueue_style( 'betterdocs-category-grid' );
 			wp_add_inline_style(
 				'betterdocs-category-grid',
-				'body.betterdocs-custom-docs-page .row.heading-title.hentry, body.betterdocs-custom-docs-page .blog_next_prev_buttons { display: none !important; }'
+				'body.betterdocs-custom-docs-page .row.heading-title.hentry, body.betterdocs-custom-docs-page .row:has(> .blog_next_prev_buttons) { display: none !important; }'
 			);
 		}
 
