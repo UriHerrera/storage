@@ -276,6 +276,13 @@ class FrontEnd extends Base {
 				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-content-wrapper { width: 100% !important; max-width: none !important; }';
 			}
 
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner { gap: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon { align-items: center !important; display: inline-flex !important; flex: 0 0 47px !important; height: 47px !important; justify-content: center !important; margin: 0 !important; width: 47px !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon svg { margin: 0 !important; max-height: 100% !important; max-width: 100% !important; object-fit: contain !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-folder-icon { align-items: center !important; display: inline-flex !important; justify-content: center !important; margin: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title { gap: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title svg { margin: 0 !important; object-fit: contain !important; }';
+
 			if ( $this->settings->get( 'enable_toc' ) ) {
 				$sticky_toc_offset = absint( $this->settings->get( 'sticky_toc_offset', 100 ) );
 				$sticky_toc_position = $this->settings->get( 'enable_sticky_toc' ) ? 'sticky' : 'static';
