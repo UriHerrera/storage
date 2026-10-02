@@ -215,6 +215,9 @@ class FrontEnd extends Base {
 	public function article_reactions() {
 		$args          = [];
 		$single_layout = $this->database->get_theme_mod( 'betterdocs_single_layout_select', true );
+		if ( in_array( $single_layout, [ 'layout-8', 'layout-10' ], true ) ) {
+			return;
+		}
 		$reactions     = $this->database->get_theme_mod( 'betterdocs_post_reactions', true );
 
 		// Get the title tag from customizer
