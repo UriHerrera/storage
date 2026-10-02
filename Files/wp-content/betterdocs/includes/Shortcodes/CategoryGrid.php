@@ -144,6 +144,27 @@ class CategoryGrid extends Shortcode {
 		}
 	}
 
+	private function get_category_grid_icon_url( $key ) {
+		$icon = $this->settings->get( $key, array() );
+
+		if ( is_array( $icon ) ) {
+			if ( ! empty( $icon['url'] ) ) {
+				return $icon['url'];
+			}
+			if ( isset( $icon['value'] ) && is_array( $icon['value'] ) && ! empty( $icon['value']['url'] ) ) {
+				return $icon['value']['url'];
+			}
+		}
+
+		return is_string( $icon ) ? $icon : '';
+	}
+
+	private function get_category_grid_document_icon() {
+		$icon_url = $this->get_category_grid_icon_url( 'category_grid_document_icon' );
+
+		return ! empty( $icon_url ) ? [ 'value' => [ 'url' => $icon_url ] ] : 'list';
+	}
+
 	public function view_params() {
 		$exploremore_btn     = $this->settings->get( 'exploremore_btn' );
 		$button_text         = $this->settings->get( 'exploremore_btn_txt' );
@@ -216,6 +237,13 @@ class CategoryGrid extends Shortcode {
 			}
 		}
 
+		$list_icon_name = $this->attributes['list_icon_name'] ?? 'list';
+		if ( empty( $list_icon_name ) || ( 'list' === $list_icon_name && empty( $this->attributes['list_icon_url'] ) ) ) {
+			$list_icon_name = $this->get_category_grid_document_icon();
+		} elseif ( ! is_array( $list_icon_name ) && 'list' !== $list_icon_name ) {
+			$list_icon_name = [ 'value' => $list_icon_name ];
+		}
+
 		return [
 			'wrapper_attr'           => [ 'class' => $wrapper_attr_classes ],
 			'inner_wrapper_attr'     => $inner_wrapper_attr,
@@ -224,7 +252,7 @@ class CategoryGrid extends Shortcode {
 			'terms_query_args'       => $terms_query,
 			'docs_query_args'        => $docs_query,
 			'nested_docs_query_args' => $docs_query,
-			'list_icon_name'         => ($this->attributes['list_icon_name'] ?? 'list') == 'list' ? 'list' : [ 'value' => $this->attributes['list_icon_name'] ?? 'list' ],
+			'list_icon_name'         => $list_icon_name,
 			'show_header'            => true,
 			'show_list'              => true,
 			'show_title'             => true,
@@ -313,7 +341,7 @@ class CategoryGrid extends Shortcode {
 					'order'   => $this->settings->get( 'terms_order', 'ASC' ),
 				],
 				'show_list_icon'     => true,
-				'list_icon_name'     => 'list',
+				'list_icon_name'     => $this->get_category_grid_document_icon(),
 				'list_icon_url'      => '',
 				'layout_type'        => '',
 				'widget_type'        => 'category-grid',
