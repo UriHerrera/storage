@@ -2737,7 +2737,6 @@ class Settings extends FreeSettings {
         ) );
 
         $args[ 'submit' ][ 'rules' ] = Rules::logicalRule( array(
-            Rules::is( 'config.active', 'tab-design', true ),
             Rules::is( 'config.active', 'tab-shortcodes', true ),
             Rules::is( 'config.active', 'tab-import-export', true ),
             Rules::is( 'config.active', 'tab-ai-chatbot', true ),
