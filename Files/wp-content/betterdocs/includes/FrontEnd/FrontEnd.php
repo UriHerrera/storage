@@ -47,6 +47,7 @@ class FrontEnd extends Base {
         }
 
 		add_filter( 'betterdocs_layout_filename', [ $this, 'layout_filename' ], 10, 2 );
+		add_filter( 'body_class', [ $this, 'body_classes' ] );
 
 		add_action( 'betterdocs_docs_before_social', [ $this, 'article_reactions' ] );
 
@@ -256,6 +257,14 @@ class FrontEnd extends Base {
 
 
 	public function enqueue_scripts() {
+		if ( $this->is_custom_docs_page() ) {
+			wp_enqueue_style( 'betterdocs-category-grid' );
+			wp_add_inline_style(
+				'betterdocs-category-grid',
+				'body.betterdocs-custom-docs-page .row.heading-title.hentry, body.betterdocs-custom-docs-page .blog_next_prev_buttons { display: none !important; }'
+			);
+		}
+
 		if ( is_singular( 'docs' ) ) {
 			wp_enqueue_style( 'betterdocs-single' );
 			wp_enqueue_style( 'betterdocs-article-summary' );
@@ -294,6 +303,35 @@ class FrontEnd extends Base {
 	public function layout_filename( $filename, $origin_layout ) {
 		$filename = ( $origin_layout === 'layout-2' ) ? 'default' : $filename;
 		return $filename;
+	}
+
+	/**
+	 * Identify the custom page configured as the BetterDocs documentation root.
+	 *
+	 * @return bool
+	 */
+	private function is_custom_docs_page() {
+		if ( $this->settings->get( 'builtin_doc_page', true ) ) {
+			return false;
+		}
+
+		$docs_page_id = absint( $this->settings->get( 'docs_page', 0 ) );
+
+		return $docs_page_id > 0 && absint( get_queried_object_id() ) === $docs_page_id;
+	}
+
+	/**
+	 * Mark the custom Docs Page so theme-level page decorations can be scoped to it.
+	 *
+	 * @param string[] $classes Body classes.
+	 * @return string[]
+	 */
+	public function body_classes( $classes ) {
+		if ( $this->is_custom_docs_page() ) {
+			$classes[] = 'betterdocs-custom-docs-page';
+		}
+
+		return $classes;
 	}
 
 	public function init() {
