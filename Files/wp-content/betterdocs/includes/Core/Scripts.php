@@ -190,6 +190,8 @@ class Scripts extends Base {
 			'card_parts'        => [],
 			'icon'              => [],
 			'icon_image'        => [],
+			'nested_icon'       => [],
+			'document_icon'     => [],
 			'title'             => [],
 			'title_hover'       => [],
 			'article'           => [],
@@ -210,6 +212,13 @@ class Scripts extends Base {
 			$selectors['card_parts'][] = $root . ' > .betterdocs-single-category-wrapper .betterdocs-single-category-inner .betterdocs-footer';
 			$selectors['icon'][] = $root . ' .betterdocs-category-icon';
 			$selectors['icon_image'][] = $root . ' .betterdocs-category-icon .betterdocs-category-icon-img';
+			$selectors['nested_icon'][] = $root . ' .betterdocs-nested-category-title .toggle-arrow';
+			$selectors['document_icon'][] = $root . ' .betterdocs-articles-list li > img';
+			$selectors['document_icon'][] = $root . ' .betterdocs-articles-list li > svg';
+			$selectors['document_icon'][] = $root . ' .betterdocs-articles-list li > i';
+			$selectors['document_icon'][] = $root . ' .betterdocs-entry-body li > img';
+			$selectors['document_icon'][] = $root . ' .betterdocs-entry-body li > svg';
+			$selectors['document_icon'][] = $root . ' .betterdocs-entry-body li > i';
 			$selectors['title'][] = $root . ' .betterdocs-category-title';
 			$selectors['title'][] = $root . ' .betterdocs-category-title a';
 			$selectors['title_hover'][] = $root . ' .betterdocs-category-title:hover';
@@ -285,6 +294,8 @@ class Scripts extends Base {
 		$css .= sprintf( "%s { color: %s; }\n", implode( ",\n", $selectors['article_hover'] ), $article_hover_color );
 		$css .= sprintf( "%s { align-items: center; display: inline-flex; height: 47px; justify-content: center; width: 47px; }\n", implode( ",\n", $selectors['icon'] ) );
 		$css .= sprintf( "%s { margin: 0; }\n", implode( ",\n", $selectors['icon_image'] ) );
+		$css .= sprintf( "%s { align-self: center; margin: 0 10px 0 0 !important; }\n", implode( ",\n", $selectors['nested_icon'] ) );
+		$css .= sprintf( "%s { align-self: center; margin: 0 10px 0 0 !important; }\n", implode( ",\n", $selectors['document_icon'] ) );
 		$css .= sprintf( "%s { background-color: %s !important; }\n", implode( ",\n", $selectors['count'] ), $count_background );
 		$css .= sprintf( "%s { background-color: %s !important; color: %s !important; }\n", implode( ",\n", $selectors['count_inner'] ), $count_inner_background, $count_color );
 		$css .= sprintf(
