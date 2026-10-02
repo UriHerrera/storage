@@ -22,6 +22,8 @@ if ( isset( $cat_icon_id ) && ( isset( $category_icon ) && ( $category_icon == '
 if ( $cat_icon_id ) {
 	$icon_url    = wp_get_attachment_image_url( $cat_icon_id, 'thumbnail' );
 	$attr['alt'] = get_post_meta( $cat_icon_id, '_wp_attachment_image_alt', true );
+} elseif ( ! empty( $default_icon ) ) {
+	$icon_url = $default_icon;
 } else {
 	$icon_url = betterdocs()->assets->icon( 'betterdocs-cat-icon.svg', true );
 }
