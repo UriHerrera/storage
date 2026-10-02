@@ -249,6 +249,33 @@ class Settings extends Base {
             'search_result_image' => true,
             'search_modal_search_type' => 'all',
             'masonry_layout' => true,
+            'category_grid_card_background' => '#ffffff',
+            'category_grid_card_border_color' => '#e7e7e7',
+            'category_grid_card_border_width' => 0,
+            'category_grid_card_border_style' => 'solid',
+            'category_grid_card_border_radius' => 0,
+            'category_grid_card_shadow' => 'default',
+            'category_grid_card_padding' => 0,
+            'category_grid_gap' => 15,
+            'category_grid_title_color' => '#3f5876',
+            'category_grid_title_hover_color' => '#528ffe',
+            'category_grid_title_font_size' => 20,
+            'category_grid_article_color' => '#566e8b',
+            'category_grid_article_hover_color' => '#528fff',
+            'category_grid_article_font_size' => 15,
+            'category_grid_header_border_color' => '#528ffe',
+            'category_grid_header_border_width' => 2,
+            'category_grid_count_background' => '#528ffe1a',
+            'category_grid_count_inner_background' => '#528ffe33',
+            'category_grid_count_color' => '#528ffe',
+            'category_grid_button_background' => '#ffffff',
+            'category_grid_button_color' => '#528ffe',
+            'category_grid_button_border_color' => '#528ffe',
+            'category_grid_button_hover_background' => '#528ffe',
+            'category_grid_button_hover_color' => '#ffffff',
+            'category_grid_button_hover_border_color' => '#528ffe',
+            'category_grid_button_border_radius' => 50,
+            'category_grid_button_font_size' => 16,
             'docs_list_icon' => array(),
             'category_title_link' => false,
             'terms_orderby' => 'betterdocs_order',
@@ -431,8 +458,231 @@ class Settings extends Base {
         return add_query_arg( $query, admin_url( 'customize.php' ) );
     }
 
+    public function category_grid_design_fields() {
+        return array(
+            'category_grid_card_background' => array(
+                'name' => 'category_grid_card_background',
+                'type' => 'colorpicker',
+                'label' => __( 'Card Background', 'betterdocs' ),
+                'default' => '#ffffff',
+                'priority' => 1
+            ),
+            'category_grid_card_border_color' => array(
+                'name' => 'category_grid_card_border_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Card Border Color', 'betterdocs' ),
+                'default' => '#e7e7e7',
+                'priority' => 2
+            ),
+            'category_grid_card_border_width' => array(
+                'name' => 'category_grid_card_border_width',
+                'type' => 'number',
+                'label' => __( 'Card Border Width', 'betterdocs' ),
+                'label_subtitle' => __( 'Set to 0 to hide the border.', 'betterdocs' ),
+                'default' => 0,
+                'priority' => 3
+            ),
+            'category_grid_card_border_style' => array(
+                'name' => 'category_grid_card_border_style',
+                'type' => 'select',
+                'label' => __( 'Card Border Style', 'betterdocs' ),
+                'default' => 'solid',
+                'priority' => 4,
+                'options' => $this->normalize_options( array(
+                    'solid' => __( 'Solid', 'betterdocs' ),
+                    'dashed' => __( 'Dashed', 'betterdocs' ),
+                    'dotted' => __( 'Dotted', 'betterdocs' )
+                ) )
+            ),
+            'category_grid_card_border_radius' => array(
+                'name' => 'category_grid_card_border_radius',
+                'type' => 'number',
+                'label' => __( 'Card Border Radius', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
+                'default' => 0,
+                'priority' => 5
+            ),
+            'category_grid_card_shadow' => array(
+                'name' => 'category_grid_card_shadow',
+                'type' => 'select',
+                'label' => __( 'Card Shadow', 'betterdocs' ),
+                'default' => 'default',
+                'priority' => 6,
+                'options' => $this->normalize_options( array(
+                    'default' => __( 'Default', 'betterdocs' ),
+                    'none' => __( 'None', 'betterdocs' ),
+                    'subtle' => __( 'Subtle', 'betterdocs' ),
+                    'strong' => __( 'Strong', 'betterdocs' )
+                ) )
+            ),
+            'category_grid_card_padding' => array(
+                'name' => 'category_grid_card_padding',
+                'type' => 'number',
+                'label' => __( 'Card Padding', 'betterdocs' ),
+                'label_subtitle' => __( 'Set to 0 to keep the layout default. Enter the padding in pixels.', 'betterdocs' ),
+                'default' => 0,
+                'priority' => 7
+            ),
+            'category_grid_gap' => array(
+                'name' => 'category_grid_gap',
+                'type' => 'number',
+                'label' => __( 'Card Gap', 'betterdocs' ),
+                'label_subtitle' => __( 'Set the space between category cards in pixels.', 'betterdocs' ),
+                'default' => 15,
+                'priority' => 8
+            ),
+            'category_grid_title_color' => array(
+                'name' => 'category_grid_title_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Category Title Color', 'betterdocs' ),
+                'default' => '#3f5876',
+                'priority' => 10
+            ),
+            'category_grid_title_hover_color' => array(
+                'name' => 'category_grid_title_hover_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Category Title Hover Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 11
+            ),
+            'category_grid_title_font_size' => array(
+                'name' => 'category_grid_title_font_size',
+                'type' => 'number',
+                'label' => __( 'Category Title Font Size', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the size in pixels.', 'betterdocs' ),
+                'default' => 20,
+                'priority' => 12
+            ),
+            'category_grid_article_color' => array(
+                'name' => 'category_grid_article_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Document Link Color', 'betterdocs' ),
+                'default' => '#566e8b',
+                'priority' => 13
+            ),
+            'category_grid_article_hover_color' => array(
+                'name' => 'category_grid_article_hover_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Document Link Hover Color', 'betterdocs' ),
+                'default' => '#528fff',
+                'priority' => 14
+            ),
+            'category_grid_article_font_size' => array(
+                'name' => 'category_grid_article_font_size',
+                'type' => 'number',
+                'label' => __( 'Document Link Font Size', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the size in pixels.', 'betterdocs' ),
+                'default' => 15,
+                'priority' => 15
+            ),
+            'category_grid_header_border_color' => array(
+                'name' => 'category_grid_header_border_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Category Header Divider Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 16
+            ),
+            'category_grid_header_border_width' => array(
+                'name' => 'category_grid_header_border_width',
+                'type' => 'number',
+                'label' => __( 'Category Header Divider Width', 'betterdocs' ),
+                'label_subtitle' => __( 'Set to 0 to hide the divider.', 'betterdocs' ),
+                'default' => 2,
+                'priority' => 17
+            ),
+            'category_grid_count_background' => array(
+                'name' => 'category_grid_count_background',
+                'type' => 'colorpicker',
+                'label' => __( 'Document Count Background', 'betterdocs' ),
+                'default' => '#528ffe1a',
+                'priority' => 18
+            ),
+            'category_grid_count_inner_background' => array(
+                'name' => 'category_grid_count_inner_background',
+                'type' => 'colorpicker',
+                'label' => __( 'Document Count Inner Background', 'betterdocs' ),
+                'default' => '#528ffe33',
+                'priority' => 19
+            ),
+            'category_grid_count_color' => array(
+                'name' => 'category_grid_count_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Document Count Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 20
+            ),
+            'category_grid_button_background' => array(
+                'name' => 'category_grid_button_background',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Background', 'betterdocs' ),
+                'default' => '#ffffff',
+                'priority' => 21
+            ),
+            'category_grid_button_color' => array(
+                'name' => 'category_grid_button_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Text Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 22
+            ),
+            'category_grid_button_border_color' => array(
+                'name' => 'category_grid_button_border_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Border Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 23
+            ),
+            'category_grid_button_hover_background' => array(
+                'name' => 'category_grid_button_hover_background',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Hover Background', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 24
+            ),
+            'category_grid_button_hover_color' => array(
+                'name' => 'category_grid_button_hover_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Hover Text Color', 'betterdocs' ),
+                'default' => '#ffffff',
+                'priority' => 25
+            ),
+            'category_grid_button_hover_border_color' => array(
+                'name' => 'category_grid_button_hover_border_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Explore More Hover Border Color', 'betterdocs' ),
+                'default' => '#528ffe',
+                'priority' => 26
+            ),
+            'category_grid_button_border_radius' => array(
+                'name' => 'category_grid_button_border_radius',
+                'type' => 'number',
+                'label' => __( 'Explore More Border Radius', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
+                'default' => 50,
+                'priority' => 27
+            ),
+            'category_grid_button_font_size' => array(
+                'name' => 'category_grid_button_font_size',
+                'type' => 'number',
+                'label' => __( 'Explore More Font Size', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the size in pixels.', 'betterdocs' ),
+                'default' => 16,
+                'priority' => 28
+            )
+        );
+    }
+
     public function design_tab() {
         $settings = array();
+
+        $settings[ 'category_grid_design' ] = array(
+            'name' => 'category_grid_design',
+            'type' => 'section',
+            'label' => __( 'Category Grid', 'betterdocs' ),
+            'label_subtitle' => __( 'Control the category grid appearance directly from BetterDocs. These settings also apply to category-grid shortcodes used with WPBakery.', 'betterdocs' ),
+            'priority' => 1,
+            'fields' => $this->category_grid_design_fields()
+        );
 
         $settings[ 'gutenberg_link' ] = array(
             'name' => 'gutenberg_link',
@@ -441,7 +691,7 @@ class Settings extends Base {
             'button' => betterdocs()->helper->current_theme_is_fse_theme() ? __( 'Design with Gutenberg', 'betterdocs' ) : __( 'Learn More', 'betterdocs' ),
             'url' => $this->gutenberg_link(),
             'customizer_img' => betterdocs()->assets->icon( 'customizer/gutenberg-preview.png', true ),
-            'priority' => 1
+            'priority' => 20
         );
 
         $settings[ 'elementor_link' ] = array(
@@ -451,7 +701,7 @@ class Settings extends Base {
             'button' => $this->is_elementor_pro() ? __( 'Design with Elementor', 'betterdocs' ) : __( 'Learn More', 'betterdocs' ),
             'url' => $this->elementor_link(),
             'customizer_img' => betterdocs()->assets->icon( 'customizer/elementor-preview.png', true ),
-            'priority' => 2
+            'priority' => 21
         );
 
         if ( ! betterdocs()->helper->current_theme_is_fse_theme() ) {
@@ -462,7 +712,7 @@ class Settings extends Base {
                 'button' => __( 'Customize in BetterDocs', 'betterdocs' ),
                 'url' => $this->customizer_link(),
                 'customizer_img' => betterdocs()->assets->icon( 'customizer/customizer-preview.png', true ),
-                'priority' => 3
+                'priority' => 22
             );
         }
 
@@ -825,7 +1075,6 @@ class Settings extends Base {
                 'loadingLabel' => __( 'Saving...', 'betterdocs' ),
                 'class' => 'save-settings',
                 'rules' => Rules::logicalRule( array(
-                    Rules::is( 'config.active', 'tab-design', true ),
                     Rules::is( 'config.active', 'tab-shortcodes', true ),
                     Rules::is( 'config.active', 'tab-instant-answer', true ),
                     Rules::is( 'config.active', 'tab-import-export', true ),
