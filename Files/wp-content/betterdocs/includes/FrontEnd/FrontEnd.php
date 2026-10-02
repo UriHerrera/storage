@@ -267,6 +267,27 @@ class FrontEnd extends Base {
 
 		if ( is_singular( 'docs' ) ) {
 			wp_enqueue_style( 'betterdocs-single' );
+			$single_doc_css = '';
+
+			if ( 'wide' === $this->settings->get( 'single_doc_layout_width', 'boxed' ) ) {
+				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-content-wrapper { width: 100% !important; max-width: none !important; }';
+			}
+
+			if ( $this->settings->get( 'enable_toc' ) ) {
+				$sticky_toc_offset = absint( $this->settings->get( 'sticky_toc_offset', 100 ) );
+				$sticky_toc_position = $this->settings->get( 'enable_sticky_toc' ) ? 'sticky' : 'static';
+				$sticky_toc_top = $this->settings->get( 'enable_sticky_toc' ) ? $sticky_toc_offset . 'px' : 'auto';
+
+				$single_doc_css .= '@media only screen and (min-width: 769px) { ';
+				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-layout-8:not(.betterdocs-single-layout-9) .betterdocs-content-wrapper .betterdocs-full-sidebar-right { align-self: flex-start !important; position: ' . $sticky_toc_position . ' !important; top: ' . $sticky_toc_top . ' !important; }';
+				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-layout-8:not(.betterdocs-single-layout-9) .betterdocs-content-wrapper .betterdocs-full-sidebar-right .right-sidebar-toc-container { max-height: none !important; overflow: visible !important; position: static !important; top: auto !important; }';
+				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-layout-8:not(.betterdocs-single-layout-9) .betterdocs-content-wrapper .betterdocs-full-sidebar-right .right-sidebar-toc-container .simplebar-content .betterdocs-toc { max-height: none !important; overflow: visible !important; position: static !important; top: auto !important; }';
+				$single_doc_css .= '}';
+			}
+
+			if ( $single_doc_css ) {
+				wp_add_inline_style( 'betterdocs-single', $single_doc_css );
+			}
 			wp_enqueue_style( 'betterdocs-article-summary' );
 			wp_enqueue_style( 'betterdocs-encyclopedia' );
 			wp_enqueue_style( 'betterdocs-glossaries' );
