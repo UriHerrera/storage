@@ -269,6 +269,9 @@ class Settings extends Base {
             'category_grid_count_inner_background' => '#528ffe33',
             'category_grid_count_color' => '#528ffe',
             'category_grid_default_icon' => array(),
+            'category_grid_document_icon' => array(),
+            'category_grid_nested_collapsed_icon' => array(),
+            'category_grid_nested_expanded_icon' => array(),
             'category_grid_button_background' => '#ffffff',
             'category_grid_button_color' => '#528ffe',
             'category_grid_button_border_color' => '#528ffe',
@@ -620,47 +623,71 @@ class Settings extends Base {
                 'label_subtitle' => __( 'Upload the icon used when a category does not have its own icon.', 'betterdocs' ),
                 'priority' => 21
             ),
+            'category_grid_document_icon' => array(
+                'name' => 'category_grid_document_icon',
+                'type' => 'media',
+                'value' => '',
+                'label' => __( 'Document List Icon', 'betterdocs' ),
+                'label_subtitle' => __( 'Upload the icon shown beside document links.', 'betterdocs' ),
+                'priority' => 22
+            ),
+            'category_grid_nested_collapsed_icon' => array(
+                'name' => 'category_grid_nested_collapsed_icon',
+                'type' => 'media',
+                'value' => '',
+                'label' => __( 'Nested Category Collapsed Icon', 'betterdocs' ),
+                'label_subtitle' => __( 'Upload the icon shown beside a collapsed nested category.', 'betterdocs' ),
+                'priority' => 23
+            ),
+            'category_grid_nested_expanded_icon' => array(
+                'name' => 'category_grid_nested_expanded_icon',
+                'type' => 'media',
+                'value' => '',
+                'label' => __( 'Nested Category Expanded Icon', 'betterdocs' ),
+                'label_subtitle' => __( 'Upload the icon shown beside an expanded nested category.', 'betterdocs' ),
+                'priority' => 24
+            ),
             'category_grid_button_background' => array(
                 'name' => 'category_grid_button_background',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Background', 'betterdocs' ),
                 'default' => '#ffffff',
-                'priority' => 22
+                'priority' => 25
             ),
             'category_grid_button_color' => array(
                 'name' => 'category_grid_button_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Text Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 23
+                'priority' => 26
             ),
             'category_grid_button_border_color' => array(
                 'name' => 'category_grid_button_border_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Border Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 24
+                'priority' => 27
             ),
             'category_grid_button_hover_background' => array(
                 'name' => 'category_grid_button_hover_background',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Background', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 25
+                'priority' => 28
             ),
             'category_grid_button_hover_color' => array(
                 'name' => 'category_grid_button_hover_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Text Color', 'betterdocs' ),
                 'default' => '#ffffff',
-                'priority' => 26
+                'priority' => 29
             ),
             'category_grid_button_hover_border_color' => array(
                 'name' => 'category_grid_button_hover_border_color',
                 'type' => 'colorpicker',
                 'label' => __( 'Explore More Hover Border Color', 'betterdocs' ),
                 'default' => '#528ffe',
-                'priority' => 27
+                'priority' => 30
             ),
             'category_grid_button_border_radius' => array(
                 'name' => 'category_grid_button_border_radius',
@@ -668,7 +695,7 @@ class Settings extends Base {
                 'label' => __( 'Explore More Border Radius', 'betterdocs' ),
                 'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
                 'default' => 50,
-                'priority' => 28
+                'priority' => 31
             ),
             'category_grid_button_font_size' => array(
                 'name' => 'category_grid_button_font_size',
@@ -676,7 +703,7 @@ class Settings extends Base {
                 'label' => __( 'Explore More Font Size', 'betterdocs' ),
                 'label_subtitle' => __( 'Enter the size in pixels.', 'betterdocs' ),
                 'default' => 16,
-                'priority' => 29
+                'priority' => 32
             )
         );
     }
