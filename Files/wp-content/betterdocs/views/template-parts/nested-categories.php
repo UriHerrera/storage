@@ -124,6 +124,15 @@ if ( isset( $widget_type ) && 'category-grid' === $widget_type ) {
 	$_nested_expanded_icon  = is_array( $_nested_expanded_icon ) && ! empty( $_nested_expanded_icon['url'] ) ? $_nested_expanded_icon['url'] : ( is_array( $_nested_expanded_icon ) && isset( $_nested_expanded_icon['value'] ) && is_array( $_nested_expanded_icon['value'] ) && ! empty( $_nested_expanded_icon['value']['url'] ) ? $_nested_expanded_icon['value']['url'] : '' );
 }
 
+$_nested_collapsed_markup = ! empty( $_nested_collapsed_icon )
+	? betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, false, [ 'betterdocs-category-toggle-icon', 'toggle-arrow', 'arrow-right' ] )
+	: betterdocs()->template_helper->icon( 'arrow-right' );
+$_nested_expanded_markup = ! empty( $_nested_expanded_icon )
+	? betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, false, [ 'betterdocs-category-toggle-icon', 'toggle-arrow', 'arrow-down' ] )
+	: betterdocs()->template_helper->icon( 'arrow-down' );
+$_nested_collapsed_markup = str_replace( 'class="toggle-arrow', 'class="betterdocs-category-toggle-icon toggle-arrow', $_nested_collapsed_markup );
+$_nested_expanded_markup  = str_replace( 'class="toggle-arrow', 'class="betterdocs-category-toggle-icon toggle-arrow', $_nested_expanded_markup );
+
 // Active-branch detection (mirrors master). Used to set .active class +
 // display:block on each nested-category-list <ul> that's in the user's
 // current branch, so the parent's body opens with the right state on
@@ -197,33 +206,28 @@ foreach ( $_nested_categories as $_nested_category ) :
 	if ( empty( $_nested_category_icon ) ) {
 		$_nested_category_icon = $_nested_default_icon;
 	}
+	$_nested_title_classes = [ 'betterdocs-nested-category-title' ];
+	if ( $_is_in_active_branch ) {
+		$_nested_title_classes[] = 'is-expanded';
+	}
 
 	?>
 	<li class="betterdocs-nested-category-wrapper" data-bd-term-id="<?php echo (int) $_nested_category->term_id; ?>">
-		<span class="betterdocs-nested-category-title">
+		<span class="<?php echo esc_attr( implode( ' ', $_nested_title_classes ) ); ?>">
 			<?php
 			if ( isset( $category_icon ) && $category_icon == 'folder' ) {
 				if ( ! empty( $_nested_category_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_category_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-right' ] );
+					echo wp_kses_post( betterdocs()->template_helper->icon_as_markup( $_nested_category_icon, false, [ 'betterdocs-category-folder-icon' ] ) );
 				} else {
-					betterdocs()->template_helper->icon( 'folder', true );
+					$_folder_icon_markup = betterdocs()->template_helper->icon( 'folder' );
+					$_folder_icon_markup = str_replace( 'class="betterdocs-folder-icon toggle-arrow arrow-right"', 'class="betterdocs-folder-icon betterdocs-category-folder-icon"', $_folder_icon_markup );
+					echo wp_kses_post( $_folder_icon_markup );
 				}
-				if ( ! empty( $_nested_category_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_category_icon, true, [ 'betterdocs-folder-icon', 'toggle-arrow', 'arrow-down' ] );
-				} else {
-					betterdocs()->template_helper->icon( 'folder-open', true );
-				}
+				echo wp_kses_post( $_nested_collapsed_markup );
+				echo wp_kses_post( $_nested_expanded_markup );
 			} else {
-				if ( ! empty( $_nested_collapsed_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_collapsed_icon, true, [ 'toggle-arrow', 'arrow-right' ] );
-				} else {
-					betterdocs()->template_helper->icon( 'arrow-right', true );
-				}
-				if ( ! empty( $_nested_expanded_icon ) ) {
-					betterdocs()->template_helper->icon_as_markup( $_nested_expanded_icon, true, [ 'toggle-arrow', 'arrow-down' ] );
-				} else {
-					betterdocs()->template_helper->icon( 'arrow-down', true );
-				}
+				echo wp_kses_post( $_nested_collapsed_markup );
+				echo wp_kses_post( $_nested_expanded_markup );
 			}
 			?>
 			<a href="#"><?php echo esc_html( $_nested_category->name ); ?></a>
