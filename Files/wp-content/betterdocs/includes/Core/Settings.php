@@ -280,6 +280,18 @@ class Settings extends Base {
             'category_grid_button_hover_border_color' => '#528ffe',
             'category_grid_button_border_radius' => 50,
             'category_grid_button_font_size' => 16,
+            'betterdocs_search_docs_tab_color' => '#00b884',
+            'betterdocs_search_faq_tab_color' => '#00b884',
+            'betterdocs_search_field_border_color' => '#d0d5dd',
+            'betterdocs_search_field_border_width' => 1,
+            'betterdocs_search_field_border_style' => 'solid',
+            'betterdocs_search_field_border_radius' => 4,
+            'betterdocs_search_modal_border_color' => '#d0d5dd',
+            'betterdocs_search_modal_border_width' => 1,
+            'betterdocs_search_modal_border_style' => 'solid',
+            'betterdocs_search_modal_border_radius' => 4,
+            'betterdocs_search_docs_tab_icon' => array(),
+            'betterdocs_search_faq_tab_icon' => array(),
             'betterdocs_font_family' => 'inherit',
             'betterdocs_font_size' => 16,
             'betterdocs_font_weight' => '400',
@@ -894,6 +906,116 @@ class Settings extends Base {
             'label_subtitle' => __( 'Control the category grid appearance directly from BetterDocs. These settings also apply to category-grid shortcodes used with WPBakery.', 'betterdocs' ),
             'priority' => 3,
             'fields' => $this->category_grid_design_fields()
+        );
+
+        $settings[ 'search_design' ] = array(
+            'name' => 'search_design',
+            'type' => 'section',
+            'label' => __( 'Search', 'betterdocs' ),
+            'label_subtitle' => __( 'Adjust the BetterDocs search field, search dialog, and Docs and FAQ tabs.', 'betterdocs' ),
+            'priority' => 4,
+            'fields' => array(
+                'betterdocs_search_docs_tab_color' => array(
+                    'name' => 'betterdocs_search_docs_tab_color',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Docs Tab Color', 'betterdocs' ),
+                    'default' => '#00b884',
+                    'priority' => 1
+                ),
+                'betterdocs_search_faq_tab_color' => array(
+                    'name' => 'betterdocs_search_faq_tab_color',
+                    'type' => 'colorpicker',
+                    'label' => __( 'FAQ Tab Color', 'betterdocs' ),
+                    'default' => '#00b884',
+                    'priority' => 2
+                ),
+                'betterdocs_search_field_border_color' => array(
+                    'name' => 'betterdocs_search_field_border_color',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Search Field Border Color', 'betterdocs' ),
+                    'default' => '#d0d5dd',
+                    'priority' => 3
+                ),
+                'betterdocs_search_field_border_width' => array(
+                    'name' => 'betterdocs_search_field_border_width',
+                    'type' => 'number',
+                    'label' => __( 'Search Field Border Width', 'betterdocs' ),
+                    'label_subtitle' => __( 'Set to 0 to hide the border.', 'betterdocs' ),
+                    'default' => 1,
+                    'priority' => 4
+                ),
+                'betterdocs_search_field_border_style' => array(
+                    'name' => 'betterdocs_search_field_border_style',
+                    'type' => 'select',
+                    'label' => __( 'Search Field Border Style', 'betterdocs' ),
+                    'default' => 'solid',
+                    'priority' => 5,
+                    'options' => $this->normalize_options( array(
+                        'solid' => __( 'Solid', 'betterdocs' ),
+                        'dashed' => __( 'Dashed', 'betterdocs' ),
+                        'dotted' => __( 'Dotted', 'betterdocs' )
+                    ) )
+                ),
+                'betterdocs_search_field_border_radius' => array(
+                    'name' => 'betterdocs_search_field_border_radius',
+                    'type' => 'number',
+                    'label' => __( 'Search Field Border Radius', 'betterdocs' ),
+                    'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
+                    'default' => 4,
+                    'priority' => 6
+                ),
+                'betterdocs_search_modal_border_color' => array(
+                    'name' => 'betterdocs_search_modal_border_color',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Search Dialog Border Color', 'betterdocs' ),
+                    'default' => '#d0d5dd',
+                    'priority' => 7
+                ),
+                'betterdocs_search_modal_border_width' => array(
+                    'name' => 'betterdocs_search_modal_border_width',
+                    'type' => 'number',
+                    'label' => __( 'Search Dialog Border Width', 'betterdocs' ),
+                    'label_subtitle' => __( 'Set to 0 to hide the border.', 'betterdocs' ),
+                    'default' => 1,
+                    'priority' => 8
+                ),
+                'betterdocs_search_modal_border_style' => array(
+                    'name' => 'betterdocs_search_modal_border_style',
+                    'type' => 'select',
+                    'label' => __( 'Search Dialog Border Style', 'betterdocs' ),
+                    'default' => 'solid',
+                    'priority' => 9,
+                    'options' => $this->normalize_options( array(
+                        'solid' => __( 'Solid', 'betterdocs' ),
+                        'dashed' => __( 'Dashed', 'betterdocs' ),
+                        'dotted' => __( 'Dotted', 'betterdocs' )
+                    ) )
+                ),
+                'betterdocs_search_modal_border_radius' => array(
+                    'name' => 'betterdocs_search_modal_border_radius',
+                    'type' => 'number',
+                    'label' => __( 'Search Dialog Border Radius', 'betterdocs' ),
+                    'label_subtitle' => __( 'Enter the radius in pixels.', 'betterdocs' ),
+                    'default' => 4,
+                    'priority' => 10
+                ),
+                'betterdocs_search_docs_tab_icon' => array(
+                    'name' => 'betterdocs_search_docs_tab_icon',
+                    'type' => 'media',
+                    'value' => '',
+                    'label' => __( 'Docs Tab Icon', 'betterdocs' ),
+                    'label_subtitle' => __( 'Upload the icon shown beside the Docs tab.', 'betterdocs' ),
+                    'priority' => 11
+                ),
+                'betterdocs_search_faq_tab_icon' => array(
+                    'name' => 'betterdocs_search_faq_tab_icon',
+                    'type' => 'media',
+                    'value' => '',
+                    'label' => __( 'FAQ Tab Icon', 'betterdocs' ),
+                    'label_subtitle' => __( 'Upload the icon shown beside the FAQ tab.', 'betterdocs' ),
+                    'priority' => 12
+                )
+            )
         );
 
         $settings[ 'gutenberg_link' ] = array(
