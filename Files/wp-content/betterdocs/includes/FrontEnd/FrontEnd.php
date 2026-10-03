@@ -486,10 +486,13 @@ class FrontEnd extends Base {
 		$docs_tab_color     = $this->get_search_color( 'betterdocs_search_docs_tab_color', '#00b884' );
 		$faq_tab_color      = $this->get_search_color( 'betterdocs_search_faq_tab_color', '#00b884' );
 
-		$css  = '.betterdocs-search-popup .betterdocs-searchform { background: #ffffff !important; border: ' . $field_border_width . 'px ' . $field_border_style . ' ' . $field_border_color . ' !important; border-radius: ' . $field_border_radius . 'px !important; box-shadow: 0 1px 2px rgba(16, 24, 40, .06) !important; }';
+		$css  = '.betterdocs-search-popup .betterdocs-searchform, .betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-header { background: #ffffff !important; border: ' . $field_border_width . 'px ' . $field_border_style . ' ' . $field_border_color . ' !important; border-radius: ' . $field_border_radius . 'px !important; box-shadow: 0 1px 2px rgba(16, 24, 40, .06) !important; }';
 		$css .= '.betterdocs-search-popup .betterdocs-searchform .betterdocs-search-command { color: #344054 !important; }';
 		$css .= '.betterdocs-search-popup .betterdocs-searchform .betterdocs-searchform-input-wrap ::placeholder { color: #667085 !important; opacity: 1 !important; }';
 		$css .= '.betterdocs-search-popup .betterdocs-searchform .command-key { background: #f2f4f7 !important; border: 1px solid #d0d5dd !important; color: #344054 !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-header .betterdocs-search-field { color: #344054 !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-header .betterdocs-search-field::placeholder { color: #667085 !important; opacity: 1 !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-header .esc-button { background: #f2f4f7 !important; border: 1px solid #d0d5dd !important; color: #344054 !important; }';
 		$css .= '.betterdocs-search-wrapper .betterdocs-search-details { animation: betterdocs-search-dialog-in .2s ease-out both; border: ' . $modal_border_width . 'px ' . $modal_border_style . ' ' . $modal_border_color . ' !important; border-radius: ' . $modal_border_radius . 'px !important; box-shadow: 0 24px 48px rgba(16, 24, 40, .2), 0 8px 16px rgba(16, 24, 40, .12) !important; }';
 		$css .= '@keyframes betterdocs-search-dialog-in { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }';
 		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="docs"].active { border-bottom-color: ' . $docs_tab_color . ' !important; }';
