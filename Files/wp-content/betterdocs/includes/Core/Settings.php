@@ -284,6 +284,24 @@ class Settings extends Base {
             'betterdocs_font_size' => 16,
             'betterdocs_font_weight' => '400',
             'betterdocs_font_color' => '#303030',
+            'betterdocs_h1_font_size' => 42,
+            'betterdocs_h1_font_weight' => '700',
+            'betterdocs_h1_font_color' => '#1d2939',
+            'betterdocs_h2_font_size' => 32,
+            'betterdocs_h2_font_weight' => '700',
+            'betterdocs_h2_font_color' => '#1d2939',
+            'betterdocs_h3_font_size' => 28,
+            'betterdocs_h3_font_weight' => '600',
+            'betterdocs_h3_font_color' => '#1d2939',
+            'betterdocs_h4_font_size' => 24,
+            'betterdocs_h4_font_weight' => '600',
+            'betterdocs_h4_font_color' => '#1d2939',
+            'betterdocs_h5_font_size' => 20,
+            'betterdocs_h5_font_weight' => '600',
+            'betterdocs_h5_font_color' => '#1d2939',
+            'betterdocs_h6_font_size' => 18,
+            'betterdocs_h6_font_weight' => '600',
+            'betterdocs_h6_font_color' => '#1d2939',
             'single_doc_layout_width' => 'boxed',
             'docs_list_icon' => array(),
             'category_title_link' => false,
@@ -716,63 +734,135 @@ class Settings extends Base {
     public function design_tab() {
         $settings = array();
 
+        $font_weight_options = $this->normalize_options( array(
+            '300' => __( 'Light', 'betterdocs' ),
+            '400' => __( 'Regular', 'betterdocs' ),
+            '500' => __( 'Medium', 'betterdocs' ),
+            '600' => __( 'Semi-bold', 'betterdocs' ),
+            '700' => __( 'Bold', 'betterdocs' ),
+            '800' => __( 'Extra-bold', 'betterdocs' )
+        ) );
+
+        $heading_typography = array(
+            'h1' => array(
+                'label' => __( 'Heading 1', 'betterdocs' ),
+                'size' => 42,
+                'weight' => '700',
+                'color' => '#1d2939'
+            ),
+            'h2' => array(
+                'label' => __( 'Heading 2', 'betterdocs' ),
+                'size' => 32,
+                'weight' => '700',
+                'color' => '#1d2939'
+            ),
+            'h3' => array(
+                'label' => __( 'Heading 3', 'betterdocs' ),
+                'size' => 28,
+                'weight' => '600',
+                'color' => '#1d2939'
+            ),
+            'h4' => array(
+                'label' => __( 'Heading 4', 'betterdocs' ),
+                'size' => 24,
+                'weight' => '600',
+                'color' => '#1d2939'
+            ),
+            'h5' => array(
+                'label' => __( 'Heading 5', 'betterdocs' ),
+                'size' => 20,
+                'weight' => '600',
+                'color' => '#1d2939'
+            ),
+            'h6' => array(
+                'label' => __( 'Heading 6', 'betterdocs' ),
+                'size' => 18,
+                'weight' => '600',
+                'color' => '#1d2939'
+            )
+        );
+
+        $typography_fields = array(
+            'betterdocs_font_family' => array(
+                'name' => 'betterdocs_font_family',
+                'type' => 'select',
+                'label' => __( 'Font Family', 'betterdocs' ),
+                'label_subtitle' => __( 'This font family is used throughout BetterDocs.', 'betterdocs' ),
+                'default' => 'inherit',
+                'priority' => 1,
+                'options' => $this->normalize_options( array(
+                    'inherit' => __( 'Theme Default', 'betterdocs' ),
+                    'system' => __( 'System UI', 'betterdocs' ),
+                    'arial' => __( 'Arial', 'betterdocs' ),
+                    'georgia' => __( 'Georgia', 'betterdocs' ),
+                    'inter' => __( 'Inter', 'betterdocs' ),
+                    'roboto' => __( 'Roboto', 'betterdocs' ),
+                    'ibm-plex-sans' => __( 'IBM Plex Sans', 'betterdocs' )
+                ) )
+            ),
+            'betterdocs_font_size' => array(
+                'name' => 'betterdocs_font_size',
+                'type' => 'number',
+                'label' => __( 'Body Text Font Size', 'betterdocs' ),
+                'label_subtitle' => __( 'Enter the body text size in pixels.', 'betterdocs' ),
+                'default' => 16,
+                'priority' => 2
+            ),
+            'betterdocs_font_weight' => array(
+                'name' => 'betterdocs_font_weight',
+                'type' => 'select',
+                'label' => __( 'Body Text Font Weight', 'betterdocs' ),
+                'label_subtitle' => __( 'Choose the weight used by body text.', 'betterdocs' ),
+                'default' => '400',
+                'priority' => 3,
+                'options' => $font_weight_options
+            ),
+            'betterdocs_font_color' => array(
+                'name' => 'betterdocs_font_color',
+                'type' => 'colorpicker',
+                'label' => __( 'Body Text Color', 'betterdocs' ),
+                'label_subtitle' => __( 'Choose the color used by body text.', 'betterdocs' ),
+                'default' => '#303030',
+                'priority' => 4
+            )
+        );
+
+        $typography_priority = 5;
+        foreach ( $heading_typography as $heading => $heading_defaults ) {
+            $typography_fields[ 'betterdocs_' . $heading . '_font_size' ] = array(
+                'name' => 'betterdocs_' . $heading . '_font_size',
+                'type' => 'number',
+                'label' => sprintf( __( '%s Font Size', 'betterdocs' ), $heading_defaults['label'] ),
+                'label_subtitle' => sprintf( __( 'Enter the %s size in pixels.', 'betterdocs' ), strtolower( $heading_defaults['label'] ) ),
+                'default' => $heading_defaults['size'],
+                'priority' => $typography_priority++
+            );
+            $typography_fields[ 'betterdocs_' . $heading . '_font_weight' ] = array(
+                'name' => 'betterdocs_' . $heading . '_font_weight',
+                'type' => 'select',
+                'label' => sprintf( __( '%s Font Weight', 'betterdocs' ), $heading_defaults['label'] ),
+                'label_subtitle' => sprintf( __( 'Choose the weight used by %s.', 'betterdocs' ), strtolower( $heading_defaults['label'] ) ),
+                'default' => $heading_defaults['weight'],
+                'priority' => $typography_priority++,
+                'options' => $font_weight_options
+            );
+            $typography_fields[ 'betterdocs_' . $heading . '_font_color' ] = array(
+                'name' => 'betterdocs_' . $heading . '_font_color',
+                'type' => 'colorpicker',
+                'label' => sprintf( __( '%s Color', 'betterdocs' ), $heading_defaults['label'] ),
+                'label_subtitle' => sprintf( __( 'Choose the color used by %s.', 'betterdocs' ), strtolower( $heading_defaults['label'] ) ),
+                'default' => $heading_defaults['color'],
+                'priority' => $typography_priority++
+            );
+        }
+
         $settings[ 'betterdocs_typography' ] = array(
             'name' => 'betterdocs_typography',
             'type' => 'section',
             'label' => __( 'Typography', 'betterdocs' ),
-            'label_subtitle' => __( 'Choose the font used by BetterDocs. Theme Default inherits your active theme font.', 'betterdocs' ),
+            'label_subtitle' => __( 'Choose the global font family and separate body and heading styles for BetterDocs. Theme Default inherits your active theme font.', 'betterdocs' ),
             'priority' => 1,
-            'fields' => array(
-                'betterdocs_font_family' => array(
-                    'name' => 'betterdocs_font_family',
-                    'type' => 'select',
-                    'label' => __( 'Font Family', 'betterdocs' ),
-                    'label_subtitle' => __( 'Theme Default inherits the font selected by your theme.', 'betterdocs' ),
-                    'default' => 'inherit',
-                    'priority' => 1,
-                    'options' => $this->normalize_options( array(
-                        'inherit' => __( 'Theme Default', 'betterdocs' ),
-                        'system' => __( 'System UI', 'betterdocs' ),
-                        'arial' => __( 'Arial', 'betterdocs' ),
-                        'georgia' => __( 'Georgia', 'betterdocs' ),
-                        'inter' => __( 'Inter', 'betterdocs' ),
-                        'roboto' => __( 'Roboto', 'betterdocs' ),
-                        'ibm-plex-sans' => __( 'IBM Plex Sans', 'betterdocs' )
-                    ) )
-                ),
-                'betterdocs_font_size' => array(
-                    'name' => 'betterdocs_font_size',
-                    'type' => 'number',
-                    'label' => __( 'Font Size', 'betterdocs' ),
-                    'label_subtitle' => __( 'Enter the BetterDocs font size in pixels.', 'betterdocs' ),
-                    'default' => 16,
-                    'priority' => 2
-                ),
-                'betterdocs_font_weight' => array(
-                    'name' => 'betterdocs_font_weight',
-                    'type' => 'select',
-                    'label' => __( 'Font Weight', 'betterdocs' ),
-                    'label_subtitle' => __( 'Choose the weight used by BetterDocs text.', 'betterdocs' ),
-                    'default' => '400',
-                    'priority' => 3,
-                    'options' => $this->normalize_options( array(
-                        '300' => __( 'Light', 'betterdocs' ),
-                        '400' => __( 'Regular', 'betterdocs' ),
-                        '500' => __( 'Medium', 'betterdocs' ),
-                        '600' => __( 'Semi-bold', 'betterdocs' ),
-                        '700' => __( 'Bold', 'betterdocs' ),
-                        '800' => __( 'Extra-bold', 'betterdocs' )
-                    ) )
-                ),
-                'betterdocs_font_color' => array(
-                    'name' => 'betterdocs_font_color',
-                    'type' => 'colorpicker',
-                    'label' => __( 'Text Color', 'betterdocs' ),
-                    'label_subtitle' => __( 'Choose the default text color used by BetterDocs.', 'betterdocs' ),
-                    'default' => '#303030',
-                    'priority' => 4
-                )
-            )
+            'fields' => $typography_fields
         );
 
         $settings[ 'single_doc_design' ] = array(
