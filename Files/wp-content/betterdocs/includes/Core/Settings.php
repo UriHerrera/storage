@@ -280,6 +280,7 @@ class Settings extends Base {
             'category_grid_button_hover_border_color' => '#528ffe',
             'category_grid_button_border_radius' => 50,
             'category_grid_button_font_size' => 16,
+            'betterdocs_font_family' => 'inherit',
             'single_doc_layout_width' => 'boxed',
             'docs_list_icon' => array(),
             'category_title_link' => false,
@@ -712,12 +713,39 @@ class Settings extends Base {
     public function design_tab() {
         $settings = array();
 
+        $settings[ 'betterdocs_typography' ] = array(
+            'name' => 'betterdocs_typography',
+            'type' => 'section',
+            'label' => __( 'Typography', 'betterdocs' ),
+            'label_subtitle' => __( 'Choose the font used by BetterDocs. Theme Default inherits your active theme font.', 'betterdocs' ),
+            'priority' => 1,
+            'fields' => array(
+                'betterdocs_font_family' => array(
+                    'name' => 'betterdocs_font_family',
+                    'type' => 'select',
+                    'label' => __( 'Font Family', 'betterdocs' ),
+                    'label_subtitle' => __( 'Theme Default inherits the font selected by your theme.', 'betterdocs' ),
+                    'default' => 'inherit',
+                    'priority' => 1,
+                    'options' => $this->normalize_options( array(
+                        'inherit' => __( 'Theme Default', 'betterdocs' ),
+                        'system' => __( 'System UI', 'betterdocs' ),
+                        'arial' => __( 'Arial', 'betterdocs' ),
+                        'georgia' => __( 'Georgia', 'betterdocs' ),
+                        'inter' => __( 'Inter', 'betterdocs' ),
+                        'roboto' => __( 'Roboto', 'betterdocs' ),
+                        'ibm-plex-sans' => __( 'IBM Plex Sans', 'betterdocs' )
+                    ) )
+                )
+            )
+        );
+
         $settings[ 'single_doc_design' ] = array(
             'name' => 'single_doc_design',
             'type' => 'section',
             'label' => __( 'Single Documents', 'betterdocs' ),
             'label_subtitle' => __( 'Choose whether single documents use the standard boxed width or the full available responsive width.', 'betterdocs' ),
-            'priority' => 1,
+            'priority' => 2,
             'fields' => array(
                 'single_doc_layout_width' => array(
                     'name' => 'single_doc_layout_width',
@@ -739,7 +767,7 @@ class Settings extends Base {
             'type' => 'section',
             'label' => __( 'Category Grid', 'betterdocs' ),
             'label_subtitle' => __( 'Control the category grid appearance directly from BetterDocs. These settings also apply to category-grid shortcodes used with WPBakery.', 'betterdocs' ),
-            'priority' => 2,
+            'priority' => 3,
             'fields' => $this->category_grid_design_fields()
         );
 
