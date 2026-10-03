@@ -285,15 +285,20 @@ class FrontEnd extends Base {
 				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-content-wrapper { width: 100% !important; max-width: none !important; }';
 			}
 
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a:hover, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a:focus-visible { background-color: ' . $this->get_search_color( 'betterdocs_search_sidebar_hover_background', '#e8fff4' ) . ' !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a.active { background: transparent !important; font-weight: 700 !important; }';
+
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner { gap: 0 !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-items-counts { margin-left: auto !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon { align-items: center !important; display: inline-flex !important; flex: 0 0 47px !important; height: 47px !important; justify-content: center !important; margin: 0 !important; width: 47px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon svg { margin: 0 !important; max-height: 100% !important; max-width: 100% !important; object-fit: contain !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-folder-icon { align-items: center !important; display: inline-flex !important; justify-content: center !important; margin: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-folder-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-folder-icon svg { height: 20px !important; max-height: 20px !important; max-width: 20px !important; object-fit: contain !important; width: 20px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title { gap: 4px !important; margin-left: 0 !important; margin-right: 0 !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title svg { margin: 0 !important; object-fit: contain !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon { align-items: center !important; display: inline-flex !important; flex: 0 0 20px !important; height: 20px !important; justify-content: center !important; margin: 0 !important; object-fit: contain !important; width: 20px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon svg { height: 100% !important; margin: 0 !important; max-height: 100% !important; max-width: 100% !important; object-fit: contain !important; width: 100% !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list > li > img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list > li > svg { flex: 0 0 20px !important; height: 20px !important; max-height: 20px !important; max-width: 20px !important; object-fit: contain !important; width: 20px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-toggle-icon { flex: 0 0 15px !important; height: 15px !important; margin: 0 !important; width: 15px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-toggle-icon.arrow-down { display: none !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title.is-expanded .betterdocs-category-toggle-icon.arrow-right { display: none !important; }';
@@ -485,6 +490,7 @@ class FrontEnd extends Base {
 		$modal_border_radius = $this->get_search_border_radius( 'betterdocs_search_modal_border_radius', 4 );
 		$docs_tab_color     = $this->get_search_color( 'betterdocs_search_docs_tab_color', '#00b884' );
 		$faq_tab_color      = $this->get_search_color( 'betterdocs_search_faq_tab_color', '#00b884' );
+		$modal_hover_background = $this->get_search_color( 'betterdocs_search_modal_hover_background', '#f6fef9' );
 
 		$css  = '.betterdocs-search-popup .betterdocs-searchform, .betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-header { background: #ffffff !important; border: ' . $field_border_width . 'px ' . $field_border_style . ' ' . $field_border_color . ' !important; border-radius: ' . $field_border_radius . 'px !important; box-shadow: 0 1px 2px rgba(16, 24, 40, .06) !important; }';
 		$css .= '.betterdocs-search-popup .betterdocs-searchform .betterdocs-search-command { color: #344054 !important; }';
@@ -503,6 +509,8 @@ class FrontEnd extends Base {
 		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"].active > span { color: ' . $faq_tab_color . ' !important; }';
 		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"]:hover > span { color: ' . $faq_tab_color . ' !important; }';
 		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"].active > .tab-icon svg path { fill: ' . $faq_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-search-item-list:hover, .betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-search-item-list:focus-within { background: ' . $modal_hover_background . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-search-configured-icon { display: block !important; flex: 0 0 20px !important; height: 20px !important; object-fit: contain !important; width: 20px !important; }';
 
 		$css .= $this->get_search_tab_icon_css( 'docs', $this->get_search_icon_url( 'betterdocs_search_docs_tab_icon' ) );
 		$css .= $this->get_search_tab_icon_css( 'faq', $this->get_search_icon_url( 'betterdocs_search_faq_tab_icon' ) );
@@ -556,14 +564,58 @@ class FrontEnd extends Base {
 		return is_string( $icon ) ? esc_url_raw( $icon ) : '';
 	}
 
+	private function get_search_result_icon_config() {
+		$config = array(
+			'document'   => $this->get_search_icon_url( 'category_grid_document_icon' ),
+			'categories' => array()
+		);
+		$default_icon = $this->get_search_icon_url( 'category_grid_default_icon' );
+		$terms        = get_terms(
+			array(
+				'taxonomy'   => 'doc_category',
+				'hide_empty' => false
+			)
+		);
+
+		if ( is_wp_error( $terms ) || empty( $terms ) ) {
+			return $config;
+		}
+
+		foreach ( $terms as $term ) {
+			$icon_url     = '';
+			$term_icon_id = get_term_meta( $term->term_id, 'doc_category_image-id', true );
+
+			if ( $term_icon_id ) {
+				$icon_url = wp_get_attachment_image_url( $term_icon_id, 'thumbnail' );
+			}
+
+			if ( empty( $icon_url ) ) {
+				$icon_url = $default_icon;
+			}
+
+			if ( ! empty( $icon_url ) ) {
+				$config['categories'][ strtolower( wp_strip_all_tags( $term->name ) ) ] = esc_url_raw( $icon_url );
+			}
+		}
+
+		return $config;
+	}
+
 	private function get_search_ui_script() {
-		return <<<'JS'
+		$icon_config = wp_json_encode(
+			$this->get_search_result_icon_config(),
+			JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+		);
+		$icon_config = $icon_config ? $icon_config : '{}';
+		$script      = <<<'JS'
 (function () {
     if (window.betterdocsSearchUiReady) {
         return;
     }
 
     window.betterdocsSearchUiReady = true;
+
+    var searchIconConfig = __SEARCH_ICON_CONFIG__;
 
     document.addEventListener('keydown', function (event) {
         if ((event.metaKey || event.ctrlKey) && event.key && event.key.toLowerCase() === 'k') {
@@ -578,16 +630,58 @@ class FrontEnd extends Base {
         });
     }
 
+    function replaceSearchIcon(svg, url) {
+        if (!svg || !url || !svg.parentNode) {
+            return;
+        }
+
+        var image = document.createElement('img');
+        image.className = 'betterdocs-search-configured-icon';
+        image.src = url;
+        image.alt = '';
+        image.setAttribute('aria-hidden', 'true');
+        svg.parentNode.replaceChild(image, svg);
+    }
+
+    function getCategoryIconUrl(text) {
+        var categories = searchIconConfig.categories || {};
+        var labels = (text || '').split(',');
+
+        for (var index = 0; index < labels.length; index++) {
+            var label = labels[index].trim().toLowerCase();
+            if (categories[label]) {
+                return categories[label];
+            }
+        }
+
+        return '';
+    }
+
+    function applySearchResultIcons() {
+        document.querySelectorAll('.betterdocs-search-wrapper .betterdocs-search-item-content').forEach(function (item) {
+            replaceSearchIcon(item.querySelector('.content-main svg'), searchIconConfig.document || '');
+
+            var categoryText = item.querySelector('.content-sub h5');
+            replaceSearchIcon(item.querySelector('.content-sub svg'), getCategoryIconUrl(categoryText ? categoryText.textContent : ''));
+        });
+    }
+
     markSearchTabs();
+    applySearchResultIcons();
 
     if (window.MutationObserver) {
-        new MutationObserver(markSearchTabs).observe(document.documentElement, {
+        new MutationObserver(function () {
+            markSearchTabs();
+            applySearchResultIcons();
+        }).observe(document.documentElement, {
             childList: true,
             subtree: true
         });
     }
 }());
 JS;
+
+		return str_replace( '__SEARCH_ICON_CONFIG__', $icon_config, $script );
 	}
 
 	private function get_typography_rule( $settings_keys, $defaults, $selectors ) {
