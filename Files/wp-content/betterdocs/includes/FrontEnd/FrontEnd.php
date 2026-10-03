@@ -285,6 +285,11 @@ class FrontEnd extends Base {
 				$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-content-wrapper { width: 100% !important; max-width: none !important; }';
 			}
 
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta { align-items: center !important; display: flex !important; flex-wrap: wrap !important; gap: 8px !important; margin-bottom: 24px !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .reading-time, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .betterdocs-view-count { background: #f2f4f7 !important; border: 1px solid #d0d5dd !important; border-radius: 16px !important; display: inline-block !important; margin: 0 !important; padding: 5px 10px !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .reading-time p, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .betterdocs-view-count p { align-items: center !important; color: #475467 !important; display: flex !important; font-size: 14px !important; font-weight: 400 !important; gap: 5px !important; line-height: 16px !important; margin: 0 !important; padding: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .reading-time p svg, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-document-meta .betterdocs-view-count p svg { color: #475467 !important; height: 14px !important; margin: 0 !important; width: 14px !important; }';
+
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a:hover, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a:focus-visible { background-color: ' . $this->get_search_color( 'betterdocs_search_sidebar_hover_background', '#e8fff4' ) . ' !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a.active { background: transparent !important; font-weight: 700 !important; }';
 
@@ -466,7 +471,7 @@ class FrontEnd extends Base {
 			);
 		}
 
-		return $css . 'body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
+		return $css . 'body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code *, body .betterdocs-wrapper .enlighter-code, body .betterdocs-wrapper .enlighter-code *, body .betterdocs-wrapper .enlighter, body .betterdocs-wrapper .enlighter * { font-family: "Source Code Pro", "Liberation Mono", monospace !important; }';
 	}
 
 	private function add_search_ui_assets() {
