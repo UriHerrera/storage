@@ -282,6 +282,8 @@ class Settings extends Base {
             'category_grid_button_font_size' => 16,
             'betterdocs_search_docs_tab_color' => '#00b884',
             'betterdocs_search_faq_tab_color' => '#00b884',
+            'betterdocs_search_sidebar_hover_background' => '#e8fff4',
+            'betterdocs_search_modal_hover_background' => '#f6fef9',
             'betterdocs_search_field_border_color' => '#d0d5dd',
             'betterdocs_search_field_border_width' => 1,
             'betterdocs_search_field_border_style' => 'solid',
@@ -928,6 +930,20 @@ class Settings extends Base {
                     'label' => __( 'FAQ Tab Color', 'betterdocs' ),
                     'default' => '#00b884',
                     'priority' => 2
+                ),
+                'betterdocs_search_sidebar_hover_background' => array(
+                    'name' => 'betterdocs_search_sidebar_hover_background',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Sidebar Hover Background', 'betterdocs' ),
+                    'default' => '#e8fff4',
+                    'priority' => 13
+                ),
+                'betterdocs_search_modal_hover_background' => array(
+                    'name' => 'betterdocs_search_modal_hover_background',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Search Modal Hover Background', 'betterdocs' ),
+                    'default' => '#f6fef9',
+                    'priority' => 14
                 ),
                 'betterdocs_search_field_border_color' => array(
                     'name' => 'betterdocs_search_field_border_color',
