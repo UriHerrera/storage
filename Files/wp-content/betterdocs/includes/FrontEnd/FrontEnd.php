@@ -53,6 +53,7 @@ class FrontEnd extends Base {
 
 		add_action( 'betterdocs_before_render', [ $this, 'before_render' ], 11, 2 );
 		add_action( 'betterdocs_after_render', [ $this, 'after_render' ], 11, 2 );
+		add_action( 'betterdocs_before_shortcode_load', [ $this, 'add_shortcode_font_style' ], 10, 1 );
 
 		//Remove Saliant Theme Script For (Delay Javascript Exection), which causes issue with betterdocs sidebar toggle, issue number (#1234)
 		add_action( 'nectar_hook_before_body_close', [ $this, 'dequeue_saliant_theme_script' ], 99999 );
@@ -262,6 +263,7 @@ class FrontEnd extends Base {
 	public function enqueue_scripts() {
 		if ( $this->is_custom_docs_page() ) {
 			wp_enqueue_style( 'betterdocs-category-grid' );
+			$this->add_font_family_style( 'betterdocs-category-grid' );
 			wp_add_inline_style(
 				'betterdocs-category-grid',
 				'body.betterdocs-custom-docs-page .row.heading-title.hentry, body.betterdocs-custom-docs-page .row:has(> .blog_next_prev_buttons) { display: none !important; }'
@@ -270,6 +272,7 @@ class FrontEnd extends Base {
 
 		if ( is_singular( 'docs' ) ) {
 			wp_enqueue_style( 'betterdocs-single' );
+			$this->add_font_family_style( 'betterdocs-single' );
 			$single_doc_css = '';
 
 			if ( 'wide' === $this->settings->get( 'single_doc_layout_width', 'boxed' ) ) {
@@ -281,8 +284,14 @@ class FrontEnd extends Base {
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon { align-items: center !important; display: inline-flex !important; flex: 0 0 47px !important; height: 47px !important; justify-content: center !important; margin: 0 !important; width: 47px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-category-icon svg { margin: 0 !important; max-height: 100% !important; max-width: 100% !important; object-fit: contain !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-category-header .betterdocs-category-header-inner .betterdocs-folder-icon { align-items: center !important; display: inline-flex !important; justify-content: center !important; margin: 0 !important; }';
-			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title { gap: 0 !important; margin-left: 0 !important; margin-right: 0 !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title { gap: 4px !important; margin-left: 0 !important; margin-right: 0 !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title svg { margin: 0 !important; object-fit: contain !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon { align-items: center !important; display: inline-flex !important; flex: 0 0 20px !important; height: 20px !important; justify-content: center !important; margin: 0 !important; object-fit: contain !important; width: 20px !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon img, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-folder-icon svg { height: 100% !important; margin: 0 !important; max-height: 100% !important; max-width: 100% !important; object-fit: contain !important; width: 100% !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-toggle-icon { flex: 0 0 15px !important; height: 15px !important; margin: 0 !important; width: 15px !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-category-toggle-icon.arrow-down { display: none !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title.is-expanded .betterdocs-category-toggle-icon.arrow-right { display: none !important; }';
+			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title.is-expanded .betterdocs-category-toggle-icon.arrow-down { display: inline-flex !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-nested-category-list.active:before, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-single-category-wrapper.active.default.show:before, body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-articles-list li a.active:before { display: none !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title .betterdocs-folder-icon.arrow-right { background: transparent !important; border-radius: 0 !important; height: 15px !important; width: 15px !important; }';
 			$single_doc_css .= 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-sidebar.betterdocs-sidebar-layout-7 .betterdocs-body .betterdocs-nested-category-title .betterdocs-folder-icon.arrow-right svg { width: 15px !important; }';
@@ -311,17 +320,45 @@ class FrontEnd extends Base {
 
 		if ( is_post_type_archive( 'docs' ) ) {
 			wp_enqueue_style( 'betterdocs-category-grid' ); //category grid shortcode is supposed to enqueue this style, but this is called again to fix flicking of UI on Docs Page
+			$this->add_font_family_style( 'betterdocs-category-grid' );
 			wp_enqueue_style( 'betterdocs-docs' );
 		}
 
 		if ( is_tax( 'doc_category' ) || is_tax( 'doc_tag' ) ) {
 			wp_enqueue_style( 'betterdocs-doc_category' );
+			$this->add_font_family_style( 'betterdocs-doc_category' );
 		}
 
 		if ( is_tax( 'doc_category' ) || is_tax( 'doc_tag' ) || is_singular( 'docs' ) ) {
 			wp_enqueue_style( 'simplebar' );
 			wp_enqueue_script( 'simplebar' );
 			wp_enqueue_script( 'betterdocs-category-grid' );
+
+			if ( is_singular( 'docs' ) ) {
+				wp_add_inline_script(
+					'betterdocs-category-grid',
+					"(function($) {\n" .
+					"    function syncNestedCategoryToggle($title) {\n" .
+					"        var $list = $title.next('.betterdocs-nested-category-list');\n" .
+					"        var expanded = $list.hasClass('active') || $list.is(':visible');\n" .
+					"        $title.toggleClass('is-expanded', expanded);\n" .
+					"    }\n" .
+					"\n" .
+					"    $(function() {\n" .
+					"        $('.betterdocs-sidebar-layout-7 .betterdocs-nested-category-title').each(function() {\n" .
+					"            syncNestedCategoryToggle($(this));\n" .
+					"        });\n" .
+					"    });\n" .
+					"\n" .
+					"    $(document).on('click.betterdocsSidebarToggle', '.betterdocs-sidebar-layout-7 .betterdocs-nested-category-title', function() {\n" .
+					"        var $title = $(this);\n" .
+					"        window.setTimeout(function() { syncNestedCategoryToggle($title); }, 0);\n" .
+					"        window.setTimeout(function() { syncNestedCategoryToggle($title); }, 400);\n" .
+					"    });\n" .
+					"})(jQuery);",
+					'after'
+				);
+			}
 		}
 
 		if ( is_post_type_archive( 'docs' ) || is_singular( 'docs' ) || is_tax( 'doc_category' ) || is_tax( 'doc_tag' ) || is_tax( 'knowledge_base' ) ) {
@@ -331,7 +368,38 @@ class FrontEnd extends Base {
 		if ( is_tax( 'glossaries' ) ) {
 			wp_enqueue_style( 'betterdocs-encyclopedia' );
 			wp_enqueue_style( 'betterdocs-single' );
+			$this->add_font_family_style( 'betterdocs-single' );
 			wp_enqueue_style( 'betterdocs-glossaries' );
+		}
+	}
+
+	private function get_font_family_css() {
+		$font_families = array(
+			'inherit' => 'inherit',
+			'system' => '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+			'arial' => 'Arial, Helvetica, sans-serif',
+			'georgia' => 'Georgia, "Times New Roman", serif',
+			'inter' => '"Inter", sans-serif',
+			'roboto' => 'Roboto, Arial, sans-serif',
+			'ibm-plex-sans' => '"IBM Plex Sans", sans-serif'
+		);
+		$font_key = $this->settings->get( 'betterdocs_font_family', 'inherit' );
+		$font_family = isset( $font_families[ $font_key ] ) ? $font_families[ $font_key ] : $font_families['inherit'];
+
+		return 'body .betterdocs-wrapper, body .betterdocs-wrapper * { font-family: ' . $font_family . ' !important; } body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
+	}
+
+	private function add_font_family_style( $handle ) {
+		wp_add_inline_style( $handle, $this->get_font_family_css() );
+	}
+
+	public function add_shortcode_font_style( $shortcode ) {
+		if ( ! is_object( $shortcode ) || ! method_exists( $shortcode, 'get_style_depends' ) ) {
+			return;
+		}
+
+		foreach ( (array) $shortcode->get_style_depends() as $handle ) {
+			$this->add_font_family_style( $handle );
 		}
 	}
 
