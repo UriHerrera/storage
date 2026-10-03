@@ -385,8 +385,15 @@ class FrontEnd extends Base {
 		);
 		$font_key = $this->settings->get( 'betterdocs_font_family', 'inherit' );
 		$font_family = isset( $font_families[ $font_key ] ) ? $font_families[ $font_key ] : $font_families['inherit'];
+		$font_size = absint( $this->settings->get( 'betterdocs_font_size', 16 ) );
+		$font_size = $font_size > 0 ? $font_size : 16;
+		$font_weights = array( '300', '400', '500', '600', '700', '800' );
+		$font_weight = (string) $this->settings->get( 'betterdocs_font_weight', '400' );
+		$font_weight = in_array( $font_weight, $font_weights, true ) ? $font_weight : '400';
+		$font_color = sanitize_hex_color( $this->settings->get( 'betterdocs_font_color', '#303030' ) );
+		$font_color = $font_color ? $font_color : '#303030';
 
-		return 'body .betterdocs-wrapper, body .betterdocs-wrapper * { font-family: ' . $font_family . ' !important; } body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
+		return 'body .betterdocs-wrapper, body .betterdocs-wrapper * { color: ' . $font_color . ' !important; font-family: ' . $font_family . ' !important; font-size: ' . $font_size . 'px !important; font-weight: ' . $font_weight . ' !important; } body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
 	}
 
 	private function add_font_family_style( $handle ) {
