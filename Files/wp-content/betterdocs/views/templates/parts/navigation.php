@@ -80,10 +80,12 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
         $prev_post  = get_post( $prev_post_id );
         $prev_title = get_the_title( $prev_post_id );
         $prev_link  = get_permalink( $prev_post_id );
+        $prev_label = sprintf( __( 'Previous - %s', 'betterdocs' ), $current_term->name );
         $nav .= sprintf(
-            '<a href="%s" rel="prev">%s %s</a>',
+            '<a href="%s" class="betterdocs-navigation-link betterdocs-navigation-prev" rel="prev"><span class="betterdocs-navigation-icon" aria-hidden="true">%s</span><span class="betterdocs-navigation-content"><span class="betterdocs-navigation-label">%s</span><span class="betterdocs-navigation-title">%s</span></span></a>',
             esc_url( $prev_link ),
             $prev_icon,
+            esc_html( $prev_label ),
             esc_html( $prev_title )
         );
     }
@@ -92,9 +94,11 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
         $next_post  = get_post( $next_post_id );
         $next_title = get_the_title( $next_post_id );
         $next_link  = get_permalink( $next_post_id );
+        $next_label = sprintf( __( 'Next - %s', 'betterdocs' ), $current_term->name );
         $nav .= sprintf(
-            '<a href="%s" rel="next">%s %s</a>',
+            '<a href="%s" class="betterdocs-navigation-link betterdocs-navigation-next" rel="next"><span class="betterdocs-navigation-content"><span class="betterdocs-navigation-label">%s</span><span class="betterdocs-navigation-title">%s</span></span><span class="betterdocs-navigation-icon" aria-hidden="true">%s</span></a>',
             esc_url( $next_link ),
+            esc_html( $next_label ),
             esc_html( $next_title ),
             $next_icon
         );
@@ -102,12 +106,11 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
 
     $wrapper_attr_array = array();
 
-    if ( isset( $widget_type ) && 'betterdocs-navigation' !== $widget_type ) {
-        $wrapper_attr_array = array( 'class' => array() );
+    if ( ! isset( $widget_type ) || 'betterdocs-navigation' !== $widget_type ) {
+        $wrapper_attr_array = array( 'class' => array( 'docs-navigation' ) );
     }
 
     if ( ! empty( $wrapper_attr_array ) ) {
-        $wrapper_attr_array[ 'class' ][  ] = 'docs-navigation';
         if ( isset( $wraper_class ) ) {
             $wrapper_attr_array[ 'class' ][  ] = $wraper_class;
         }
