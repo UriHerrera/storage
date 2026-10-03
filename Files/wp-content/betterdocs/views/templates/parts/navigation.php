@@ -21,53 +21,70 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
         return;
     }
 
-    // Use the first term for navigation
-    $current_term = $terms[ 0 ];
-
-    // Build query args same as category-list.php
-    $query_args = betterdocs()->query->docs_query_args(
+    // Build one ordered sequence across all populated categories.
+    $category_query_args = betterdocs()->query->terms_query(
         array(
-            'post_type' => 'docs',
-            'posts_per_page' => -1,
-            'term_id' => $current_term->term_id,
-            'term_slug' => $current_term->slug,
-            'orderby' => betterdocs()->settings->get( 'alphabetically_order_post', 'betterdocs_order' ),
-            'order' => betterdocs()->settings->get( 'docs_order', 'ASC' )
+            'taxonomy' => 'doc_category'
         )
     );
+    $categories = get_terms( $category_query_args );
 
-    // Get posts using the same method as category-list.php
-    $posts = betterdocs()->query->get_posts( $query_args, true );
-
-    if ( ! $posts->have_posts() ) {
-        wp_reset_postdata();
+    if ( is_wp_error( $categories ) || empty( $categories ) ) {
         return;
     }
 
-    // Build array of post IDs in order
-    $post_ids = array();
-    while ( $posts->have_posts() ) {
-        $posts->the_post();
-        $post_ids[  ] = get_the_ID();
-    }
-    wp_reset_postdata();
+    $navigation_items = array();
+    $navigation_post_ids = array();
 
-    // Find current post position
-    $current_index = array_search( $current_post->ID, $post_ids, true );
+    foreach ( $categories as $category ) {
+        $query_args = betterdocs()->query->docs_query_args(
+            array(
+                'post_type' => 'docs',
+                'posts_per_page' => -1,
+                'term_id' => $category->term_id,
+                'term_slug' => $category->slug,
+                'orderby' => betterdocs()->settings->get( 'alphabetically_order_post', 'betterdocs_order' ),
+                'order' => betterdocs()->settings->get( 'docs_order', 'ASC' )
+            )
+        );
+        $posts = betterdocs()->query->get_posts( $query_args, true );
+
+        if ( ! $posts->have_posts() ) {
+            wp_reset_postdata();
+            continue;
+        }
+
+        while ( $posts->have_posts() ) {
+            $posts->the_post();
+            $post_id = get_the_ID();
+
+            if ( isset( $navigation_post_ids[ $post_id ] ) ) {
+                continue;
+            }
+
+            $navigation_post_ids[ $post_id ] = true;
+            $navigation_items[  ] = array(
+                'id' => $post_id,
+                'term' => $category
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    $current_index = false;
+    foreach ( $navigation_items as $index => $navigation_item ) {
+        if ( $current_post->ID === $navigation_item['id'] ) {
+            $current_index = $index;
+            break;
+        }
+    }
 
     if ( false === $current_index ) {
         return;
     }
 
-    // Get previous and next post IDs with circular navigation
-    $total_posts = count( $post_ids );
-    $last_index  = $total_posts - 1;
-
-    // If current is first item, prev wraps to last item
-    $prev_post_id = ( 0 === $current_index ) ? $post_ids[ $last_index ] : $post_ids[ $current_index - 1 ];
-
-    // If current is last item, next wraps to first item
-    $next_post_id = ( $last_index === $current_index ) ? $post_ids[ 0 ] : $post_ids[ $current_index + 1 ];
+    $prev_item = $current_index > 0 ? $navigation_items[ $current_index - 1 ] : null;
+    $next_item = $current_index < count( $navigation_items ) - 1 ? $navigation_items[ $current_index + 1 ] : null;
 
     // SVG icons
     $prev_icon = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42px" viewBox="0 0 50 50" version="1.1"><g id="surface1"><path style=" " d="M 11.957031 13.988281 C 11.699219 14.003906 11.457031 14.117188 11.28125 14.308594 L 1.015625 25 L 11.28125 35.691406 C 11.527344 35.953125 11.894531 36.0625 12.242188 35.976563 C 12.589844 35.890625 12.867188 35.625 12.964844 35.28125 C 13.066406 34.933594 12.972656 34.5625 12.71875 34.308594 L 4.746094 26 L 48 26 C 48.359375 26.003906 48.695313 25.816406 48.878906 25.503906 C 49.058594 25.191406 49.058594 24.808594 48.878906 24.496094 C 48.695313 24.183594 48.359375 23.996094 48 24 L 4.746094 24 L 12.71875 15.691406 C 13.011719 15.398438 13.09375 14.957031 12.921875 14.582031 C 12.753906 14.203125 12.371094 13.96875 11.957031 13.988281 Z "></path></g></svg>';
@@ -76,11 +93,10 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
     // Build navigation HTML
     $nav = '';
 
-    if ( $prev_post_id ) {
-        $prev_post  = get_post( $prev_post_id );
-        $prev_title = get_the_title( $prev_post_id );
-        $prev_link  = get_permalink( $prev_post_id );
-        $prev_label = sprintf( __( 'Previous - %s', 'betterdocs' ), $current_term->name );
+    if ( $prev_item ) {
+        $prev_title = get_the_title( $prev_item['id'] );
+        $prev_link  = get_permalink( $prev_item['id'] );
+        $prev_label = sprintf( __( 'Previous - %s', 'betterdocs' ), $prev_item['term']->name );
         $nav .= sprintf(
             '<a href="%s" class="betterdocs-navigation-link betterdocs-navigation-prev" rel="prev"><span class="betterdocs-navigation-icon" aria-hidden="true">%s</span><span class="betterdocs-navigation-content"><span class="betterdocs-navigation-label">%s</span><span class="betterdocs-navigation-title">%s</span></span></a>',
             esc_url( $prev_link ),
@@ -90,11 +106,10 @@ if ( ! betterdocs()->settings->get( 'enable_navigation' ) ) {
         );
     }
 
-    if ( $next_post_id ) {
-        $next_post  = get_post( $next_post_id );
-        $next_title = get_the_title( $next_post_id );
-        $next_link  = get_permalink( $next_post_id );
-        $next_label = sprintf( __( 'Next - %s', 'betterdocs' ), $current_term->name );
+    if ( $next_item ) {
+        $next_title = get_the_title( $next_item['id'] );
+        $next_link  = get_permalink( $next_item['id'] );
+        $next_label = sprintf( __( 'Next - %s', 'betterdocs' ), $next_item['term']->name );
         $nav .= sprintf(
             '<a href="%s" class="betterdocs-navigation-link betterdocs-navigation-next" rel="next"><span class="betterdocs-navigation-content"><span class="betterdocs-navigation-label">%s</span><span class="betterdocs-navigation-title">%s</span></span><span class="betterdocs-navigation-icon" aria-hidden="true">%s</span></a>',
             esc_url( $next_link ),
