@@ -385,15 +385,73 @@ class FrontEnd extends Base {
 		);
 		$font_key = $this->settings->get( 'betterdocs_font_family', 'inherit' );
 		$font_family = isset( $font_families[ $font_key ] ) ? $font_families[ $font_key ] : $font_families['inherit'];
-		$font_size = absint( $this->settings->get( 'betterdocs_font_size', 16 ) );
-		$font_size = $font_size > 0 ? $font_size : 16;
-		$font_weights = array( '300', '400', '500', '600', '700', '800' );
-		$font_weight = (string) $this->settings->get( 'betterdocs_font_weight', '400' );
-		$font_weight = in_array( $font_weight, $font_weights, true ) ? $font_weight : '400';
-		$font_color = sanitize_hex_color( $this->settings->get( 'betterdocs_font_color', '#303030' ) );
-		$font_color = $font_color ? $font_color : '#303030';
 
-		return 'body .betterdocs-wrapper, body .betterdocs-wrapper * { color: ' . $font_color . ' !important; font-family: ' . $font_family . ' !important; font-size: ' . $font_size . 'px !important; font-weight: ' . $font_weight . ' !important; } body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
+		$css = 'body .betterdocs-wrapper, body .betterdocs-wrapper * { font-family: ' . $font_family . ' !important; }';
+		$css .= $this->get_typography_rule(
+			array(
+				'size' => 'betterdocs_font_size',
+				'weight' => 'betterdocs_font_weight',
+				'color' => 'betterdocs_font_color'
+			),
+			array(
+				'size' => 16,
+				'weight' => '400',
+				'color' => '#303030'
+			),
+			array(
+				'body .betterdocs-wrapper .betterdocs-content',
+				'body .betterdocs-wrapper .betterdocs-content p',
+				'body .betterdocs-wrapper .betterdocs-content li',
+				'body .betterdocs-wrapper .betterdocs-content blockquote',
+				'body .betterdocs-wrapper .betterdocs-content td',
+				'body .betterdocs-wrapper .betterdocs-content th',
+				'body .betterdocs-wrapper .betterdocs-content figcaption'
+			)
+		);
+
+		$heading_defaults = array(
+			'h1' => array( 'size' => 42, 'weight' => '700', 'color' => '#1d2939' ),
+			'h2' => array( 'size' => 32, 'weight' => '700', 'color' => '#1d2939' ),
+			'h3' => array( 'size' => 28, 'weight' => '600', 'color' => '#1d2939' ),
+			'h4' => array( 'size' => 24, 'weight' => '600', 'color' => '#1d2939' ),
+			'h5' => array( 'size' => 20, 'weight' => '600', 'color' => '#1d2939' ),
+			'h6' => array( 'size' => 18, 'weight' => '600', 'color' => '#1d2939' )
+		);
+
+		foreach ( $heading_defaults as $heading => $defaults ) {
+			$heading_selector = 'body .betterdocs-wrapper .betterdocs-content ' . $heading;
+			$selectors        = array( $heading_selector, $heading_selector . ' a' );
+
+			if ( 'h1' === $heading ) {
+				$selectors[] = 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-entry-title';
+				$selectors[] = 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-entry-title a';
+				$selectors[] = 'body .betterdocs-wrapper.betterdocs-single-wrapper .betterdocs-entry-title h1';
+			}
+
+			$css .= $this->get_typography_rule(
+				array(
+					'size' => 'betterdocs_' . $heading . '_font_size',
+					'weight' => 'betterdocs_' . $heading . '_font_weight',
+					'color' => 'betterdocs_' . $heading . '_font_color'
+				),
+				$defaults,
+				$selectors
+			);
+		}
+
+		return $css . 'body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
+	}
+
+	private function get_typography_rule( $settings_keys, $defaults, $selectors ) {
+		$font_size = absint( $this->settings->get( $settings_keys['size'], $defaults['size'] ) );
+		$font_size = $font_size > 0 ? $font_size : $defaults['size'];
+		$font_weights = array( '300', '400', '500', '600', '700', '800' );
+		$font_weight = (string) $this->settings->get( $settings_keys['weight'], $defaults['weight'] );
+		$font_weight = in_array( $font_weight, $font_weights, true ) ? $font_weight : $defaults['weight'];
+		$font_color = sanitize_hex_color( $this->settings->get( $settings_keys['color'], $defaults['color'] ) );
+		$font_color = $font_color ? $font_color : $defaults['color'];
+
+		return implode( ', ', $selectors ) . ' { color: ' . $font_color . ' !important; font-size: ' . $font_size . 'px !important; font-weight: ' . $font_weight . ' !important; }';
 	}
 
 	private function add_font_family_style( $handle ) {
