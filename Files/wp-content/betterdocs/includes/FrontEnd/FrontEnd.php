@@ -28,6 +28,7 @@ class FrontEnd extends Base {
 	private $settings;
 	private $widget_attributes = [];
 	private $widget_type       = '';
+	private $search_ui_assets_added = false;
 
 	public function __construct( Container $container, Database $database, Settings $settings ) {
 		$this->container = $container;
@@ -273,6 +274,11 @@ class FrontEnd extends Base {
 		if ( is_singular( 'docs' ) ) {
 			wp_enqueue_style( 'betterdocs-single' );
 			$this->add_font_family_style( 'betterdocs-single' );
+			if ( $this->settings->get( 'live_search' ) ) {
+				wp_enqueue_style( 'betterdocs-search-modal' );
+				wp_enqueue_script( 'betterdocs-search-modal' );
+				$this->add_search_ui_assets();
+			}
 			$single_doc_css = '';
 
 			if ( 'wide' === $this->settings->get( 'single_doc_layout_width', 'boxed' ) ) {
@@ -458,6 +464,129 @@ class FrontEnd extends Base {
 		return $css . 'body .betterdocs-wrapper pre, body .betterdocs-wrapper pre *, body .betterdocs-wrapper code, body .betterdocs-wrapper code * { font-family: monospace !important; }';
 	}
 
+	private function add_search_ui_assets() {
+		if ( $this->search_ui_assets_added ) {
+			return;
+		}
+
+		$this->search_ui_assets_added = true;
+		wp_add_inline_style( 'betterdocs-search-modal', $this->get_search_ui_css() );
+		wp_add_inline_script( 'betterdocs-search-modal', $this->get_search_ui_script(), 'after' );
+	}
+
+	private function get_search_ui_css() {
+		$field_border_color = $this->get_search_color( 'betterdocs_search_field_border_color', '#d0d5dd' );
+		$field_border_width = $this->get_search_border_width( 'betterdocs_search_field_border_width', 1 );
+		$field_border_style = $this->get_search_border_style( 'betterdocs_search_field_border_style', 'solid' );
+		$field_border_radius = $this->get_search_border_radius( 'betterdocs_search_field_border_radius', 4 );
+		$modal_border_color = $this->get_search_color( 'betterdocs_search_modal_border_color', '#d0d5dd' );
+		$modal_border_width = $this->get_search_border_width( 'betterdocs_search_modal_border_width', 1 );
+		$modal_border_style = $this->get_search_border_style( 'betterdocs_search_modal_border_style', 'solid' );
+		$modal_border_radius = $this->get_search_border_radius( 'betterdocs_search_modal_border_radius', 4 );
+		$docs_tab_color     = $this->get_search_color( 'betterdocs_search_docs_tab_color', '#00b884' );
+		$faq_tab_color      = $this->get_search_color( 'betterdocs_search_faq_tab_color', '#00b884' );
+
+		$css  = '.betterdocs-search-popup .betterdocs-searchform { background: #ffffff !important; border: ' . $field_border_width . 'px ' . $field_border_style . ' ' . $field_border_color . ' !important; border-radius: ' . $field_border_radius . 'px !important; box-shadow: 0 1px 2px rgba(16, 24, 40, .06) !important; }';
+		$css .= '.betterdocs-search-popup .betterdocs-searchform .betterdocs-search-command { color: #344054 !important; }';
+		$css .= '.betterdocs-search-popup .betterdocs-searchform .betterdocs-searchform-input-wrap ::placeholder { color: #667085 !important; opacity: 1 !important; }';
+		$css .= '.betterdocs-search-popup .betterdocs-searchform .command-key { background: #f2f4f7 !important; border: 1px solid #d0d5dd !important; color: #344054 !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details { animation: betterdocs-search-dialog-in .2s ease-out both; border: ' . $modal_border_width . 'px ' . $modal_border_style . ' ' . $modal_border_color . ' !important; border-radius: ' . $modal_border_radius . 'px !important; box-shadow: 0 24px 48px rgba(16, 24, 40, .2), 0 8px 16px rgba(16, 24, 40, .12) !important; }';
+		$css .= '@keyframes betterdocs-search-dialog-in { from { opacity: 0; transform: translate(-50%, -12px); } to { opacity: 1; transform: translate(-50%, 0); } }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="docs"].active { border-bottom-color: ' . $docs_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="docs"].active > span { color: ' . $docs_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="docs"]:hover > span { color: ' . $docs_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="docs"].active > .tab-icon svg path { fill: ' . $docs_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"].active { border-bottom-color: ' . $faq_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"].active > span { color: ' . $faq_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"]:hover > span { color: ' . $faq_tab_color . ' !important; }';
+		$css .= '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="faq"].active > .tab-icon svg path { fill: ' . $faq_tab_color . ' !important; }';
+
+		$css .= $this->get_search_tab_icon_css( 'docs', $this->get_search_icon_url( 'betterdocs_search_docs_tab_icon' ) );
+		$css .= $this->get_search_tab_icon_css( 'faq', $this->get_search_icon_url( 'betterdocs_search_faq_tab_icon' ) );
+
+		return $css;
+	}
+
+	private function get_search_tab_icon_css( $type, $icon_url ) {
+		if ( empty( $icon_url ) ) {
+			return '';
+		}
+
+		$icon_url = str_replace( array( '\\', '"', "'", '(', ')' ), '', $icon_url );
+
+		return '.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="' . $type . '"] .tab-icon { background-image: url("' . $icon_url . '") !important; background-position: center !important; background-repeat: no-repeat !important; background-size: contain !important; display: inline-block !important; font-size: 0 !important; height: 20px !important; width: 20px !important; }' .
+			'.betterdocs-search-wrapper .betterdocs-search-details .betterdocs-search-content .betterdocs-tab-items[data-betterdocs-search-tab="' . $type . '"] .tab-icon svg { display: none !important; }';
+	}
+
+	private function get_search_color( $key, $default ) {
+		$value = sanitize_hex_color( $this->settings->get( $key, $default ) );
+
+		return $value ? $value : $default;
+	}
+
+	private function get_search_border_width( $key, $default ) {
+		return min( 20, absint( $this->settings->get( $key, $default ) ) );
+	}
+
+	private function get_search_border_radius( $key, $default ) {
+		return min( 40, absint( $this->settings->get( $key, $default ) ) );
+	}
+
+	private function get_search_border_style( $key, $default ) {
+		$value = $this->settings->get( $key, $default );
+
+		return in_array( $value, array( 'solid', 'dashed', 'dotted' ), true ) ? $value : $default;
+	}
+
+	private function get_search_icon_url( $key ) {
+		$icon = $this->settings->get( $key, array() );
+
+		if ( is_array( $icon ) ) {
+			if ( ! empty( $icon['url'] ) ) {
+				return esc_url_raw( $icon['url'] );
+			}
+			if ( isset( $icon['value'] ) && is_array( $icon['value'] ) && ! empty( $icon['value']['url'] ) ) {
+				return esc_url_raw( $icon['value']['url'] );
+			}
+		}
+
+		return is_string( $icon ) ? esc_url_raw( $icon ) : '';
+	}
+
+	private function get_search_ui_script() {
+		return <<<'JS'
+(function () {
+    if (window.betterdocsSearchUiReady) {
+        return;
+    }
+
+    window.betterdocsSearchUiReady = true;
+
+    document.addEventListener('keydown', function (event) {
+        if ((event.metaKey || event.ctrlKey) && event.key && event.key.toLowerCase() === 'k') {
+            event.preventDefault();
+        }
+    }, true);
+
+    function markSearchTabs() {
+        document.querySelectorAll('.betterdocs-search-tabs .betterdocs-tab-items').forEach(function (tab) {
+            var label = (tab.textContent || '').trim().toLowerCase();
+            tab.setAttribute('data-betterdocs-search-tab', label === 'faq' ? 'faq' : 'docs');
+        });
+    }
+
+    markSearchTabs();
+
+    if (window.MutationObserver) {
+        new MutationObserver(markSearchTabs).observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+    }
+}());
+JS;
+	}
+
 	private function get_typography_rule( $settings_keys, $defaults, $selectors ) {
 		$font_size = absint( $this->settings->get( $settings_keys['size'], $defaults['size'] ) );
 		$font_size = $font_size > 0 ? $font_size : $defaults['size'];
@@ -481,6 +610,9 @@ class FrontEnd extends Base {
 
 		foreach ( (array) $shortcode->get_style_depends() as $handle ) {
 			$this->add_font_family_style( $handle );
+			if ( 'betterdocs-search-modal' === $handle ) {
+				$this->add_search_ui_assets();
+			}
 		}
 	}
 
