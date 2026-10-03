@@ -281,6 +281,9 @@ class Settings extends Base {
             'category_grid_button_border_radius' => 50,
             'category_grid_button_font_size' => 16,
             'betterdocs_font_family' => 'inherit',
+            'betterdocs_font_size' => 16,
+            'betterdocs_font_weight' => '400',
+            'betterdocs_font_color' => '#303030',
             'single_doc_layout_width' => 'boxed',
             'docs_list_icon' => array(),
             'category_title_link' => false,
@@ -736,6 +739,38 @@ class Settings extends Base {
                         'roboto' => __( 'Roboto', 'betterdocs' ),
                         'ibm-plex-sans' => __( 'IBM Plex Sans', 'betterdocs' )
                     ) )
+                ),
+                'betterdocs_font_size' => array(
+                    'name' => 'betterdocs_font_size',
+                    'type' => 'number',
+                    'label' => __( 'Font Size', 'betterdocs' ),
+                    'label_subtitle' => __( 'Enter the BetterDocs font size in pixels.', 'betterdocs' ),
+                    'default' => 16,
+                    'priority' => 2
+                ),
+                'betterdocs_font_weight' => array(
+                    'name' => 'betterdocs_font_weight',
+                    'type' => 'select',
+                    'label' => __( 'Font Weight', 'betterdocs' ),
+                    'label_subtitle' => __( 'Choose the weight used by BetterDocs text.', 'betterdocs' ),
+                    'default' => '400',
+                    'priority' => 3,
+                    'options' => $this->normalize_options( array(
+                        '300' => __( 'Light', 'betterdocs' ),
+                        '400' => __( 'Regular', 'betterdocs' ),
+                        '500' => __( 'Medium', 'betterdocs' ),
+                        '600' => __( 'Semi-bold', 'betterdocs' ),
+                        '700' => __( 'Bold', 'betterdocs' ),
+                        '800' => __( 'Extra-bold', 'betterdocs' )
+                    ) )
+                ),
+                'betterdocs_font_color' => array(
+                    'name' => 'betterdocs_font_color',
+                    'type' => 'colorpicker',
+                    'label' => __( 'Text Color', 'betterdocs' ),
+                    'label_subtitle' => __( 'Choose the default text color used by BetterDocs.', 'betterdocs' ),
+                    'default' => '#303030',
+                    'priority' => 4
                 )
             )
         );
