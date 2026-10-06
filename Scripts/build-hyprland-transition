@@ -3,19 +3,13 @@
 set -euo pipefail
 
 usage() {
-	printf "%s\n" "Usage: $0 --removed-list FILE [--removed-list FILE ...] [--output-dir DIRECTORY]"
+	printf "%s\n" "Usage: $0 [--output-dir DIRECTORY]"
 }
 
 output_dir="$PWD"
-removed_lists=()
 
 while [ "$#" -gt 0 ]; do
 	case "$1" in
-		--removed-list)
-			[ "$#" -ge 2 ] || { usage >&2; exit 2; }
-			removed_lists+=("$2")
-			shift 2
-			;;
 		--output-dir|-o)
 			[ "$#" -ge 2 ] || { usage >&2; exit 2; }
 			output_dir=$2
@@ -32,19 +26,6 @@ while [ "$#" -gt 0 ]; do
 	esac
 done
 
-[ "${#removed_lists[@]}" -gt 0 ] || {
-	printf "%s\n" "At least one --removed-list is required." >&2
-	usage >&2
-	exit 2
-}
-
-for list in "${removed_lists[@]}"; do
-	[ -f "$list" ] || {
-		printf "Missing removal list: %s\n" "$list" >&2
-		exit 1
-	}
-done
-
 case "$output_dir" in
 	/*) ;;
 	*) output_dir="$PWD/$output_dir" ;;
@@ -57,37 +38,13 @@ for command in equivs-build dpkg-deb; do
 	}
 done
 
-declare -A removed_package_set=()
-for list in "${removed_lists[@]}"; do
-	while IFS= read -r package || [ -n "$package" ]; do
-		[ -n "$package" ] || continue
-		[[ "$package" =~ ^[a-z0-9][a-z0-9+.-]*(:[a-z0-9]+)?$ ]] || {
-			printf "Invalid package name in %s: %s\n" "$list" "$package" >&2
-			exit 1
-		}
-		removed_package_set["$package"]=1
-	done < "$list"
-done
-
-mapfile -t removed_packages < <(printf "%s\n" "${!removed_package_set[@]}" | sort)
-[ "${#removed_packages[@]}" -gt 0 ] || {
-	printf "%s\n" "The removal lists contain no packages." >&2
-	exit 1
-}
-
-conflicts=$(printf "%s, " "${removed_packages[@]}")
-conflicts=${conflicts%, }
-postinst_packages=$(printf "%s " "${removed_packages[@]}")
-postinst_packages=${postinst_packages% }
-
 mkdir -p -- "$output_dir"
 
 work_dir=$(mktemp -d)
-trap 'rm -rf -- $work_dir' EXIT
+trap 'rm -rf -- "$work_dir"' EXIT
 
 version="0.1.0-$(date +%Y%m%d%H%M%S)"
-
-transition_control="$work_dir/transition-configuration"
+control="$work_dir/transition-configuration"
 printf "%s\n" \
 	"Section: oldlibs" \
 	"Priority: optional" \
@@ -100,76 +57,19 @@ printf "%s\n" \
 	"Replaces: hyprland-core, hyprland-data, hyprland-qt-support0, hyprlock, hyprpicker, hyprpolkitagent, hyprsysteminfo, hyprscreend, iio-hyprland, libhyprcursor1, libhyprutils10, libhyprutils11" \
 	"Architecture: all" \
 	"Description: Transition package for the Nitrux Hyprland package migration." \
-	> "$transition_control"
-
-removals_postinst="$work_dir/removals-postinst"
-printf "%b\n" \
-	"#!/bin/sh" \
-	"" \
-	"set -eu" \
-	"" \
-	"[ \"\${1:-}\" = configure ] || exit 0" \
-	"" \
-	"removed_packages=\"$postinst_packages\"" \
-	"" \
-	"for package in \$removed_packages; do" \
-	"\tfor list_file in \"/var/lib/dpkg/info/\$package.list\" \"/var/lib/dpkg/info/\$package\":*.list; do" \
-	"\t\t[ -f \"\$list_file\" ] || continue" \
-	"" \
-	"\t\tpackage_id=\${list_file#/var/lib/dpkg/info/}" \
-	"\t\tpackage_id=\${package_id%.list}" \
-	"" \
-	"\t\twhile IFS= read -r path || [ -n \"\$path\" ]; do" \
-	"\t\t\tcase \"\$path\" in" \
-	"\t\t\t\t/*) ;;" \
-	"\t\t\t\t*) continue ;;" \
-	"\t\t\tesac" \
-	"" \
-	"\t\t\tif [ -f \"\$path\" ] || [ -L \"\$path\" ]; then" \
-	"\t\t\t\tif ! /usr/bin/dpkg-query -S \"\$path\" >/dev/null 2>&1; then" \
-	"\t\t\t\t\t/bin/rm -f -- \"\$path\"" \
-	"\t\t\t\tfi" \
-	"\t\t\tfi" \
-	"\t\tdone < \"\$list_file\"" \
-	"" \
-	"\t\t/bin/rm -f -- \"/var/lib/dpkg/info/\$package_id\".*" \
-	"\tdone" \
-	"done" \
-	"" \
-	"exit 0" \
-	> "$removals_postinst"
-chmod 0755 "$removals_postinst"
-
-removals_control="$work_dir/removals-configuration"
-printf "%s\n" \
-	"Section: oldlibs" \
-	"Priority: optional" \
-	"Homepage: https://nxos.org" \
-	"Package: nitrux-ota-removals" \
-	"Version: $version" \
-	"Maintainer: Uri Herrera <uri_herrera@nxos.org>" \
-	"Depends: hyprland-transition" \
-	"Conflicts: $conflicts" \
-	"Replaces: $conflicts" \
-	"Architecture: all" \
-	"Postinst: $removals_postinst" \
-	"Description: Remove packages omitted from a Nitrux OTA target." \
-	> "$removals_control"
+	> "$control"
 
 (
 	cd "$work_dir"
-	equivs-build "$transition_control"
-	equivs-build "$removals_control"
+	equivs-build "$control"
 )
 
-for package in hyprland-transition nitrux-ota-removals; do
-	package_deb=$(find "$work_dir" -maxdepth 1 -type f -name "${package}_*.deb" -print -quit)
-	[ -n "$package_deb" ] || {
-		printf "Failed to build %s.\n" "$package" >&2
-		exit 1
-	}
+package_deb=$(find "$work_dir" -maxdepth 1 -type f -name 'hyprland-transition_*.deb' -print -quit)
+[ -n "$package_deb" ] || {
+	printf "%s\n" "Failed to build hyprland-transition." >&2
+	exit 1
+}
 
-	dpkg-deb --info "$package_deb" >/dev/null
-	cp -- "$package_deb" "$output_dir/"
-	printf "Wrote %s\n" "$output_dir/$(basename "$package_deb")"
-done
+dpkg-deb --info "$package_deb" >/dev/null
+cp -- "$package_deb" "$output_dir/"
+printf "Wrote %s\n" "$output_dir/$(basename "$package_deb")"
