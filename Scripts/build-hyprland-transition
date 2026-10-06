@@ -43,7 +43,7 @@ mkdir -p -- "$output_dir"
 work_dir=$(mktemp -d)
 trap 'rm -rf -- "$work_dir"' EXIT
 
-version="0.1.0-$(date +%Y%m%d%H%M%S)"
+version="0.0.1-$(date +%Y%m%d%H%M%S)"
 control="$work_dir/transition-configuration"
 printf "%s\n" \
 	"Section: oldlibs" \
