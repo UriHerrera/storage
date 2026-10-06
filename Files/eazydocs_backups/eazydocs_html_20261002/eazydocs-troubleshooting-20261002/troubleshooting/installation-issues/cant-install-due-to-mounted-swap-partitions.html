@@ -1,0 +1,10 @@
+<p>In certain circumstances, such as virtualized environments, the system may automatically mount Swap partitions during a Live session boot. Calamares does not unmount Swap partitions automatically unless it's started like this:</p>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">sudo -E start-calamares
+</code></pre>
+
+<hr>
+
+<p>Note that running Calamares directly, i.e., <code class="EnlighterJSRAW" data-enlighter-language="generic">sudo calamares</code> will not unmount Swap partitions, and if the target device has mounted partitions, the installation will not continue.</p>
+
+

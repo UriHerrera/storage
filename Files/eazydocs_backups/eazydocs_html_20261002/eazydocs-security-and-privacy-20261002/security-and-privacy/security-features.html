@@ -1,0 +1,21 @@
+<p><strong>Application Sandboxing</strong></p>
+
+<ul>
+<li><strong>AppBoxes &amp; Flatpaks</strong>: AppBoxes (CLI and GUI) and Flatpaks are isolated with <a href="https://github.com/containers/bubblewrap">Bubblewrap</a> or <a href="https://firejail.wordpress.com/">Firejail</a>, providing lightweight namespace sandboxes that prevent unauthorized access to user data and system files.</li>
+<li><strong>Other Executables</strong>: We utilize <a href="https://apparmor.net/">AppArmor</a> and <a href="https://firejail.wordpress.com/">Firejail</a> to restrict the capabilities of standard executables. This way ensures they operate with the principle of least privilege.</li></ul>
+<p><strong>Network Security</strong></p>
+
+<ul>
+<li><strong>Firewall Management</strong>: Nitrux includes <a href="https://firewalld.org/">Firewalld</a>, which is managed via <strong>Cinderward</strong>, making it easy to configure traffic rules.</li>
+<li><strong>VPN Support</strong>: NetworkManager comes pre-configured with plugins for <a href="https://openvpn.net/">OpenVPN</a>, <a href="https://www.infradead.org/openconnect/">OpenConnect</a>, and <a href="https://github.com/adrienverge/openfortivpn">OpenFortiVPN</a>.</li>
+<li><strong>WireGuard</strong>: Nitrux supports <a href="https://www.wireguard.com/">WireGuard</a> for high-performance encrypted tunnels, which are managed via <strong>Wirecloak</strong> or <strong>wg-quick</strong>, making it easy to select tunnels.</li>
+<li><strong>Encrypted DNS</strong>: Nitrux uses <a href="https://github.com/DNSCrypt/dnscrypt-proxy">dnscrypt-proxy</a> by default, which encrypts DNS queries between your machine and the DNS resolver.</li></ul>
+<p><strong>Filesystem Integrity</strong></p>
+
+<ul>
+<li><strong>Immutable Root</strong>: The system core is read-only by default to prevent tampering and ensure stability. However, users can still perform persistent modifications when necessary.</li></ul>
+<p><strong>Password Management</strong></p>
+
+<ul>
+<li><strong>KWalletManager</strong>: We use it to securely store and manage system credentials.</li></ul>
+

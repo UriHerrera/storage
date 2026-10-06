@@ -1,0 +1,13 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Feedback Form",
+	"name": "betterdocs/feedback-form",
+	"category": "betterdocs",
+	"description": "Collect user feedback or reviews for your knowledge base documentation.",
+	"textdomain": "betterdocs",
+	"editorStyle": [
+		"file:./style-feedback-editor.css"
+	],
+	"editorScript": "betterdocs-blocks-editor"
+}

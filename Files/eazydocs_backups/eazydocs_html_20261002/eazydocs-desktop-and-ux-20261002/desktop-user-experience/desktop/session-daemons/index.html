@@ -1,0 +1,79 @@
+<p>Nitrux includes background daemons and services that run during the user session to automate system behavior.</p>
+
+<h3>NX Power Daemon</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">nx-powerd</code> combines Nitrux's dynamic power-profile management and battery notifications.</p>
+
+<ul>
+<li>Uses the performance profile when connected to AC power.</li>
+<li>Uses power-saver, balanced, or performance profiles based on remaining battery capacity.</li>
+<li>Adjusts brightness when the power profile changes.</li>
+<li>Provides notifications for AC and battery transitions, critical battery levels, charging status, and battery-care reminders.</li></ul>
+<p>The default profile thresholds are power-saver at 20% or below, balanced from 21% to 59%, and performance at 60% or above. The configuration file is <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/nx-powerd/nx-powerd.conf</code>.</p>
+
+<h3>Hyprscreend</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">hyprscreend</code> is a daemon developed by Nitrux that manages Hyprland monitor modes, scaling, power-dependent refresh rates, and external display hotplugging.</p>
+
+<ul>
+<li><strong>Internal displays</strong> → Selects the preferred monitor mode, adjusts scaling, and changes the refresh rate according to the power source.</li>
+<li><strong>External displays</strong> → Detects connected displays and configures their preferred mode, position, and scaling automatically.</li></ul>
+<p>The former <code class="EnlighterJSRAW" data-enlighter-language="generic">hyprextscreend</code> daemon is now integrated into <code class="EnlighterJSRAW" data-enlighter-language="generic">hyprscreend</code>. The configuration file is <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hyprscreend/hyprscreend.conf</code>.</p>
+
+<h3>NX AppHub Daemon</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">nx-apphubd</code> integrates AppBoxes generated with the NX AppHub CLI into the desktop environment. It watches <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.local/bin/nx-apphub</code>, validates AppBoxes, creates desktop entries, installs application icons, and creates shell aliases for command-line applications.</p>
+
+<h3>KDE and Nitrux Integration Daemons</h3>
+
+<p>For integration with Qt and Maui applications, Nitrux starts the following services:</p>
+
+<ul>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">kded6</code></strong> → KDE background services daemon.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">ksecretd</code></strong> → Secret Service API provider and KWallet integration.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">polkit-nx-agent</code></strong> → Graphical authentication prompts.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">MauiManServer</code></strong> → Synchronizes global desktop settings used by Maui and Qt applications.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">maui-bluetooth-obex-agent</code></strong> → Provides Bluetooth file transfers through OBEX.</li></ul>
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">kwalletd6</code> is not started as a standalone user service. KWallet is initialized through the PAM and D-Bus integration.</p>
+
+<h3>Hyprland Session Daemons</h3>
+
+<ul>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">hypridle</code></strong> → Dims the screen, locks the session, turns off the display, and suspends the system according to the configured idle timers.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">hyprpaper</code></strong> → Displays the desktop wallpaper.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">hyprsunset</code></strong> → Provides the blue light filter. The default profile uses the normal display mode at 07:00 and a 5800K color temperature with 0.8 gamma at 19:00.</li></ul>
+<p>The Hyprland daemon configuration files are stored in <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hypr/</code>.</p>
+
+<h3>NudgeOSD</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">nudge-osd</code> is a QML-based on-screen display for keyboard shortcuts and system feedback. It provides volume, mute, and brightness notifications and listens for commands through D-Bus. The configuration file is <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/nudge-osd/nudge-osd.conf</code>.</p>
+
+<h3>dmemcg-booster</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">dmemcg-booster</code> manages device-memory cgroup settings to prioritize VRAM protection for selected applications. In Nitrux, it runs in agent mode and uses Hyprland as its focus provider to track the currently focused application.</p>
+
+<h3>PipeWire and WirePlumber</h3>
+
+<ul>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">pipewire</code></strong> → Main multimedia and audio server.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">pipewire-pulse</code></strong> → PulseAudio-compatible PipeWire server.</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">wireplumber</code></strong> → Session and policy manager for PipeWire.</li></ul>
+<p>Nitrux also provides low-latency PipeWire settings and Bluetooth audio policies.</p>
+
+<h3>XDG Desktop Portal</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">xdg-desktop-portal</code> provides desktop integration for sandboxed applications, including file selection, screen sharing, and other portal interfaces. It starts after PipeWire and WirePlumber.</p>
+
+<h3>GameMode</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">gamemoded</code> applies temporary system optimizations when applications request GameMode, primarily for games.</p>
+
+<h3>OpenRazer Daemon</h3>
+
+<p><code class="EnlighterJSRAW" data-enlighter-language="generic">openrazer-daemon</code> provides userspace support for compatible Razer peripherals.</p>
+
+<h3>Information</h3>
+
+<p>These services are registered as user-level OpenRC services and start automatically with the workspace session. Most users do not need to change their configuration.</p>
+
+

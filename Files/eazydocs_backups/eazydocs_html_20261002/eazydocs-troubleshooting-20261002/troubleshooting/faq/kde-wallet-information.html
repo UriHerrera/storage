@@ -1,0 +1,13 @@
+<p>Nitrux uses KDE Wallet as the system secret storage service. KDE Wallet securely stores sensitive information, including network credentials, application tokens, and other authentication data. Applications access stored secrets through a standard interface instead of saving credentials in plain-text configuration files. KDE Wallet protects stored credentials, but it does not replace full disk encryption. Disk encryption protects the entire filesystem when the system is powered off, while KDE Wallet protects application secrets within the user session.</p>
+
+<h3>Important Notes</h3>
+
+<p>As of Nitrux 6.0.0, the user must unlock the wallet manually. Automatic unlocking requires that the wallet password match the user's login password, which removes the separation between system authentication and access to stored secrets. Requiring manual unlocking preserves that separation and ensures that access to credentials requires explicit user consent, so applications that store credentials may prompt for the wallet password the first time they need access to stored secrets during a session. After the wallet is unlocked, applications can retrieve stored credentials normally. KDE Wallet offers a legacy encryption option called <strong>Classic (Blowfish)</strong>, which is considered legacy cryptography. Modern wallets use stronger encryption, such as integration with <strong>GnuPG</strong>.</p>
+
+<ul>
+<li><em>Nitrux recommends avoiding the Classic (Blowfish) wallet format when possible</em>.</li></ul>
+<p>After creating a wallet, we recommend <strong>rebooting</strong>. Otherwise, <em>kwalletd6</em> will fail to open the wallet; logging in and out is not enough; <strong>this seems to be a bug in kwalletd6</strong>.</p>
+
+<p>For a detailed tutorial about using KWalletManager, see <a href="https://nxos.org/documentation/resources/tutorials/">Resources → Tutorials → Desktop</a>.</p>
+
+

@@ -1,0 +1,62 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "betterdocs/code-snippet-tab",
+	"title": "BetterDocs Code Snippet Tab",
+	"category": "betterdocs",
+	"description": "Show HTTP responses as status-code tabs (200, 404, …), each with a copyable code example.",
+	"keywords": [
+		"response",
+		"api",
+		"http",
+		"status",
+		"code",
+		"betterdocs"
+	],
+	"textdomain": "betterdocs",
+	"attributes": {
+		"blockId": {
+			"type": "string"
+		},
+		"blockMeta": {
+			"type": "object"
+		},
+		"resOption": {
+			"type": "string",
+			"default": "Desktop"
+		},
+		"responses": {
+			"type": "array",
+			"default": [
+				{
+					"status": "200",
+					"language": "json",
+					"codeContent": "{\n  \"success\": true\n}"
+				}
+			]
+		},
+		"showCopyButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"showHeader": {
+			"type": "boolean",
+			"default": true
+		},
+		"showLineNumbers": {
+			"type": "boolean",
+			"default": false
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		}
+	},
+	"supports": {
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false
+	}
+}

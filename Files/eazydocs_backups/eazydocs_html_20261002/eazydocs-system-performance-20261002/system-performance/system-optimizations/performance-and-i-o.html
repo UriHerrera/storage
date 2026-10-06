@@ -1,0 +1,26 @@
+<p>Nitrux enables multiple changes in the kernel I/O and memory systems.</p>
+
+<ul>
+<li>We use <strong>asynchronous garbage collection</strong> by default to avoid synchronous updates to access or modification times.</li>
+<li><strong>Modify the rate at which the kernel reclaims VFS caches to enable asynchronous, non-blocking I/O</strong> and <strong>reduce the kernel's aggressiveness in swapping out anonymous memory relative to pagecache and other caches</strong>.</li>
+<li><strong>Increase Linux autotuning TCP buffer limits</strong>. These TCP buffer settings enhance high-speed network performance by dynamically adjusting buffer sizes to improve throughput, reduce packet loss, prevent congestion, and ensure smooth data transfers, all while efficiently managing system memory.</li>
+<li><strong>Increase the maximum number of packets queued for processing before dropping</strong>. It improves handling of bursty traffic, reduces packet drops, and enhances performance and stability on high-speed networks under heavy load.</li>
+<li><strong>Reuse Time-Wait TCP connections to reduce the number of open TCP connections</strong>. Efficiently manage network connections, reducing open TCP connections, freeing up system resources, and improving performance.</li>
+<li><strong>Control the boost applied to the watermark (the minimum number of free pages the kernel tries to maintain)</strong>. Maintain higher free memory to prevent the system from stalling due to memory shortages.</li>
+<li><strong>Change the dirty page settings to reduce disk I/O</strong>. Allow for efficient memory usage without frequent disk access.</li>
+<li><strong>Disable the 32-bit VDSO</strong> (Virtual Dynamic Shared Object) on 64-bit systems.</li>
+<li><strong>Enable AMD Preferred Core</strong> functionality to ensure the CPU's most performant cores run scheduled tasks.</li>
+<li><strong>SCX scheduler</strong> based on whether the system is running on AC or battery power. The SCX framework uses dispatch queues (DSQs) to manage task queuing and execution, including a global FIFO queue (SCX\<em>DSQ\</em>GLOBAL) and per-CPU local queues (SCX\<em>DSQ\</em>LOCAL).</li>
+<li><strong>Enable the AMD 3D V-Cache Optimizer</strong> on supported systems to prioritize the CCD with the larger L3 cache, improving application performance.</li>
+<li><strong>Configure GameMode to use its heuristics to pin and park cores</strong> on AMD 3D V-Cache processors and Intel processors with P/E cores, avoiding performance loss from suboptimal core scheduling.</li>
+<li><strong>ADIOS (Adaptive Deadline I/O Scheduler)</strong>. A block-layer I/O scheduler for the Linux kernel, designed for modern multi-queue block devices (blk-mq), providing low-latency disk access while maintaining fairness across concurrent workloads.</li>
+<li><strong>Expanded file monitoring</strong>. Increasing the inotify watch limit prevents "limit reached" errors in applications that monitor vast numbers of files, such as IDEs (VS Code, IntelliJ) and file synchronization tools.</li>
+<li><strong>Enable TCP Fast Open</strong>. We enable TCP Fast Open to eliminate the initial handshake delay for supported applications, speeding up repetitive data connections.</li>
+<li><strong>Enable zswap</strong>. Compresses memory pages before writing to swap, reducing disk I/O. Zswap is preferred over zram because it retains disk-backed swap as a fallback, providing both performance and stability under heavy memory pressure.</li>
+<li><strong>Eliminate the wake-up timeout and drastically reduce boot time</strong> by preventing the NVMe drive from entering the deepest power-saving states.</li>
+<li><strong>Optimized RCU settings</strong>. </li>
+<li>Enable expedited RCU grace periods to improve system responsiveness in specific scenarios.</li>
+<li>Offload all RCU (Read-Copy-Update) callbacks to kernel threads, reducing interrupt contention on CPUs.</li>
+<li>Enable "lazy" RCU mode to delay some operations and optimize performance.</li>
+<li>Enable additional security checks for user copy operations.</li></ul>
+

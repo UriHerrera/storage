@@ -1,0 +1,22 @@
+<p>Nitrux uses OpenRC as its init system instead of systemd.</p>
+
+<h3>Why OpenRC?</h3>
+
+<p>Nitrux follows the Unix philosophy: "do one thing and do it well." Systemd is more than an init system; <strong>it's a software suite</strong> that includes a device manager, login manager, network manager, logging daemon, and more. This scope conflicts with Nitrux's preference for focused, single-purpose tools. OpenRC is a process spawner that:</p>
+
+<ul>
+<li>Utilizes the system-provided init.</li>
+<li>Provides process isolation.</li>
+<li>Supports parallelized startup.</li>
+<li>Handles service dependencies.</li></ul>
+<p>It does what an init system should do without absorbing unrelated functionality.</p>
+
+<h3>Documentation</h3>
+
+<p>For usage and configuration, see the <a href="https://github.com/OpenRC/openrc/blob/master/user-guide.md">OpenRC documentation</a>.</p>
+
+<h3>Information</h3>
+
+<p>For a detailed tutorial on the service creation process, see <a href="https://nxos.org/documentation/resources/tutorials/">Resources → Tutorials → Services</a>.</p>
+
+

@@ -1,0 +1,17 @@
+<p>Nitrux does not revolve around a package manager<strong>.</strong> Unlike conventional distributions, where a package manager (<em>apt</em>, <em>dnf</em>, <em>pacman</em>, etc.) serves as the central mechanism for managing software (<em>installing, updating, and removing</em>), Nitrux places <strong>software management entirely outside the root filesystem</strong>. Conventional package managers modify the root directly, making the system mutable. Nitrux deliberately avoids this model. Allowing a traditional package manager to alter the root defeats the purpose of immutability and reintroduces the unpredictability that immutability eliminates. By separating the base system from user-installed applications, Nitrux ensures that system upgrades remain deterministic and reliable. Even though we use <code class="EnlighterJSRAW" data-enlighter-language="generic">.deb</code> packages to build the root filesystem during development, the host system includes no <em>apt</em>, <em>dpkg</em>, or equivalent package manager. Users who attempt to install software the traditional way will find no mechanism to do so. Nitrux enforces this intentionally.</p>
+
+<h3>Deliberate Pathways</h3>
+
+<p>The architecture in Nitrux channels users toward methods that preserve system integrity: self-contained applications that live in user space, sandboxed runtimes that cannot modify the root, and containers that provide full package manager access without compromising the host. The officially supported methods for software management are:</p>
+
+<ul>
+<li><strong>NX AppHub</strong>: Nitrux's user-level software management system, with a reproducible, declarative, and rootless model designed specifically for our immutable architecture.</li>
+<li><strong>Flatpak</strong>: Sandboxed applications distributed through Flatpak repositories.</li>
+<li><strong>Distrobox containers</strong>: Full Linux environments that provide access to traditional package managers without modifying the host system.</li></ul>
+<p>These pathways allow users to install and manage software while preserving the immutability of the base system.</p>
+
+<h3>Important Notes</h3>
+
+<p>For information about using AppImage in Nitrux, see <a href="https://nxos.org/documentation/troubleshooting/faq/appimage-information/">Troubleshooting → FAQ → AppImage Information</a>.</p>
+
+

@@ -1,0 +1,5 @@
+<p>Regarding AppImages in Nitrux, AppImages traditionally rely on a FUSE 2 runtime (<code class="EnlighterJSRAW" data-enlighter-language="generic">libfuse.so.2</code>). However, <strong>FUSE 2 is considered obsolete and unmaintained</strong>, and some distributions no longer ship it by default as the ecosystem transitions toward FUSE</p>
+
+<ol>
+<li>While Nitrux supports AppImages that use FUSE 3, i.e., they <em>will run</em>, starting with Nitrux 5.0.0, we removed the AppImage integration daemon (<em>appimaged</em>). That said, <strong>AppImages are not the only, nor the primary, means of software acquisition in Nitrux</strong><em>.</em> As of Nitrux 6.0.0, we continue to include FUSE 2 to maintain compatibility with external AppImages in Nitrux. Nonetheless, we do not guarantee that FUSE 2 support will remain in future releases. With support removed, users who want to run AppImages that still depend on FUSE 2 can do so in a container environment.</li></ol>
+

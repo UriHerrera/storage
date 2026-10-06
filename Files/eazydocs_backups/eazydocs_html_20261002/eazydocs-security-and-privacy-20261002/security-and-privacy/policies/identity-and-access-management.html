@@ -1,0 +1,7 @@
+<p>Policies related to user accounts, passwords, and authentication. <strong>Deactivated Root Account</strong>: By default, the root account is disabled (has no password set) in both the Live session and the installed system to enforce accountability via <code class="EnlighterJSRAW" data-enlighter-language="generic">sudo</code>. <a href="https://pages.nist.gov/800-63-4/sp800-63b.html"><strong>NIST Special Publication 800-63B Revision 4</strong></a>-compliant password policies. <strong>Brute-Force Protection</strong>: The system includes active countermeasures against guessing attacks:</p>
+
+<ul>
+<li><strong>Mandatory Delays</strong>: The authentication module enforces a 4-second delay after every failed attempt to slow down automated attacks.</li>
+<li><strong>Lockout Policy</strong>: The system locks accounts for 15 minutes after five consecutive failed attempts. It tracks failures for 15 minutes before resetting the counter.</li>
+<li><strong>Silent Auditing</strong>: Logs failures for auditing but suppresses specific error details to deny attackers information.</li></ul>
+

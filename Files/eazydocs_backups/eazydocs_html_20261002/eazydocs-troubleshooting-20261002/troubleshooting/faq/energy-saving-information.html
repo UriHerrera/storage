@@ -1,0 +1,22 @@
+<p>Nitrux includes energy-optimizing software like <a href="https://github.com/fenrus75/powertop">Powertop</a> and <a href="https://gitlab.freedesktop.org/upower/power-profiles-daemon">power-profiles-daemon</a>.</p>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">sudo overlayroot-chroot
+
+mount -t devtmpfs dev /dev
+
+powertop --calibrate
+
+sync
+
+umount /dev
+
+exit
+</code></pre>
+
+<hr>
+
+<h3>Important Notes</h3>
+
+<p>To adequately use Powertop, run it while using the battery so its auto-tune functionality creates the file "<em>saved_results.powertop</em>" in <code class="EnlighterJSRAW" data-enlighter-language="generic">/var/cache/powertop</code>. When using Powertop for calibration, it will toggle various functions, such as the backlight or WiFi. Thus, it may turn your screen black for a while, cause a network connection loss, etc. <strong>Do not touch the machine during the calibration</strong>. Powertop needs to run 370+ measurements before correctly displaying power usage estimates. Each lasts 20 seconds, meaning Powertop must run for 1h30 in total. To do this, run the commands below. Check the available options in Powertop by running the following command <code class="EnlighterJSRAW" data-enlighter-language="generic">powertop --help</code>.</p>
+
+

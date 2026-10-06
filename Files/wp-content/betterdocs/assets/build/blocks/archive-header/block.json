@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Archive Header",
+	"name": "betterdocs/archive-header",
+	"category": "betterdocs",
+	"description": "Header For Archive Page",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

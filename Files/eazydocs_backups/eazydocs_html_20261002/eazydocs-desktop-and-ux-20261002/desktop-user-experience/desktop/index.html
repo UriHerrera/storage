@@ -1,0 +1,32 @@
+<p>Nitrux assembles its desktop environment from individual Wayland-native components rather than using a traditional integrated desktop like GNOME or KDE Plasma.</p>
+
+<h3>Components</h3>
+
+<ul>
+<li><strong>Window manager</strong> → Hyprland (tiling Wayland compositor).</li>
+<li><strong>Session manager</strong> → Nitrux Workspace Session Manager.</li>
+<li><strong>Status bar</strong> → Valenz.</li>
+<li><strong>Dock</strong> → Marina.</li>
+<li><strong>Login manager</strong> → greetd + QMLGreet.</li>
+<li><strong>Lock screen</strong> → Desklock.</li>
+<li><strong>Idle daemon</strong> → Hypridle.</li>
+<li><strong>Wallpaper</strong> → Hyprpaper.</li>
+<li><strong>Application launcher/Clipboard manager</strong> → Vicinae.</li>
+<li><strong>Notifications</strong> → Valenz.</li>
+<li><strong>Session menu</strong> → QMLogout.</li>
+<li><strong>Display configuration</strong> → Hyprscreend (hyprscreend-cpp).</li>
+<li><strong>On-screen display</strong> → NudgeOSD.</li></ul>
+<h3>Design Choices</h3>
+
+<p>This approach provides:</p>
+
+<ul>
+<li><strong>Modularity</strong>: Each component handles a single responsibility.</li>
+<li><strong>Wayland-native</strong>: No X11 dependencies or compatibility layers.</li>
+<li><strong>Consistency</strong>: Unified appearance through the Catppuccin Mocha color scheme.</li>
+<li><strong>Performance</strong>: Lightweight components with minimal resource overhead.</li></ul>
+<h3>Important Notes</h3>
+
+<p>X11 sessions are not supported. Custom Wayland sessions are technically supported; however, they depend on the user configuring them.</p>
+
+

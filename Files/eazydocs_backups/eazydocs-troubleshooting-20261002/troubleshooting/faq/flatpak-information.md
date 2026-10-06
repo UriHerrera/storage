@@ -1,0 +1,12 @@
+---
+title: "Flatpak Information"
+eazydocs_id: 14978
+---
+
+Below is the information we deem essential for users to know about Flatpak runtimes. Due to Flatpak's design, most applications automatically install a runtime that contains graphics libraries, such as MESA or, for NVIDIA hardware, the NVIDIA driver runtimes; therefore, Flatpak applications will not use the system libraries.
+
+- For the NVIDIA driver runtimes that Flatpak installs, the runtimes must match the driver version installed in the system. Not installing other NVIDIA driver runtimes will prevent applications that require 3D acceleration from working.
+- Flatpak does not automatically remove older NVIDIA driver runtime versions.
+- We recommend rebooting after upgrading the MESA or NVIDIA driver runtimes, as we've observed that applications requiring 3D acceleration won't work; logging out and back in isn't enough.
+ 
+ App developers must update Flatpak applications like MangoHud to use the newer runtimes before they can work again. Flatpak, like other package managers, uses a dependency-based design. When an application is updated, and the new version requires an updated base runtime or SDK, if Flatpak doesn't install the required versions alongside the application, users must manually install them.

@@ -1,0 +1,20 @@
+<p>Policies that mitigate low-level exploits and memory corruption vulnerabilities.</p>
+
+<ul>
+<li><strong>Memory Sanitization</strong>: The system immediately fills freed memory pages and heap objects with zeroes, preventing use-after-free attacks and data leaks from uninitialized memory.</li>
+<li><strong>Kernel Exploit Mitigation</strong>: </li>
+<li><strong>Disable Slab Merging</strong>: Prevents the kernel from merging memory slabs of similar size, making heap-corruption exploits significantly harder to exploit.</li>
+<li><strong>Page Table Isolation (PTI)</strong>: Mitigates speculative execution attacks such as Meltdown.</li>
+<li><strong>Randomize Kernel Stack Offset</strong>: Introduces randomness to the kernel stack offset on every system call to thwart memory prediction attacks.</li>
+<li><strong>Restrict Kernel Pointers</strong>: Hides kernel pointer addresses from non-privileged processes to prevent information leaks.</li>
+<li><strong>Attack Surface Reduction</strong>: </li>
+<li><strong>Disable Virtual Syscalls</strong>: Disables vsyscalls to reduce the attack surface for specific exploits and improve performance.</li>
+<li><strong>Enable BPF JIT Hardening</strong>: Hardens the Berkeley Packet Filter (BPF) Just-in-Time (JIT) compiler to mitigate JIT spraying attacks.</li>
+<li><strong>Restrict SysRq Key</strong>: We restrict the SysRq key to allow only safe reboot sequences (REISUB) while blocking dangerous debugging commands.</li>
+<li><strong>Restrict Process Tracing</strong>: Disables unprivileged users from tracing or attaching to other running processes.</li>
+<li><strong>Disable Obscure Network Protocols</strong>: </li>
+<li>We actively blacklist over 15 rare or legacy network protocols, such as DCCP, SCTP, RDS, TIPC, AppleTalk, and IPX, to prevent the kernel from loading them. Attackers frequently target these unused modules due to their lower code quality and historical vulnerabilities.</li>
+<li><strong>Disable Vulnerable Kernel Modules</strong>: </li>
+<li>We actively blacklist specific user-space cryptographic interfaces (algif_*) and network protocols (esp4, esp6, rxrpc) to prevent the kernel from loading them.</li>
+<li><strong>Enable multiple LSMs (Linux security modules)</strong>, such as Capability, AppArmor, Yama, BPF, and Landlock.</li></ul>
+

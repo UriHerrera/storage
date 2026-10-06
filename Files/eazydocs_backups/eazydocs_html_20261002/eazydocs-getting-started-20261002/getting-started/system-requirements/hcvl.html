@@ -1,0 +1,30 @@
+<p>HCVL is a validation framework Nitrux uses to ensure the system runs only in environments that match its design goals. HCVL provides immediate, explicit feedback when the system detects unsupported conditions.</p>
+
+<h3>Design Goals</h3>
+
+<ul>
+<li>Predictable performance.</li>
+<li>Correctness over permissiveness.</li>
+<li>Clear user feedback.</li>
+<li>No silent degradation.</li>
+<li>Accurate benchmarking and bug reporting.</li></ul>
+<h3>What HCVL Validates</h3>
+
+<ul>
+<li>CPU capabilities required by the system.</li>
+<li>GPU compatibility with the selected ISO flavor.</li>
+<li>Physical vs. virtualized execution.</li>
+<li>Minimum system resources.</li>
+<li>Supported software management workflows.</li></ul>
+<h3>Behavior on Validation Failure</h3>
+
+<ul>
+<li>Boot may stop early with an on-screen message.</li>
+<li>The system may refuse to continue into a graphical session.</li>
+<li>The user is informed why and what to do instead.</li>
+<li>Unsupported environments do not proceed silently.</li></ul>
+<h3>User Control and Transparency</h3>
+
+<p>HCVL is not DRM. We do not obfuscate it. Advanced users can inspect, modify, or remove it. Doing so places the system outside supported configurations.</p>
+
+

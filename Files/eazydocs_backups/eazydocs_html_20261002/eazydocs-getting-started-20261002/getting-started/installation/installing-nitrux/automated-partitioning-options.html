@@ -1,0 +1,13 @@
+<p>Users can select the automated partition options<strong>,</strong> such as <strong>Install alongside</strong>, <strong>Erase disk</strong>, and <strong>Replace partition</strong>. When you use these options, Calamares uses our custom partition layout and creates three partitions, in addition to ESP and Swap. Our partition layout uses percentages to assign partition sizes, which scale based on the storage device size, unallocated space, or the selected partition to replace. We base these percentages on a device with at least 64 GiB of storage; for example, we assign 22% to the root directory, which allocates 14.08 GiB, leaving sufficient space for the root.</p>
+
+<ul>
+<li>The <code class="EnlighterJSRAW" data-enlighter-language="generic">/</code> partition (<strong>NX_ROOT</strong>) will occupy 22% of the disk and use XFS.</li>
+<li>The <code class="EnlighterJSRAW" data-enlighter-language="generic">/home</code> partition (<strong>NX_HOME</strong>) will occupy 68% of the disk and use F2FS.</li>
+<li>The <code class="EnlighterJSRAW" data-enlighter-language="generic">/var/lib</code> partition (<strong>NX\<em>VAR\</em>LIB</strong>) will occupy 10% of the disk and use F2FS.</li>
+<li>The <code class="EnlighterJSRAW" data-enlighter-language="generic">/boot/efi</code> The partition (<strong>EFI System Partition</strong>) is fixed-size (300 MB) and uses FAT32.</li>
+<li>The <code class="EnlighterJSRAW" data-enlighter-language="generic">swap</code> partition (<strong>SWAP</strong>) uses whatever space remains on the storage device.</li></ul>
+<h3>Important Notes</h3>
+
+<p>Please be aware that the root directory is immutable, and any directory within it is read-only. <strong>Our custom partition layout separates user-managed directories from the root</strong>.</p>
+
+

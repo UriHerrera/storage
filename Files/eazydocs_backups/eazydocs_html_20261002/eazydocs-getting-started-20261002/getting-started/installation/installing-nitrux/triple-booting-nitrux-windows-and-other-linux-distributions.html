@@ -1,0 +1,35 @@
+<p>Installing Nitrux alongside Windows and other Linux distributions follows the same process as a dual-boot setup.</p>
+
+<ol>
+<li>Assuming Windows is already present, install the other Linux distribution before installing Nitrux.</li>
+<li>Disable Secure Boot using your device's firmware.</li>
+<li>After disabling Secure Boot, do either of the following: </li></ol>
+<ul>
+<li>Boot the Nitrux ISO, launch the installer, select "Install alongside," and click on an existing partition with sufficient space. Adjust the slider to allocate space for Nitrux.</li></ul>
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-23-09-24.png" alt="">As before, use the slider to allocate storage for installing Nitrux within Calamares. Image for reference.</p>
+
+<hr>
+
+<p>-</p>
+
+<ul>
+<li>Or use Windows or another Linux distribution to shrink an existing partition to create unallocated space. Then, launch the installer, select "Replace partition," and click the unallocated space.</li></ul>
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-23-18-19.png" alt="">Using unallocated space to install Nitrux. Image for reference.</p>
+
+<hr>
+
+<p>-</p>
+
+<ul>
+<li>Alternatively, select "Manual partitioning" and follow our partition layout table.</li></ul>
+<p>Regardless of the selection, once the installation is complete, GRUB will display entries to boot into Nitrux, Windows (Windows Boot Manager), and other Linux distributions upon reboot.</p>
+
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-23-21-18.png" alt="">Upon reboot, GRUB will display an entry for each available OS. Image for reference.</p>
+
+<hr>
+
+

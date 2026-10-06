@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Attachment",
+    "name": "betterdocs/attachment",
+    "category": "betterdocs",
+    "description": "Add attachments such as .pdf, .jpeg, .zip etc files in your docs and show them on your Single Docs page with the Add Attachment Block.",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-pro-blocks-editor"
+}

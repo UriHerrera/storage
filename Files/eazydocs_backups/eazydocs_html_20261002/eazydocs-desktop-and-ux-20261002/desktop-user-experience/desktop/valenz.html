@@ -1,0 +1,107 @@
+<p>Valenz is a QML-based workspace shell bar designed for Nitrux. Built with MauiKit and LayerShell-Qt, it provides workspace navigation, window controls, system status, notifications, media controls, and quick settings for the Hyprland session.</p>
+
+<h3>Bar Layout</h3>
+
+<p>Valenz runs as an overlay above the desktop and can display on the active screen or on all screens.</p>
+
+<ul>
+<li><strong>Left side</strong> → Current workspace indicator, workspace navigation, and open-window tabs.</li>
+<li><strong>Center</strong> → Focused window title, clock, date, weather, and calendar access.</li>
+<li><strong>Right side</strong> → Media controls, system tray, screen capture, Vicinae, notifications, and Control Center.</li></ul>
+<p>Valenz hides automatically when the focused window enters fullscreen mode.</p>
+
+<h3>Workspace and Windows</h3>
+
+<ul>
+<li><strong>Workspace indicator</strong> → Displays the current workspace and total workspace count.</li>
+<li><strong>Workspace navigation</strong> → Previous and next workspace buttons.</li>
+<li><strong>Window tabs</strong> → Displays open windows with their title and icon.</li>
+<li><strong>Window focusing</strong> → Clicking a window tab focuses that window.</li></ul>
+<h3>Clock, Weather, and Calendar</h3>
+
+<p>The center of the bar displays the current time, date, weather icon, temperature, and location. Clicking the clock or weather display opens the calendar popup, which provides:</p>
+
+<ul>
+<li>Monthly calendar navigation.</li>
+<li>Current weather details.</li>
+<li>Three-day weather forecast.</li>
+<li>Feels-like temperature, humidity, UV index, and wind speed.</li>
+<li>Optional calendar events when Agenda is installed.</li></ul>
+<p>Weather data is retrieved from the Open-Meteo API.</p>
+
+<h3>Media Controls</h3>
+
+<p>Valenz uses MPRIS to display the currently active media player.</p>
+
+<ul>
+<li><strong>Track information</strong> → Displays the title, artist, timestamp, and album artwork.</li>
+<li><strong>Playback</strong> → Previous track, play/pause, and next track.</li>
+<li><strong>Media sources</strong> → Supports desktop MPRIS players and compatible Bluetooth media sources.</li>
+<li><strong>Source selection</strong> → Allows switching between available media players.</li></ul>
+<p>Media controls are hidden when no media player is active unless <code class="EnlighterJSRAW" data-enlighter-language="generic">Mpris/alwaysVisible</code> is enabled.</p>
+
+<h3>System Tray</h3>
+
+<p>Valenz includes a system tray for applications that provide StatusNotifierItem or legacy XEmbed tray icons. When available, Valenz starts <code class="EnlighterJSRAW" data-enlighter-language="generic">xembedsniproxy</code> to support legacy tray applications under Wayland.</p>
+
+<h3>Notifications</h3>
+
+<p>Valenz provides a desktop notification server through the <code class="EnlighterJSRAW" data-enlighter-language="generic">org.freedesktop.Notifications</code> D-Bus interface.</p>
+
+<ul>
+<li>Displays notification bubbles.</li>
+<li>Stores notification history.</li>
+<li>Supports notification actions.</li>
+<li>Supports inline replies when provided by the application.</li>
+<li>Displays notification counts.</li>
+<li>Provides a Do Not Disturb mode.</li></ul>
+<h3>Launcher Integration</h3>
+
+<p>Valenz includes buttons intended to launch a menu and a clipboard manager; by default, Valenz uses Vicinae, but this is configurable.</p>
+
+<ul>
+<li><strong>Launcher</strong> → <code class="EnlighterJSRAW" data-enlighter-language="generic">vicinae toggle</code>.</li>
+<li><strong>Clipboard</strong> → <code class="EnlighterJSRAW" data-enlighter-language="generic">vicinae vicinae://launch/clipboard/history</code>.</li></ul>
+<h3>Control Center</h3>
+
+<p>The Control Center provides quick access to system status and frequently used settings.</p>
+
+<ul>
+<li><strong>Network</strong> → Displays Wi-Fi status and network activity.</li>
+<li><strong>Bluetooth</strong> → Displays Bluetooth status and connected devices.</li>
+<li><strong>Power profile</strong> → Selects power-saver, balanced, or performance mode.</li>
+<li><strong>Volume</strong> → Adjusts speaker volume and mute state.</li>
+<li><strong>Microphone</strong> → Adjusts microphone volume when available.</li>
+<li><strong>Brightness</strong> → Adjusts display brightness when supported.</li>
+<li><strong>Dark mode</strong> → Toggles between the configured light and dark color schemes.</li>
+<li><strong>Camera</strong> → Displays and controls camera privacy state when supported.</li>
+<li><strong>Night light</strong> → Displays and controls the blue light filter when available.</li>
+<li><strong>Do Not Disturb</strong> → Enables or disables notification suppression.</li>
+<li><strong>System resources</strong> → Displays CPU, RAM, disk, and network usage.</li>
+<li><strong>Settings</strong> → Opens Workspace Settings.</li>
+<li><strong>Shutdown</strong> → Opens the session options provided by QMLogout.</li></ul>
+<h3>Screen Capture</h3>
+
+<p>Valenz integrates with Toma for screenshots and screen recordings.</p>
+
+<ul>
+<li><strong>Full screen</strong> → Captures or records the entire screen.</li>
+<li><strong>Region</strong> → Captures or records a selected region.</li>
+<li><strong>Window</strong> → Captures or records a selected window.</li></ul>
+<h3>Appearance</h3>
+
+<ul>
+<li><strong>Color schemes</strong> → Catppuccin Latte Nitrux for light mode and Catppuccin Mocha Nitrux for dark mode by default.</li>
+<li><strong>Icon mode</strong> → System icons at 16px.</li>
+<li><strong>Bar height</strong> → 52px in the default configuration.</li>
+<li><strong>Screen placement</strong> → All screens in the default configuration.</li>
+<li><strong>Layer spacing</strong> → 5px top spacing and 9px left and right spacing.</li></ul>
+<h3>Configuration</h3>
+
+<p>Valenz stores its user configuration in <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/valenz/valenz.conf</code>.</p>
+
+<h3>Information</h3>
+
+<p>Valenz is developed by Nitrux and released under the BSD-3-Clause license.</p>
+
+

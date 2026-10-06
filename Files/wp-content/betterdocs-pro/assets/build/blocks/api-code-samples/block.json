@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs API Code Samples",
+	"name": "betterdocs/api-code-samples",
+	"category": "betterdocs",
+	"description": "The endpoint Request/Response code panel. Place it in the right-hand column of the single-doc template to get the sticky code sidebar on block themes.",
+	"keywords": [ "api", "code", "samples", "request", "response", "betterdocs" ],
+	"textdomain": "betterdocs-pro",
+	"attributes": {
+		"showRequest": { "type": "boolean", "default": true },
+		"showResponse": { "type": "boolean", "default": true }
+	},
+	"supports": { "html": false },
+	"editorScript": "betterdocs-pro-blocks-editor"
+}

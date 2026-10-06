@@ -1,0 +1,43 @@
+<p>To install Nitrux alongside Windows, do the following steps:</p>
+
+<ol>
+<li>Disable Secure Boot using your device's firmware.</li>
+<li>After disabling Secure Boot, do either of the following: </li></ol>
+<ul>
+<li>Boot the Nitrux ISO, launch the installer, select "Install alongside," and click on an existing Windows NTFS partition with sufficient space. Adjust the slider to allocate space for Nitrux.</li></ul>
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-20-17-52.png" alt="">Allocating storage space to install Nitrux within Calamares. Image for reference.</p>
+
+<hr>
+
+<p>1.</p>
+
+<ul>
+<li>Or, boot into Windows and use Disk Management to shrink a partition on your storage device to create unallocated space. Then, launch the installer, select "Replace partition," and click the unallocated space.</li></ul>
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-21-33-14.png" alt="">Using unallocated space to install Nitrux. Image for reference.</p>
+
+<hr>
+
+<ul>
+<li>Alternatively, select "Manual partitioning" and follow our partition layout table.</li></ul>
+<p>Regardless of the selection, once the installation is complete, GRUB will display entries to boot into Nitrux or Windows (Windows Boot Manager) upon reboot.</p>
+
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2024/11/Captura-de-pantalla-de-2024-11-11-18-53-56.png" alt="">Upon rebooting, GRUB will display an entry for the Windows Boot Manager. Image for reference.</p>
+
+<hr>
+
+<p>Installing Nitrux alongside other Linux distributions follows the same process described above.</p>
+
+<ol>
+<li>Disable Secure Boot using your device's firmware.</li>
+<li>After disabling Secure Boot, do either of the following: </li>
+<li>Boot the Nitrux ISO, launch the installer, select "Install alongside," and click on an existing partition with sufficient space. Adjust the slider to allocate space for Nitrux.</li>
+<li>Alternatively, select "Manual partitioning" and follow our partition layout table.</li></ol>
+<p>Regardless of the selection, once installation is complete, GRUB will display entries to boot into Nitrux or another Linux distribution at reboot.</p>
+
+

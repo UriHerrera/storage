@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<polylang-config>
+    <custom-types>
+        <custom-type translate="1">docs</custom-type>
+    </custom-types>
+    <taxonomies>
+        <taxonomy translate="1">doc_category</taxonomy>
+        <taxonomy translate="1">doc_tag</taxonomy>
+        <taxonomy translate="1">glossaries</taxonomy>
+    </taxonomies>
+    <custom-term-fields>
+        <custom-term-field action="copy">doc_category_order</custom-term-field>
+        <custom-term-field action="copy">doc_category_image-id</custom-term-field>
+        <custom-term-field action="copy">glossary_term_description</custom-term-field>
+        <custom-term-field action="copy">status</custom-term-field>
+        <custom-term-field action="copy">order</custom-term-field>
+    </custom-term-fields>
+</polylang-config>

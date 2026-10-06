@@ -1,0 +1,47 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+$document_views = (int) get_post_meta( get_the_ID(), '_betterdocs_meta_views', true );
+$view_label     = _n( 'view', 'views', $document_views, 'betterdocs' );
+?>
+<div class="betterdocs-document-meta">
+	<?php
+	$mobile_nav_enabled = true === $mobile_sidebar || 'true' === $mobile_sidebar;
+	$mobile_toc_enabled = true === $mobile_toc || 'true' === $mobile_toc;
+	if ( $mobile_nav_enabled ) {
+		betterdocs()->views->get(
+			"templates/parts/mobile-nav",
+			[
+				"mobile_sidebar"           => true,
+				"mobile_toc"               => $mobile_toc_enabled,
+				"mobile_sidebar_icon"      => betterdocs()->settings->get( "mobile_sidebar_icon", [] ),
+				"mobile_sidebar_icon_only" => true,
+				"mobile_nav_inline"        => true,
+			]
+		);
+	}
+	?>
+	<div class="reading-time betterdocs">
+		<p>
+			<svg width="14" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<mask id="mask0_6195_23752" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0">
+				<rect y="0.5" width="14" height="14" fill="#D9D9D9"/>
+				</mask>
+				<g mask="url(#mask0_6195_23752)">
+				<path d="M8.92508 10.241L9.74175 9.42435L7.58341 7.26602V4.58268H6.41675V7.73268L8.92508 10.241ZM7.00008 13.3327C6.19314 13.3327 5.4348 13.1796 4.72508 12.8733C4.01536 12.5671 3.398 12.1514 2.873 11.6264C2.348 11.1014 1.93237 10.4841 1.62612 9.77435C1.31987 9.06463 1.16675 8.30629 1.16675 7.49935C1.16675 6.6924 1.31987 5.93407 1.62612 5.22435C1.93237 4.51463 2.348 3.89727 2.873 3.37227C3.398 2.84727 4.01536 2.43164 4.72508 2.12539C5.4348 1.81914 6.19314 1.66602 7.00008 1.66602C7.80703 1.66602 8.56536 1.81914 9.27508 2.12539C9.9848 2.43164 10.6022 2.84727 11.1272 3.37227C11.6522 3.89727 12.0678 4.51463 12.374 5.22435C12.6803 5.93407 12.8334 6.6924 12.8334 7.49935C12.8334 8.30629 12.6803 9.06463 12.374 9.77435C12.0678 10.4841 11.6522 11.1014 11.1272 11.6264C10.6022 12.1514 9.9848 12.5671 9.27508 12.8733C8.56536 13.1796 7.80703 13.3327 7.00008 13.3327ZM7.00008 12.166C8.29314 12.166 9.39418 11.7115 10.3032 10.8025C11.2122 9.89345 11.6667 8.7924 11.6667 7.49935C11.6667 6.20629 11.2122 5.10525 10.3032 4.19622C9.39418 3.2872 8.29314 2.83268 7.00008 2.83268C5.70703 2.83268 4.60598 3.2872 3.69696 4.19622C2.78793 5.10525 2.33341 6.20629 2.33341 7.49935C2.33341 8.7924 2.78793 9.89345 3.69696 10.8025C4.60598 11.7115 5.70703 12.166 7.00008 12.166Z" fill="currentColor"/>
+				</g>
+			</svg>
+			<?php echo ! empty( $reading_title ) ? esc_html( $reading_title . ': ' . $time ) : esc_html( $time ); ?>
+		</p>
+	</div>
+	<div class="betterdocs-view-count betterdocs">
+		<p>
+			<svg width="14" height="15" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+				<path d="M7 2.5C3.55 2.5 1.09 4.73.33 7.5 1.09 10.27 3.55 12.5 7 12.5s5.91-2.23 6.67-5C12.91 4.73 10.45 2.5 7 2.5Zm0 8.33A3.33 3.33 0 1 1 7 4.17a3.33 3.33 0 0 1 0 6.66Zm0-1.66a1.67 1.67 0 1 0 0-3.34 1.67 1.67 0 0 0 0 3.34Z" fill="currentColor"/>
+			</svg>
+			<?php echo esc_html( number_format_i18n( $document_views ) . ' ' . $view_label ); ?>
+		</p>
+	</div>
+</div>

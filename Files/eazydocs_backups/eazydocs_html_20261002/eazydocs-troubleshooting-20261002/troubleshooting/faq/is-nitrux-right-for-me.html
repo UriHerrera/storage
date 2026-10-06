@@ -1,0 +1,23 @@
+<p>Nitrux is a highly <em><strong>opinionated</strong></em> (i.e., building-focused software, strict boundaries, and removing variables) specialized workstation distribution. It is engineered around an immutable root, OpenRC, and a custom MauiKit-based user space. Because it intentionally breaks from traditional Linux paradigms to achieve its design goals, it is not a general-purpose distribution for everyone.</p>
+
+<p>Nitrux is <strong>not</strong> the right fit for you if:</p>
+
+<p><strong>You require a traditionally mutable system:</strong></p>
+
+<p>While root modifications are technically possible, they must be executed strictly through <a href="https://nxos.org/documentation/system-management/administration/nx-overlayroot/">NX Overlayroot</a>. If you expect to modify the root filesystem on the fly or reject the concept of an immutable base entirely, this architecture will frustrate your workflow. <strong>You rely on host-level package managers:</strong></p>
+
+<p>The root-level package manager is absent by design. You manage software via rootless or containerized solutions. If you dislike using NX AppHub (AppBoxes), Flatpak, or Distrobox containers, you will not enjoy managing software here.</p>
+
+<p><strong>You prefer monolithic desktop environments:</strong></p>
+
+<p>If your daily usage depends on GNOME, KDE Plasma, or a traditional Windows-like layout, using Nitrux will feel foreign.</p>
+
+<p><strong>You require a <code class="EnlighterJSRAW" data-enlighter-language="generic">systemd</code> host:</strong></p>
+
+<p>The base system utilizes OpenRC. Host-level services, background tasks, or tutorials relying on <code class="EnlighterJSRAW" data-enlighter-language="generic">systemctl</code> commands will not function here. While you can run <code class="EnlighterJSRAW" data-enlighter-language="generic">systemd</code> isolated within a Distrobox container, the core operating system strictly does not use it.</p>
+
+<p><strong>You expect Debian behaviors:</strong></p>
+
+<p>While built from a Debian rootfs, the package manager and core paradigms are removed during installation. Treating Nitrux like Debian will result in system conflicts.</p>
+
+

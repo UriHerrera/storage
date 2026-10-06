@@ -1,0 +1,90 @@
+<wpml-config>
+    <custom-types>
+        <custom-type translate="1">docs</custom-type>
+    </custom-types>
+    <taxonomies>
+        <taxonomy translate="1">doc_category</taxonomy>
+        <taxonomy translate="1">doc_tag</taxonomy>
+        <taxonomy translate="1">glossaries</taxonomy>
+    </taxonomies>
+    <custom-term-fields>
+        <custom-term-field action="copy">doc_category_order</custom-term-field>
+        <custom-term-field action="copy">doc_category_image-id</custom-term-field>
+        <custom-term-field action="ignore">glossary_term_description</custom-term-field>
+        <custom-term-field action="copy">status</custom-term-field>
+        <custom-term-field action="copy">order</custom-term-field>
+    </custom-term-fields>
+    <admin-texts>
+        <key name="theme_mods_*">
+            <key name="betterdocs_social_sharing_text" />
+            <key name="betterdocs_live_search_heading" />
+            <key name="betterdocs_live_search_subheading" />
+        </key>
+        <key name="betterdocs_settings">
+            <key name="breadcrumb_doc_title" />
+            <key name="search_placeholder" />
+            <key name="search_not_found_text" />
+            <key name="count_text" />
+            <key name="count_text_singular" />
+            <key name="exploremore_btn_txt" />
+            <key name="toc_title" />
+            <key name="breadcrumb_home_text" />
+            <key name="feedback_link_text" />
+            <key name="feedback_form_title" />
+            <key name="search_button_text" />
+            <key name="breadcrumb_home_url" />
+        </key>
+    </admin-texts>
+    <elementor-widgets>
+        <widget name="betterdocs-doc-share">
+            <conditions>
+                <condition key="widgetType">betterdocs-doc-share</condition>
+            </conditions>
+            <fields>
+                <field type="Doc Share: Title" editor_type="LINE">share_title</field>
+            </fields>
+        </widget>
+        <widget name="betterdocs-feedback">
+            <conditions>
+                <condition key="widgetType">betterdocs-feedback</condition>
+            </conditions>
+            <fields>
+                <field type="Doc Feedback: Content" editor_type="LINE">feedback_link_title</field>
+                <field type="Doc Feedback: Feedback Form Title" editor_type="LINE">feedback_form_title</field>
+                <field type="Doc Feedback: Button Text" editor_type="LINE">feedback_form_button_text</field>
+            </fields>
+        </widget>
+        <widget name="betterdocs-search-form">
+            <conditions>
+                <condition key="widgetType">betterdocs-search-form</condition>
+            </conditions>
+            <fields>
+                <field type="Doc Feedback: Placeholder" editor_type="LINE">section_search_field_placeholder</field>
+            </fields>
+        </widget>
+        <widget name="betterdocs-toc">
+            <conditions>
+                <condition key="widgetType">betterdocs-toc</condition>
+            </conditions>
+            <fields>
+                <field type="Doc Table of Contents: TOC Title" editor_type="LINE">toc_title</field>
+            </fields>
+        </widget>
+        <widget name="betterdocs-category-grid">
+            <conditions>
+                <condition key="widgetType">betterdocs-category-grid</condition>
+            </conditions>
+            <fields>
+                <field type="BetterDocs Category Grid: Button Text" editor_type="LINE">button_text</field>
+            </fields>
+        </widget>
+        <widget name="betterdocs-reading-time">
+            <conditions>
+                <condition key="widgetType">betterdocs-reading-time</condition>
+            </conditions>
+            <fields>
+                <field type="BetterDocs Estimated Reading Time: Min Read Text" editor_type="LINE">ert_reading_text</field>
+            </fields>
+        </widget>
+    </elementor-widgets>
+</wpml-config>

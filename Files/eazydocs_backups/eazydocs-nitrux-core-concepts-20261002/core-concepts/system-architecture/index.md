@@ -1,0 +1,6 @@
+---
+title: "System Architecture"
+eazydocs_id: 14767
+---
+
+Nitrux is systematically intentional, a design philosophy made executable. This section explains the foundational design decisions that define Nitrux. Understanding these concepts provides the context necessary to work effectively with the system.

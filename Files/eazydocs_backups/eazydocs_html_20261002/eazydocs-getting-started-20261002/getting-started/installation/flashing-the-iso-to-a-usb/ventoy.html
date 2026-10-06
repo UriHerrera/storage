@@ -1,0 +1,25 @@
+<p>If you are using Windows or Linux and <a href="https://www.ventoy.net/"><strong>Ventoy</strong></a>, follow these steps:</p>
+
+<ol>
+<li>Download a Nitrux ISO file, and <a href="https://www.ventoy.net/en/download.html">install Ventoy</a> and its GUI in the host operating system.</li>
+<li>Using the Ventoy GUI, install Ventoy on the USB drive; this will delete all the data on the selected drive.</li>
+<li>Copy and paste, or cut and move, the Nitrux ISO file from the download location to the Ventoy directory on the USB drive. The directory will appear in the file manager's sidebar.</li></ol>
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2021/12/Screenshot_20230709_041633.png" alt=""></p>
+
+<hr>
+
+<h3>Troubleshooting</h3>
+
+<p>Below is a list of recommendations when using Ventoy.</p>
+
+<ul>
+<li>Always ensure you use the latest available version of Ventoy.</li>
+<li>Ensure that Secure Boot is active in Option→Secure Boot Support.</li>
+<li>Do not confuse this directory with <strong>VENTOYEFI</strong>.</li>
+<li>When using Ventoy on Linux, run the command <code class="EnlighterJSRAW" data-enlighter-language="generic">sync</code> to flush the USB write cache. In devices with little or no cache (like most USB thumb drives), the user must flush the cache before data is properly stored, and the kernel writes the data to the NAND flash. <strong>Ventoy does not implement any file verification method before or after the user copies or moves the ISO to the USB device</strong>. Always verify the ISO file's checksum after copying or moving it to the Ventoy directory.</li>
+<li>When booting our ISO file with Ventoy, if the computer has less than 4GB of RAM, select the GRUB 2 boot option in the menu; otherwise, you will see an "out of memory" error. </li>
+<li>For more information, see <a href="https://github.com/ventoy/Ventoy/issues/1515">this issue at the Ventoy bug tracker</a>.</li>
+<li>Additionally, check the <a href="https://www.ventoy.net/en/doc_grub2boot.html">Ventoy documentation about using the GRUB 2 boot mode</a>.</li></ul>
+

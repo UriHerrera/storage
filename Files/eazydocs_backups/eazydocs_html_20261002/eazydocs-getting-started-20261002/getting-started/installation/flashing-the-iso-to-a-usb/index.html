@@ -1,0 +1,15 @@
+<p>These instructions will walk you through creating a bootable Nitrux USB stick on Windows or Linux. You can use a USB stick to boot, test, or install Nitrux on any computer that supports USB booting. We do not recommend using the following programs to flash the Nitrux ISO to a USB drive. We will close issues caused by the software listed below, including failed flash or write operations and an unbootable Live session.</p>
+
+<ul>
+<li><strong>BalenaEtcher</strong>. BalenaEtcher runs an <em>unknown</em> test at the end of the flashing process that consistently fails, even though it writes the image to the USB device without errors. Additionally, users have reported <a href="https://github.com/balena-io/etcher/issues/2057">severe privacy concerns because the application </a><a href="https://github.com/balena-io/etcher/issues/2057">sends user data to multiple third parties</a>.</li>
+<li><strong>Unetbootin</strong>. Unetbootin does not write the image; it copies it to the USB. However, unlike Ventoy, Unetbootin does not boot the ISO file.</li>
+<li><strong>KDE ISOImageWriter</strong>. ISOImageWriter fails to write the ISO image at 99%; this is a <a href="https://bugs.kde.org/show_bug.cgi?id=445036">known application issue</a>.</li>
+<li><strong>Linux Mint mintstick</strong>. Mintstick fails to write the ISO image correctly to the target device.</li></ul>
+<p>We strongly recommend using the following programs to flash our ISO file to a USB instead. The list of software below for flashing the ISO is not in any particular order of preference.</p>
+
+<ul>
+<li><strong>Rufus</strong> (Windows)</li>
+<li><strong>Ventoy</strong> (Windows/Linux)</li>
+<li><strong>ROSA Image Writer</strong> (Windows/Linux)</li>
+<li><strong>dd</strong> (*nix)</li></ul>
+

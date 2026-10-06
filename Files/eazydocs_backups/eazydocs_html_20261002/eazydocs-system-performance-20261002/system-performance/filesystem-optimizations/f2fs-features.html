@@ -1,0 +1,16 @@
+<p>Since Nitrux 2.8.0, the <code class="EnlighterJSRAW" data-enlighter-language="generic">/home</code> and <code class="EnlighterJSRAW" data-enlighter-language="generic">/var/lib</code> partitions use F2FS. These F2FS-formatted partitions will also use the following additional filesystem features.</p>
+
+<ul>
+<li>Compression using zstd with compression at level</li></ul>
+<ol>
+<li>The primary goal is to reduce writes to extend the flash lifetime and, potentially, to achieve a slight performance increase.</li></ol>
+<ul>
+<li>Verification of compressed blocks using a checksum to avoid corruption.</li>
+<li>Enable a better garbage collector and asynchronous garbage collection.</li>
+<li>Avoid synchronously updating access or modification times, which improves I/O performance and flash durability.</li>
+<li>The filesystem applies encryption at the directory level, and different directories can use different encryption keys.</li></ul>
+<h3>Important Notes</h3>
+
+<p>Since Nitrux 5.1.0, we provide our own implementation of <code class="EnlighterJSRAW" data-enlighter-language="generic">mkfs.f2fs</code> so that new F2FS partitions can support compression. However, existing F2FS partitions cannot be "made" to support it, unless the user recreates them.</p>
+
+

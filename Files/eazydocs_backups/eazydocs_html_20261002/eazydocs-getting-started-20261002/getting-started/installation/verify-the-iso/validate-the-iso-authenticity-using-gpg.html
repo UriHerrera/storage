@@ -1,0 +1,13 @@
+<p>Since Nitrux 3.2.1, our ISO images have been signed with a GPG key to ensure their authenticity. To verify the ISO's authenticity using GPG, do the following.</p>
+
+<ul>
+<li>Download the ISO and the signature file.</li>
+<li>Import the latest public key from the <a href="http://nxos.org/changelog">changelog for the new release</a>.</li>
+<li>Verify the signature using the command below.</li></ul>
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+gpg --verify path_to_sig_file.sig path_to_iso_file.iso
+</code></pre>
+
+<p>Once you have verified the integrity and authenticity of the ISO file, flash it to a USB.</p>
+
+

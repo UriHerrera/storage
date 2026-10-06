@@ -1,0 +1,56 @@
+<p>AppFinder is a software-management GUI for Nitrux. Built with <strong><a href="https://mauikit.org/">MauiKit</a></strong>, it brings together the supported ways to obtain, build, and manage software while keeping those workflows separate from the immutable base system.</p>
+
+<h3>Software Sources</h3>
+
+<ul>
+<li><strong>Flathub</strong>: Browse featured applications, collections, and categories; search for applications; install, launch, update, and remove Flatpaks; and manage optional Flatpak add-ons.</li>
+<li><strong>NX AppHub</strong>: Browse curated AppBox recipes, refresh the local applications repository, activate or remove AppBoxes, launch installed AppBoxes, and restore AppBox backups.</li>
+<li><strong>Personal Bundle Builder</strong>: Create and edit local AppImage bundle projects, configure their package sources, dependencies, integration, launch options, and sandboxing, then save and build the bundles locally.</li>
+<li><strong>Distrobox</strong>: Create and manage development containers using a selected base image, with controls to start, stop, open, clone, repair, and delete containers.</li></ul>
+
+<h3>Usage</h3>
+
+<p>Launch AppFinder from the application menu or run it from the terminal:</p>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+appfinder
+</code></pre>
+
+<p>Use the navigation sidebar to switch between <strong>NX AppHub</strong>, <strong>Flathub</strong>, and <strong>Distrobox</strong>. AppFinder can refresh Flathub, NX AppHub, and Distrobox data automatically when it starts. This behavior, the initial Flathub view, and sidebar visibility can be changed in <strong>Preferences</strong>.</p>
+
+<h3>NX AppHub</h3>
+
+<p>The NX AppHub view has three areas:</p>
+
+<ul>
+<li><strong>Explore NX AppHub</strong>: Browse and search curated AppBox recipes. Refresh the local applications repository when new recipes are available.</li>
+<li><strong>Personal Bundle Builder</strong>: Build a personal AppImage from a local recipe. A generated project can be edited before saving or building it.</li>
+<li><strong>Installed AppBoxes</strong>: Launch or remove installed AppBoxes and restore an available backup.</li></ul>
+<p>AppBox recipes are built through <code class="EnlighterJSRAW" data-enlighter-language="generic">nx-apphub-cli</code>. For details, see the <a href="https://github.com/Nitrux/nx-apphub/wiki">NX AppHub Wiki</a>, the <a href="https://github.com/Nitrux/nx-apphub-apps/wiki">NX AppHub Apps Wiki</a>, and the <a href="https://github.com/Nitrux/nx-apphubd/wiki">NX AppHub Daemon Wiki</a>.</p>
+
+<h3>Flathub</h3>
+
+<p>AppFinder uses Flathub for sandboxed desktop applications. The Flathub view provides featured applications, collections, category browsing, search, and an installed-applications view. Selecting an application opens its details, where available actions include installation, launching, updating, removal, and management of optional add-ons.</p>
+
+<p>AppFinder installs applications for the current user by default. System-wide Flatpaks and their runtimes are shown separately when present.</p>
+
+<h3>Personal Bundles</h3>
+
+<p>The Personal Bundle Builder creates local AppImage projects from package metadata and a selected distribution source. Projects can define package repositories, optional PPAs, dependencies, desktop integration, executable and library paths, metadata, pre-build commands, and optional Bubblewrap or Firejail sandbox settings.</p>
+
+<p>After a project is saved, use <strong>Build Bundle</strong> to create the AppImage. Built GUI bundles can be opened from AppFinder, while the output location can be revealed from the bundle actions.</p>
+
+<h3>Distrobox</h3>
+
+<p>The Distrobox view provides mutable development environments without modifying the Nitrux base system. When creating a container, specify its name and base image, such as <code class="EnlighterJSRAW" data-enlighter-language="generic">ubuntu:24.04</code>. You can optionally mount a host directory as the container home.</p>
+
+<ul>
+<li><strong>Rootless containers</strong>: Run without root privileges and are the default choice for development environments.</li>
+<li><strong>Rootful containers</strong>: Can be created when real root privileges are required. AppFinder can load and refresh the rootful-container inventory.</li>
+<li><strong>Container actions</strong>: Start, stop, open, clone, repair, and delete containers. All containers can also be stopped or deleted from the action bar.</li></ul>
+
+<p><strong>Warning:</strong> Rootful containers can modify host-owned resources. Enable this option only when required.</p>
+
+<h3>Information</h3>
+
+<p>AppFinder is developed by Nitrux and released under the <a href="https://github.com/Nitrux/appfinder/blob/main/LICENSE">BSD-3-Clause license</a>. Source code and issue tracking are available in the <a href="https://github.com/Nitrux/appfinder">AppFinder repository</a>.</p>

@@ -1,0 +1,68 @@
+<p>Nitrux Workspace Session Manager, a.k.a. nwsm, manages the Hyprland graphical session and OpenRC user services.</p>
+
+<h3>Session Management</h3>
+
+<ul>
+<li><strong>Wayland readiness</strong> → Waits for a verified Wayland socket before starting desktop services.</li>
+<li><strong>Hyprland readiness</strong> → Can require a valid <code class="EnlighterJSRAW" data-enlighter-language="generic">HYPRLAND_INSTANCE_SIGNATURE</code>.</li>
+<li><strong>Session D-Bus</strong> → Starts the Wayland session inside its own D-Bus session.</li>
+<li><strong>Environment management</strong> → Publishes Wayland, Hyprland, D-Bus, XDG, toolkit, and cursor environment variables.</li>
+<li><strong>Session recovery</strong> → Detects compositor replacement and refreshes the graphical session environment.</li>
+<li><strong>Session restart</strong> → Restarts the supplied Wayland session command when it exits or the compositor becomes unavailable.</li></ul>
+<h3>OpenRC User Services</h3>
+
+<p>nwsm activates the OpenRC user <code class="EnlighterJSRAW" data-enlighter-language="generic">desktop</code> runlevel after the compositor is ready. Service definitions are discovered from:</p>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">/etc/user/init.d</code> → System-provided user services.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/rc/init.d</code> → User-provided services.</li></ul>
+<p>nwsm automatically registers newly installed services with the desktop runlevel and records registered services in: <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/rc/.nwsm-services-registered</code> Services removed by the user are not automatically re-enrolled.</p>
+
+<h3>Environment</h3>
+
+<p>After the compositor becomes ready, nwsm publishes the session environment through <code class="EnlighterJSRAW" data-enlighter-language="generic">dbus-update-activation-environment</code>. This allows OpenRC user services and applications to access the current graphical session. The managed environment includes variables such as:</p>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">DBUS_SESSION_BUS_ADDRESS</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">DISPLAY</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">WAYLAND_DISPLAY</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XDG_CURRENT_DESKTOP</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XDG_SESSION_DESKTOP</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XDG_SESSION_TYPE</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">HYPRLAND_INSTANCE_SIGNATURE</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">HYPRLAND_CMD</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">QT_QPA_PLATFORM</code></li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">GTK_USE_PORTAL</code></li></ul>
+<h3>Session Startup</h3>
+
+<p>Nitrux starts Hyprland through nwsm with the following command: <code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_REQUIRED_VARS=HYPRLAND_INSTANCE_SIGNATURE nwsm -- /usr/bin/start-hyprland</code> After Hyprland starts, the session configuration runs: <code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm finalize</code> This publishes compositor-provided environment variables that were not available when nwsm initially started the session.</p>
+
+<h3>Commands</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm -- &lt;wayland-session-command&gt;</code> → Start and supervise a Wayland session.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm finalize</code> → Publish the current compositor environment.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm check</code> → Check whether an nwsm session is active.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm status</code> → Display the current session status.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm reconcile</code> → Discover newly installed services and reactivate the desktop runlevel.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm stop</code> → Stop the active nwsm session.</li></ul>
+<h3>Configuration</h3>
+
+<p>nwsm is configured through environment variables:</p>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_READY_TIMEOUT</code> → Maximum time to wait for the Wayland and compositor sockets. The default is 60 seconds.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_FINALIZE_GRACE</code> → Grace period for <code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm finalize</code>. The default is 1 second.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_REQUIRED_VARS</code> → Comma- or space-separated environment variables that must be available before the session is considered ready.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_RESTART_ON_EXIT</code> → Controls whether the supplied Wayland session command is restarted after exiting. Restarting is enabled by default.</li></ul>
+<p>Set <code class="EnlighterJSRAW" data-enlighter-language="generic">NWSM_RESTART_ON_EXIT=0</code> to disable automatic session-command restarts.</p>
+
+<h3>Session Exit</h3>
+
+<p>When the session ends, nwsm stops the OpenRC user <code class="EnlighterJSRAW" data-enlighter-language="generic">desktop</code> runlevel, restores the previous D-Bus activation environment, removes temporary compositor handoff data, and terminates the remaining session processes. The default Hyprland keybind for stopping the session is <code class="EnlighterJSRAW" data-enlighter-language="generic">Super + M</code>.</p>
+
+<h3>Information</h3>
+
+<p>Nitrux Workspace Session Manager is licensed under the BSD-3-Clause license.</p>
+
+

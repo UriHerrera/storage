@@ -1,0 +1,15 @@
+<p>If you are using Linux and the command <strong>'dd,'</strong> follow these steps:</p>
+
+<ol>
+<li>Download a Nitrux ISO file.</li>
+<li>Insert the USB flash drive into a USB port, then open a Terminal window.</li>
+<li>Enter the following command in the Terminal window and hit Enter. </li></ol>
+<ul>
+<li>You must replace <strong>/dev/sdX</strong> with the correct device, such as <strong>/dev/sda</strong>,<strong>/dev/sdb,</strong> or others.</li></ul>
+<hr>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+sudo dd if=nitrux.iso of=/dev/sdX oflag=sync bs=4M status=progress
+</code></pre>
+
+

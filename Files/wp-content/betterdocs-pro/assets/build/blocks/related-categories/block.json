@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Related Categories",
+    "name": "betterdocs/related-categories",
+    "category": "betterdocs",
+    "description": "Display Your Related Categories",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-pro-blocks-editor"
+}

@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Archive Doc List",
+	"name": "betterdocs/archive-doc-list",
+	"category": "betterdocs",
+	"description": "Streamlines the creation of your knowledge-base archive lists.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

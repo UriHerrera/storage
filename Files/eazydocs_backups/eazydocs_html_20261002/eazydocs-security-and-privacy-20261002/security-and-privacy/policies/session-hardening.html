@@ -1,0 +1,8 @@
+<p>Policies that enforce secure environments for user processes and resource usage.</p>
+
+<ul>
+<li><strong>Default Permissions (Umask)</strong>: The system enforces strict file creation masks, preventing users from creating world-writable files by default.</li>
+<li><strong>Resource Limits</strong>: We strictly enforce system limits during login to prevent Denial of Service (DoS) attacks caused by resource exhaustion.</li>
+<li><strong>Keyring Management</strong>: The system initializes session keyrings and forces revocation upon logout, which prevents cryptographic keys from leaking between sessions.</li>
+<li><strong>Session Tracking</strong>: We register user sessions with the login manager, ensuring proper seat management without relying on systemd.</li></ul>
+

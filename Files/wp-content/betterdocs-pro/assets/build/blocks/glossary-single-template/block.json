@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "Glossary Single Template",
+    "name": "betterdocs/glossary-single-template",
+    "category": "betterdocs",
+    "description": "Display glossary term content using a unified template.",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-blocks-editor"
+}

@@ -1,0 +1,8 @@
+<p>Nitrux supports full-disk encryption with <a href="https://en.wikipedia.org/wiki/Dm-crypt">dm-crypt</a> during installation via the Calamares installer.</p>
+
+<ul>
+<li>During early boot, the system prompts the user for their passphrase to unlock all encrypted partitions.</li>
+<li>Block-device encryption during installation is in addition to any userland tool (such as <a href="https://github.com/google/fscrypt">fscrypt</a>).</li></ul>
+<p>The checkbox to encrypt the installation is visible only when selecting automated options in the partitions module, such as <strong>Install alongside</strong>, <strong>Erase disk</strong>, and <strong>Replace partition</strong>. When selecting <strong>Manual partitioning</strong>, the user must use a new partition—not edit an existing partition—to make the checkbox visible in the individual partition setup window.</p>
+
+

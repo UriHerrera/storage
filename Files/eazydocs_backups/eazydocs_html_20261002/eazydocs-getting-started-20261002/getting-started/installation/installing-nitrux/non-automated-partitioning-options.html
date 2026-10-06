@@ -1,0 +1,47 @@
+<p>Users can also select <strong>Manual partitioning</strong>. However, we strongly recommend following our partition layout; otherwise, users will lose functionality such as upgrades and rollbacks with the Nitrux Update Tool System. We recommend reading the following information before proceeding with manual partitioning.</p>
+
+<ol>
+<li>Installing Nitrux in Legacy BIOS hardware is not supported.</li>
+<li>While the layout below is our recommendation, users can add <em>almost any directory</em> they want as a separate partition. However, the root and home must be separate because the root directory is immutable.</li>
+<li>Please be aware that neither XFS nor F2FS partitions support downsizing, only growing.</li>
+<li>Most importantly, the root directory is immutable, and any directory within it is read-only. <strong>Do not use a single partition layout</strong>.</li></ol>
+<p>Select the mount point of all partitions and options (where applicable). The layout below defines our <strong>partition layout for EFI/</strong><strong>UEFI-based</strong> computers with GPT (<a href="https://en.wikipedia.org/wiki/GUID_Partition_Table">GUID Partition Table</a>) storage devices.</p>
+
+<h3>Default Partition Layout</h3>
+
+<ul>
+<li><strong>EFI System Partition</strong></li>
+<li><strong>Label:</strong> ESP</li>
+<li><strong>Mount point:</strong> /boot/efi</li>
+<li><strong>Filesystem type:</strong> FAT32</li>
+<li><strong>Flags:</strong> boot</li>
+<li><strong>Size:</strong> 100 M</li>
+<li><strong>Root filesystem</strong></li>
+<li><strong>Label:</strong> NX_ROOT</li>
+<li><strong>Mount point:</strong> /</li>
+<li><strong>Filesystem type:</strong> XFS</li>
+<li><strong>Flags:</strong> none</li>
+<li><strong>Size:</strong> We <strong>require</strong> at least 7.5 GB of free space for the root filesystem. However, we <strong>recommend</strong> at least 10 GB of free space</li>
+<li><strong>Home directory</strong></li>
+<li><strong>Label:</strong> NX_HOME</li>
+<li><strong>Mount point:</strong> /home</li>
+<li><strong>Filesystem type:</strong> F2FS</li>
+<li><strong>Flags:</strong> none</li>
+<li><strong>Size:</strong> Up to the user's discretion</li>
+<li><strong>/var/lib directory</strong></li>
+<li><strong>Label:</strong> NX\<em>VAR\</em>LIB</li>
+<li><strong>Mount point:</strong> /var/lib</li>
+<li><strong>Filesystem type:</strong> F2FS</li>
+<li><strong>Flags:</strong> none</li>
+<li><strong>Size:</strong> At least 7 GB; more if using <em>system</em> Flatpaks and Distrobox containers</li>
+<li><strong>Swap</strong></li>
+<li><strong>Label:</strong> SWAP</li>
+<li><strong>Mount point:</strong> None (automatically configured)</li>
+<li><strong>Filesystem type:</strong> Linux swap</li>
+<li><strong>Flags:</strong> swap</li>
+<li><strong>Size:</strong> 1x RAM (Suspend) or 2x RAM (Suspend/Hibernation)</li></ul>
+<h3>Important Notes</h3>
+
+<p><strong>Do not add the directory</strong> <code class="EnlighterJSRAW" data-enlighter-language="generic">/etc</code> <strong>as a separate partition</strong>; otherwise, the system will be unbootable Nitrux <strong>requires</strong> XFS for the root partition. The Nitrux Update Tool System depends on XFS features to create redundant backups. Systems installed on other filesystems cannot use Rescue or Rescue Mode. We emphasize that <strong>users must</strong> <strong>label</strong> the partitions; otherwise, they will lose functionality such as upgrades and rollbacks with the Nitrux Update Tool System. Optionally, encrypt the entire system (or each partition individually).</p>
+
+

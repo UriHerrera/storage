@@ -1,0 +1,101 @@
+<p>Nitrux strictly separates the immutable root filesystem from user-installed software. Applications never modify the root—they exist entirely in user-writable locations, managed through declarative tooling rather than traditional package managers.</p>
+
+<h3><strong>Decoupling Applications from System Integrity</strong></h3>
+
+<p>In traditional distributions, applications and system components share the same hierarchy (e.g., <code class="EnlighterJSRAW" data-enlighter-language="generic">/usr</code>), creating a fragile dependency web in which a software update can destabilize the boot process. Nitrux eliminates this risk by enforcing a strict <strong>Layered Architecture</strong>. We treat the system not as a bucket for applications, but as an immutable chassis. Applications are modular payloads that run <em>on top</em> of this chassis, not <em>inside</em> it.</p>
+
+<h3>The Architecture Stack</h3>
+
+<p>We divide the system into three distinct zones of authority:</p>
+
+<ul>
+<li><strong>Immutable Root (Tier 0)</strong>: The OS core. It is read-only and managed strictly by the Nitrux Update Tool System. Nothing the user installs ever touches this layer.</li>
+<li><strong>Persistent System State (Tier 1)</strong>: Located in /var/lib, this layer holds system-wide data that must change (Docker images, Bluetooth pairings, NetworkManager connections) but does not alter OS binaries.</li>
+<li><strong>User Space (Tier 2)</strong>: Located in /home, this is your domain. AppBoxes and user configurations live here, completely isolated from the system core.</li></ul>
+<hr>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+┌────────────────────────────────────────────────────────────────┐
+│                         USER SPACE                             │
+│                          /home                                 │
+│  ┌───────────────┐  ┌───────────────┐  ┌────────────────────┐  │
+│  │   AppBoxes    │  │ Flatpak user  │  │ User configuration │  │
+│  │  (NX AppHub)  │  │               │  │                    │  │
+│  └───────────────┘  └───────────────┘  └────────────────────┘  │
+├────────────────────────────────────────────────────────────────┤
+│                   PERSISTENT SYSTEM STATE                      │
+│                         /var/lib                               │
+│  ┌───────────────┐  ┌───────────────┐  ┌────────────────────┐  │
+│  │Flatpak system │  │   Distrobox   │  │   Service data     │  │
+│  │               │  |    rootful    │  |  (NetworkManager,  │  │
+│  │               │  │  containers   │  │  BlueZ, etc.)      │  │
+│  └───────────────┘  └───────────────┘  └────────────────────┘  │
+├────────────────────────────────────────────────────────────────┤
+│                       IMMUTABLE ROOT                           │
+│                            /                                   │
+│                                                                │
+│                    Read-only base system                       │
+│                   (NX Overlayroot + NUTS)                      │
+│                                                                │
+│                  ┌──────────────────────┐                      │
+│                  │   No writes allowed  │                      │
+│                  └──────────────────────┘                      │
+└────────────────────────────────────────────────────────────────┘
+
+                SOFTWARE INSTALLATION FLOW
+
+                       ┌──────────┐
+                       │  User    │
+                       │ installs │
+                       │ software │
+                       └────┬─────┘
+                            │
+               ┌────────────┼────────────┐
+               ▼            ▼            ▼
+          ┌─────────┐ ┌──────────┐ ┌───────────┐
+          │AppBoxes │ │ Flatpak  │ │ Distrobox │
+          └────┬────┘ └────┬─────┘ └─────┬─────┘
+               │           │             │
+               ▼           ▼             ▼
+          ┌─────────┐ ┌──────────┐ ┌───────────┐
+          │ /home   │ │ /home or │ │ /home or  │
+          │         │ │ /var/lib │ │ /var/lib  │
+          └─────────┘ └──────────┘ └───────────┘
+               │           │             │
+               └───────────┴─────────────┘
+                           │
+                           ▼
+               ┌───────────────────────┐
+               │ Immutable root        │
+               │ remains untouched     │
+               └───────────────────────┘
+</code></pre>
+
+<hr>
+
+<p>Users can install, uninstall, or modify applications in the <em>User Space</em> or <em>Persistent State</em> without compromising the <em>Immutable Root's bootability</em>.</p>
+
+<h3>Why Rootless?</h3>
+
+<ul>
+<li><strong>Preserves immutability.</strong> Software installation cannot compromise the root filesystem's known state.</li>
+<li><strong>User autonomy.</strong> Users manage their own applications without elevated privileges. NX AppHub manages AppBoxes entirely within the user space.</li>
+<li><strong>Reproducibility.</strong> NX AppHub builds AppBoxes locally from YAML definitions and curated Debian-based repositories: no third-party binaries, deterministic results.</li>
+<li><strong>Sandboxing by default.</strong> AppBoxes can include Firejail, AppArmor, or Bubblewrap profiles. Flatpaks run sandboxed. Distrobox isolates containers by design.</li>
+<li><strong>No package manager conflicts.</strong> Traditional package managers scatter files across the filesystem and create dependency conflicts over time. The rootless model eliminates this.</li></ul>
+<h3>The Components</h3>
+
+<p><strong>NX AppHub:</strong> The orchestrator of the user layer. Unlike a traditional package manager that scatters files across the root filesystem, NX AppHub CLI manages applications as discrete, atomic units. It ensures that installing a calculator app never requires root privileges or risks breaking the display driver. <strong>AppBoxes:</strong> Our vision of the ideal format for Nitrux. A declarative workflow wraps AppBoxes.</p>
+
+<ul>
+<li><strong>Reliability:</strong> They are purpose-built for the Nitrux runtime, prioritizing native stability and optimization over universal compatibility. They integrate seamlessly into the desktop while remaining physically isolated from the core.</li>
+<li><strong>Isolation</strong>: They run within <strong>Bubblewrap</strong> (GUI) or <strong>AppArmor/Firejail</strong> (CLI) environments.</li>
+<li><strong>Determinism:</strong> Built locally from verifiable upstream packages, ensuring a transparent chain of trust free from opaque binaries.</li>
+<li><strong>Efficiency:</strong> They function as a modular system overlay, bundling only what the host lacks to avoid redundancy and bloat.</li></ul>
+<p><strong>Flatpak</strong> and <strong>Distrobox</strong> are supported as a secondary universal standard for applications not yet available as AppBoxes, adhering to the same rootless, sandboxed principles.</p>
+
+<h3>Information</h3>
+
+<p>See <a href="https://nxos.org/documentation/software-management/">Software Management</a> for detailed information.</p>
+
+

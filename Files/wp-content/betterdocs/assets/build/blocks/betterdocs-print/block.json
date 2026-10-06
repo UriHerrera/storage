@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Print",
+	"name": "betterdocs/betterdocs-print",
+	"category": "betterdocs",
+	"description": "Print Button lets your users simply just hit the button, save as PDF & print the documentation.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

@@ -1,0 +1,22 @@
+<p>To add a wireless connection using the GUI (<strong>recommended</strong>), do the following steps:</p>
+
+<ul>
+<li>Open System Settings→KDE Wallet→click the button Launch Wallet Manager, or New in Automatic Wallet Selection.</li>
+<li>Enter a name for the <em>wallet</em> and select an encryption type.</li>
+<li>Enter a password for the <em>wallet</em> and click OK, then reboot.</li>
+<li>Log in and open System Settings→Wi-FI and Internet→Wi-Fi &amp; Networking, or left-click the network module in Waybar.</li>
+<li>Double left-click or right-click the wireless network, select Connect, and enter the wireless password.</li>
+<li>Enter the <em>wallet</em> password when prompted to open it and connect to the wireless network.</li></ul>
+<p>Alternatively, users can use the command <code class="EnlighterJSRAW" data-enlighter-language="generic">nmtui</code> in the terminal (<strong>fallback, not recommended</strong>). Using the command <code class="EnlighterJSRAW" data-enlighter-language="generic">nmtui</code> will skip the KDE Wallet integration. Skipping KDE Wallet to store the network password will be significantly less secure, as NetworkManager stores the password in plain text.</p>
+
+<ul>
+<li>Select "Activate a connection."</li>
+<li>Navigate to the chosen network using the arrow and tab keys, and select "&lt;Activate&gt;" or press Enter.</li>
+<li>Enter the password for the selected network, and select "&lt;OK&gt;" or press Enter.</li></ul>
+<p>NetworkManager automatically configures Ethernet connections, and no user action is required.</p>
+
+<h3>Important Notes</h3>
+
+<p>Entering an incorrect password prevents the system from connecting to the network. As of Nitrux 6.0.0, the user must unlock the wallet manually; wireless networks do not connect automatically at login. If no wallet exists before adding a wireless network, the notification "<em>Failed to get secrets for &lt;Network&gt; No agents were available for this request.</em>" will appear; <strong>this is not a bug in Nitrux</strong>. The notification only indicates that there is no encrypted database (i.e., <em>no wallet)</em> to store the secrets (i.e., <em>the password)</em>.</p>
+
+

@@ -1,0 +1,64 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "betterdocs/code-snippet",
+	"title": "BetterDocs Code Snippet",
+	"category": "betterdocs",
+	"description": "Insert stylized, language-aware code blocks with copy-to-clipboard functionality.",
+	"keywords": [
+		"code",
+		"snippet",
+		"syntax",
+		"highlight",
+		"programming",
+		"betterdocs"
+	],
+	"textdomain": "betterdocs",
+	"attributes": {
+		"blockId": {
+			"type": "string"
+		},
+		"blockMeta": {
+			"type": "object"
+		},
+		"resOption": {
+			"type": "string",
+			"default": "Desktop"
+		},
+		"codeContent": {
+			"type": "string",
+			"default": ""
+		},
+		"language": {
+			"type": "string",
+			"default": "javascript"
+		},
+		"codeVariants": {
+			"type": "array",
+			"default": []
+		},
+		"showLanguageLabel": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCopyButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"showLineNumbers": {
+			"type": "boolean",
+			"default": false
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		}
+	},
+	"supports": {
+		"align": [
+			"wide",
+			"full"
+		],
+		"html": false
+	}
+}

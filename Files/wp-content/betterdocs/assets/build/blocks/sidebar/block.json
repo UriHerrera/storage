@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Sidebar",
+	"name": "betterdocs/sidebar",
+	"category": "betterdocs",
+	"description": "Easily incorporate sidebars into your knowledge base documentation.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

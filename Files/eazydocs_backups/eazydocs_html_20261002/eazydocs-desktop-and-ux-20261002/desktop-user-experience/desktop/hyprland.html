@@ -1,0 +1,129 @@
+<p>Nitrux ships with a preconfigured Hyprland environment.</p>
+
+<h3>Appearance</h3>
+
+<ul>
+<li><strong>Gaps</strong> → 4px inner, 8px outer.</li>
+<li><strong>Border</strong> → 1px; active gradient from cyan to green at 45°, gray inactive.</li>
+<li><strong>Corner rounding</strong> → 16px.</li>
+<li><strong>Opacity</strong> → 100% active, 80% inactive.</li>
+<li><strong>Blur</strong> → Enabled, size 6, three passes, with opacity ignored.</li>
+<li><strong>Animations</strong> → Enabled for windows, borders, fading, workspaces, and monitor changes.</li>
+<li><strong>Layout</strong> → Dwindle with split preservation enabled.</li></ul>
+<h3>Input</h3>
+
+<ul>
+<li><strong>Keyboard layout</strong> → US.</li>
+<li><strong>Mouse sensitivity</strong> → Default (0).</li>
+<li><strong><code class="EnlighterJSRAW" data-enlighter-language="generic">epic-mouse-v1</code> Sensitivity</strong> → -0.5.</li>
+<li><strong>Touchpad natural scroll</strong> → Disabled.</li>
+<li><strong>Focus follows mouse</strong> → Enabled.</li>
+<li><strong>Touchpad gestures</strong> → Three-finger horizontal swipes switch workspaces.</li></ul>
+<h3>Idle and Lock (hypridle)</h3>
+
+<ul>
+<li><strong>5 minutes (300s)</strong> → Screen dims.</li>
+<li><strong>5 minutes 50 seconds (350s)</strong> → Desklock activates.</li>
+<li><strong>8 minutes 20 seconds (500s)</strong> → Display turns off.</li>
+<li><strong>10 minutes (600s)</strong> → System suspends.</li></ul>
+<p>The lock screen activates automatically before sleep and when the lid is closed. The display turns back on after resume.</p>
+
+<h3>Wallpaper (hyprpaper)</h3>
+
+<p>Default wallpaper: <code class="EnlighterJSRAW" data-enlighter-language="generic">/usr/share/wallpapers/Blossom/contents/images/4096x2304.png</code></p>
+
+<h3>Autostart</h3>
+
+<p>The default configuration provides the following user services and applications:</p>
+
+<ul>
+<li><strong>Display</strong> → Hyprscreend, Hyprpaper.</li>
+<li><strong>Desktop shell</strong> → Marina dock, Valenz panel, and notification interface.</li>
+<li><strong>Session and locking</strong> → Hypridle, Desklock.</li>
+<li><strong>Launcher and clipboard</strong> → Vicinae.</li>
+<li><strong>Notifications and OSD</strong> → Valenz, NudgeOSD.</li>
+<li><strong>Audio</strong> → PipeWire, PipeWire Pulse, WirePlumber.</li>
+<li><strong>Portals</strong> → XDG Desktop Portal.</li>
+<li><strong>Power and hardware</strong> → NX Powerd, OpenRazer daemon, MauiManServer, Maui Bluetooth OBEX agent.</li>
+<li><strong>Background services</strong> → NX AppHub daemon, GameMode, dmemcg-booster, KDED6, KSecretD, and the Nitrux PolicyKit agent.</li>
+<li><strong>Blue light filter</strong> → Hyprsunset.</li></ul>
+<p>Hyprland also runs <code class="EnlighterJSRAW" data-enlighter-language="generic">nwsm finalize</code>, <code class="EnlighterJSRAW" data-enlighter-language="generic">brightnessctl -s set 48000</code>, and <code class="EnlighterJSRAW" data-enlighter-language="generic">xdg-user-dirs-update</code> when the session starts.</p>
+
+<h3>Keybinds</h3>
+
+<p>These are the default keybinds in the Hyprland configuration. Nitrux uses <code class="EnlighterJSRAW" data-enlighter-language="generic">Super</code> (Windows key) as the main modifier.</p>
+
+<h3>Applications</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Q</code> → Terminal (Station).</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + E</code> → File manager (Index).</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + W</code> → Web browser (Fiery).</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + R</code> → Application launcher (Vicinae).</li></ul>
+<h3>Windows</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + C</code> → Close window.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + V</code> → Toggle floating.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + F</code> → Toggle fullscreen.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + P</code> → Pseudotile.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + J</code> → Toggle split.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Arrow keys</code> → Move focus.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + LMB drag</code> → Move window.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + RMB drag</code> → Resize window.</li></ul>
+<h3>Workspaces</h3>
+
+<p>Hyprland does not use traditional maximize or minimize actions. Windows can be tiled, floating, or fullscreen. To hide a window, move it to another workspace.</p>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + 1–0</code> → Switch to workspace 1–10.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + 1–0</code> → Move the window to workspace 1–10.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Ctrl + 1–0</code> → Activate Marina launcher 1–10.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + F12</code> → Hold the Marina launcher.</li></ul>
+<h3>Session</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + L</code> → Lock the screen with Desklock.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + M</code> → Terminate the session.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + P</code> → Session options (QMLogout).</li></ul>
+<h3>Screenshots</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Print</code> → Full screenshot.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Print</code> → Selection screenshot.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Shift + Print</code> → Window screenshot.</li></ul>
+<p>Toma handles screenshots.</p>
+
+<h3>Clipboard</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + V</code> → Show Vicinae clipboard history.</li></ul>
+<h3>Media Keys</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioRaiseVolume</code> → Volume up.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioLowerVolume</code> → Volume down.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioMute</code> → Toggle mute.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioPlay</code> → Play/pause.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioNext</code> → Next track.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86AudioPrev</code> → Previous track.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86MonBrightnessUp</code> → Brightness up.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">XF86MonBrightnessDown</code> → Brightness down.</li></ul>
+<h3>Utilities</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + D</code> → Restart Marina.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + W</code> → Restart Valenz.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + N</code> → Restart NudgeOSD.</li></ul>
+<h3>Configuration Files</h3>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hypr/hyprland.lua</code> → Main Hyprland configuration.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hypr/hypridle.conf</code> → Idle and lock behavior.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hypr/hyprpaper.conf</code> → Wallpaper.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/hypr/hyprsunset.conf</code> → Blue light filter.</li></ul>
+<h3>Important Notes</h3>
+
+<p>Hyprland Documentation: <a href="https://wiki.hypr.land/">https://wiki.hypr.land/</a></p>
+
+

@@ -1,0 +1,6 @@
+---
+title: "Using QuickHash-GUI (Windows)"
+eazydocs_id: 14694
+---
+
+If you're on Windows, you can use a program like [QuickHash-GUI](https://www.quickhash-gui.org/). After installing the application, select SHA-512 as the algorithm, click the "File" tab, then click the "Select File" button and navigate to the ISO directory. QuickHash-GUI will immediately start checking the file's checksum. \[divider line\_type="undefined" custom\_height="10"\] ![](https://nxos.org/wp-content/uploads/2021/12/Captura-de-pantalla-2024-07-11-144217-2.png)\[divider line\_type="undefined" custom\_height="10"\] To verify that this sum matches, download the checksum file and open it using any text editor. Then, copy the sum and paste it into the field "Expected Hash Value." QuickHash-GUI will automatically verify the sum and display a dialog if verification succeeds. \[divider line\_type="undefined" custom\_height="10"\] ![](https://nxos.org/wp-content/uploads/2021/12/Captura-de-pantalla-2024-07-11-144813-2.png)\[divider line\_type="undefined" custom\_height="10"\] ![](https://nxos.org/wp-content/uploads/2021/12/Captura-de-pantalla-2024-07-11-144806.png)\[divider line\_type="undefined" custom\_height="10"\]

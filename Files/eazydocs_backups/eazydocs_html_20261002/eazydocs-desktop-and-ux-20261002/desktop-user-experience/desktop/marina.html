@@ -1,0 +1,58 @@
+<p>Marina is a QML-based workspace dock designed for Nitrux. Built with MauiKit and LayerShell-Qt, it provides application launchers, window tracking, and workspace integration for Hyprland.</p>
+
+<h3>Appearance</h3>
+
+<ul>
+<li><strong>Position</strong> → Bottom of the screen.</li>
+<li><strong>Icon size</strong> → 40px.</li>
+<li><strong>Edge margin</strong> → 5px.</li>
+<li><strong>Width and height</strong> → Adjusted automatically.</li></ul>
+<h3>Window Controls</h3>
+
+<ul>
+<li><strong>Left-click</strong> → Launch an application or focus its window.</li>
+<li><strong>Left-click on an application with multiple windows</strong> → Cycle through its windows.</li>
+<li><strong>Middle-click</strong> → Open a new window.</li>
+<li><strong>Right-click</strong> → Open the application menu.</li>
+<li><strong>Drag a pinned launcher</strong> → Reorder the launcher.</li></ul>
+<h3>Launcher Menu</h3>
+
+<p>The launcher's contextual menu provides the following actions:</p>
+
+<ul>
+<li><strong>Open new window</strong> → Launch another instance of the application.</li>
+<li><strong>Pin or unpin launcher</strong> → Add or remove the application from the dock.</li>
+<li><strong>Tile or untile window</strong> → Toggle the active window between tiled and floating.</li>
+<li><strong>Close</strong> → Close all windows belonging to the application.</li></ul>
+<h3>Indicators</h3>
+
+<ul>
+<li><strong>Running indicator</strong> → Shows when an application is running.</li>
+<li><strong>Window count</strong> → Displays the number of open windows when more than three are running.</li>
+<li><strong>Unread messages</strong> → Displays launcher-entry message counts when supported by the application.</li>
+<li><strong>Launch indicator</strong> → Shows while an application is starting.</li></ul>
+<h3>Usage</h3>
+
+<p>Launcher shortcuts are disabled by default. When enabled, the following Hyprland keybinds are available:</p>
+
+<ul>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + F12</code> → Hold to activate launcher shortcut mode.</li>
+<li><code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Ctrl + 1–0</code> → Launch pinned launcher 1–10.</li></ul>
+<p>The default configuration uses a 2.3-second hold delay and keeps launcher shortcut mode active for 995ms. The default keybind for restarting Marina is <code class="EnlighterJSRAW" data-enlighter-language="generic">Super + Shift + D</code>.</p>
+
+<h3>Behavior</h3>
+
+<ul>
+<li><strong>Auto-hide</strong> → Disabled.</li>
+<li><strong>Auto-hide delay</strong> → 500ms when enabled.</li>
+<li><strong>Fullscreen behavior</strong> → Marina is hidden while a window is fullscreen.</li>
+<li><strong>Window tracking</strong> → Updates automatically when applications, windows, workspaces, or displays change.</li></ul>
+<h3>Configuration</h3>
+
+<p>Marina stores its user configuration in: <code class="EnlighterJSRAW" data-enlighter-language="generic">~/.config/marina/marina.conf</code> Marina monitors its configuration file and automatically applies configuration changes.</p>
+
+<h3>Information</h3>
+
+<p>Marina is developed by Nitrux and released under the BSD-3-Clause license.</p>
+
+

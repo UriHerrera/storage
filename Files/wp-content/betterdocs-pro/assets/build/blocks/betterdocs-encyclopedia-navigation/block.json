@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Encyclopedia Navigation",
+    "name": "betterdocs/betterdocs-encyclopedia-navigation",
+    "category": "betterdocs",
+    "description": "Display encyclopedia navigation or documentation in alphabetical order to help users find their needs easily.",
+    "textdomain": "betterdocs-pro",
+    "editorScript": "betterdocs-blocks-editor"
+}

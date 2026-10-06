@@ -1,0 +1,81 @@
+@font-face {
+  font-family: "btd-icon";
+  src: url("fonts/btd-icon.eot?59skm4");
+  src: url("fonts/btd-icon.eot?59skm4#iefix") format("embedded-opentype"), url("fonts/btd-icon.ttf?59skm4") format("truetype"), url("fonts/btd-icon.woff?59skm4") format("woff"), url("fonts/btd-icon.svg?59skm4#btd-icon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+.btd-icon {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "btd-icon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.btd-add-line:before {
+  content: "\e900";
+}
+
+.btd-close-fill:before {
+  content: "\e901";
+}
+
+.btd-copy:before {
+  content: "\e902";
+}
+
+.btd-moon:before {
+  content: "\e903";
+}
+
+.btd-search:before {
+  content: "\e904";
+}
+
+.btd-sun:before {
+  content: "\e905";
+}
+
+.btd-crown:before {
+  content: "\e906";
+}
+
+.btd-lock:before {
+  content: "\e907";
+}
+
+.btd-delete:before {
+  content: "\e908";
+}
+
+.btd-upload:before {
+  content: "\e909";
+}
+
+.btd-tick:before {
+  content: "\e90a";
+}
+
+.btd-duplicate:before {
+  content: "\e90b";
+}
+
+.btd-lock-open:before {
+  content: "\e90c";
+}
+
+.btd-key:before {
+  content: "\e90d";
+}
+
+.btd-arrow-up:before {
+  content: "\e90e";
+}/*# sourceMappingURL=style.css.map */

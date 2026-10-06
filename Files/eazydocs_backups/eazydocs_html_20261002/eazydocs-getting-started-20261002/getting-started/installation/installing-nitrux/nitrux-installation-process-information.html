@@ -1,0 +1,28 @@
+<p>Below is the information we consider necessary for users to read and understand before installing Nitrux on their computers.</p>
+
+<ol>
+<li>The default username and password for the Live session are both: <code class="EnlighterJSRAW" data-enlighter-language="generic">nitrux</code></li>
+<li>When adding a username, i.e., "a name for the user," do not include spaces, special characters, or numbers.</li>
+<li>When adding a hostname, i.e., "a name for the computer," do not include spaces or special characters.</li>
+<li>Our Calamares configuration enforces strict password quality checks using libpwquality to ensure high account security.</li>
+<li>When creating the system administrator account, users must define a password that is at least 12 characters long and includes a mix of four character classes: uppercase letters, lowercase letters, numbers, and symbols. Additionally, the system rejects passwords that contain common patterns, username substrings, or banned words (e.g., "nitrux," "calamares," or "password").</li>
+<li>We recommend using a password generator application (mobile or desktop) or a website. <strong>Please avoid using simple passwords</strong>, such as 1234567890aB!, as they will not pass the password quality checks (they fail the dictionary check). Alternatively, run the following command to generate a usable password directly from the terminal.</li></ol>
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+pwgen -ys 15 1
+</code></pre>
+
+<hr>
+
+<p>To view Calamares's verbose output during installation, click the icon next to the progress bar or start Calamares from the Terminal. To start Calamares from the Terminal, run the following command.</p>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">
+sudo -E start-calamares
+</code></pre>
+
+<hr>
+
+<h3>Important Notes</h3>
+
+<p>Users can bypass the password quality check during installation by unchecking "Enable password strength validation." However, <strong>we strongly recommend leaving this enabled</strong>. Please be aware that this is a one-time exception. Once installation is complete, the system's high-security requirements enforce strong passwords for all new accounts. Valid hostname characters are ASCII letters a-z, digits 0-9, and the hyphen (-). Neither a hostname nor a username may start with a hyphen.</p>
+
+

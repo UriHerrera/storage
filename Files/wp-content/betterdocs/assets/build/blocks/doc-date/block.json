@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Date",
+	"name": "betterdocs/date",
+	"category": "betterdocs",
+	"description": "Display the date of the Docs.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

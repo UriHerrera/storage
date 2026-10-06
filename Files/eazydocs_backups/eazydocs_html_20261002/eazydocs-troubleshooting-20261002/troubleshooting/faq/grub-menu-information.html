@@ -1,0 +1,28 @@
+<p>Run the following commands to edit the GRUB Menu, such as adding or modifying kernel parameters.</p>
+
+<pre><code class="EnlighterJSRAW" data-enlighter-language="generic">sudo overlayroot-chroot
+
+mount -t devtmpfs dev /dev
+
+mount -t auto $(findfs LABEL=NX_VAR_LIB) /var/lib
+
+micro /etc/default/grub
+
+# (... do stuff...)
+
+update-grub
+
+sync
+
+umount /dev /var/lib
+
+exit
+</code></pre>
+
+<p>When booting with UEFI, press <code class="EnlighterJSRAW" data-enlighter-language="generic">Escape</code> to display the GRUB menu after the manufacturer logo. When booting with Legacy BIOS, press <code class="EnlighterJSRAW" data-enlighter-language="generic">Shift</code> to display the GRUB menu after the manufacturer logo.</p>
+
+<h3>Important Notes</h3>
+
+<p>The GRUB menu will not be displayed in VirtualBox or GNOME Boxes unless there's an additional entry in GRUB to display a menu; pressing Escape has no effect.</p>
+
+

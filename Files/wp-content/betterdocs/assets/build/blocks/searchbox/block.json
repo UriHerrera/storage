@@ -1,0 +1,10 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "title": "BetterDocs Search Form",
+    "name": "betterdocs/searchbox",
+    "category": "betterdocs",
+    "description": "Simple search forms for easy user guidance for your knowledge base.",
+    "textdomain": "betterdocs",
+    "editorScript": "betterdocs-blocks-editor"
+}

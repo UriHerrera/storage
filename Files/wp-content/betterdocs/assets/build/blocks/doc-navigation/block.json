@@ -1,0 +1,10 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"title": "BetterDocs Doc Navigation",
+	"name": "betterdocs/doc-navigation",
+	"category": "betterdocs",
+	"description": "Navigate between one docs to another easily with doc navigator block.",
+	"textdomain": "betterdocs",
+	"editorScript": "betterdocs-blocks-editor"
+}

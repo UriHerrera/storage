@@ -1,0 +1,27 @@
+<p>If you are using Windows and <a href="https://rufus.ie/"><strong>Rufus</strong></a>, follow these steps:</p>
+
+<ol>
+<li>Download a Nitrux ISO file, and download and install Rufus.</li>
+<li>Insert the USB flash drive into a USB port, then launch Rufus.</li>
+<li>Rufus will update the device within the '<strong>Device'</strong> field. If the '<strong>Device'</strong> selected is incorrect (perhaps you have multiple USB storage devices), select the correct one from the dropdown menu in the device field.</li>
+<li>Now, select the Boot selection. The choices will include <em>Non-bootable,</em> <em>FreeDOS, Disk, or ISO image</em>. Select "<strong>Disk or ISO image</strong>."</li>
+<li>To select the Nitrux ISO file you downloaded previously, click <strong>SELECT</strong> to the right of "Boot selection." If this is the only ISO file in the Downloads folder, you will see only one file listed. Select the appropriate ISO file, then click <strong>Open</strong>.</li>
+<li>The default selections for the Partition scheme (<em>GPT</em>) and Target system (<em>UEFI (no CSM)</em>) are appropriate (and are the only options available).</li>
+<li>Rufus will update the "Volume" label to reflect the ISO selected. Leave all other parameters at their default values, then click <strong>START</strong> to initiate the writing process.</li>
+<li>When prompted to select which mode to write this image, choose to <strong>Write in DD Image mode.</strong></li>
+<li>Rufus will now write the ISO to your USB stick, and the progress bar will show your progress. With a reasonably modern machine, this should take around 10 minutes. Rufus displays the total elapsed time in the lower-right corner of the Rufus window.</li>
+<li>When Rufus has finished writing the USB device, the Status bar will be green-filled, and the word <strong>READY</strong> will appear in the center. Select <strong>CLOSE</strong> to complete the writing process.</li></ol>
+<hr>
+
+<p><img src="https://nxos.org/wp-content/uploads/2021/12/Captura-de-pantalla-2021-12-08-203241.png" alt=""></p>
+
+<hr>
+
+<h3>Troubleshooting</h3>
+
+<p><a href="https://www.neowin.net/software/rufus-424070-beta/">Rufus 4.2.4070 Beta</a> introduced a feature to display a warning about revoked UEFI bootloaders: "Add detection and warning for UEFI revoked bootloaders (including ones revoked through SkuSiPolicy.p7b)." Doing this will cause Rufus to display a warning message. Users can ignore this warning, as the bootloader post-installation is signed; however, the bootloader in the ISO isn't signed, nor are the kernels, and the distribution will not boot with Secure Boot enabled.</p>
+
+<ul>
+<li>See <a href="https://github.com/pbatard/rufus/issues/2244">this issue at the Rufus repository</a> for context about this warning.</li>
+<li>Also, <a href="https://www.reddit.com/r/ghostspectre/comments/15un0rq/trying_to_download_ghost_for_first_time_so/">see this reply in a Reddit thread of the Rufus developer</a> about their reasoning for implementing it.</li></ul>
+

@@ -1,0 +1,75 @@
+{
+    "name": "wpdeveloper/betterdocs-pro",
+    "version": "4.1.0",
+    "authors": [
+        {
+            "name": "WPDeveloper",
+            "email": "support@wpdeveloper.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WPDeveloper\\BetterDocsPro\\": "includes/"
+        },
+        "exclude-from-classmap": [
+            "CoenJacobs\\Mozart"
+        ]
+    },
+    "require-dev": {
+        "coenjacobs/mozart": "^0.7.1"
+    },
+    "require": {
+        "wpdeveloper/licensing": "^2.3",
+        "woocommerce/action-scheduler": "^3.9"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:WPDevelopers/licensing.git"
+        }
+    ],
+    "extra": {
+        "mozart": {
+            "dep_namespace": "WPDeveloper\\BetterDocsPro\\Dependencies\\",
+            "dep_directory": "/includes/Dependencies/",
+            "classmap_directory": "/includes/classes/dependencies",
+            "classmap_prefix": "BetterDocsPro_",
+            "delete_vendor_directories": false,
+            "excluded_packages": [
+                "woocommerce/action-scheduler"
+            ]
+        }
+    },
+    "scripts": {
+        "pre-install-cmd": [
+            "rm -Rf includes/Dependencies",
+            "rm -Rf includes/classes"
+        ],
+        "pre-update-cmd": [
+            "rm -Rf includes/Dependencies",
+            "rm -Rf includes/classes"
+        ],
+        "post-install-cmd": [
+            "./vendor/bin/mozart compose",
+            "./vendor/bin/change-textdomain.sh betterdocs-pro ./includes/Dependencies/WPDeveloper/Licensing",
+            "rm -Rf vendor/bin",
+            "rm -Rf vendor/wpdeveloper",
+            "rm -Rf vendor/coenjacobs",
+            "rm -Rf vendor/league",
+            "rm -Rf vendor/symfony",
+            "rm -Rf vendor/psr",
+            "composer dump-autoload -o"
+        ],
+        "post-update-cmd": [
+            "./vendor/bin/mozart compose",
+            "./vendor/bin/change-textdomain.sh betterdocs-pro ./includes/Dependencies/WPDeveloper/Licensing",
+            "rm -Rf vendor/bin",
+            "rm -Rf vendor/wpdeveloper",
+            "rm -Rf vendor/coenjacobs",
+            "rm -Rf vendor/league",
+            "rm -Rf vendor/symfony",
+            "rm -Rf vendor/psr",
+            "composer dump-autoload -o"
+        ]
+    }
+}

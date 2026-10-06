@@ -1,0 +1,87 @@
+{
+    "name": "wpdeveloper/betterdocs",
+    "version": "3.0.0",
+    "authors": [
+        {
+            "name": "WPDeveloper",
+            "email": "support@wpdeveloper.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/priyomukul/wp-notice"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "WPDeveloper\\BetterDocs\\": "includes/"
+        },
+        "exclude-from-classmap": [
+            "CoenJacobs\\Mozart"
+        ]
+    },
+    "require": {
+        "php-di/php-di": "6.0.0",
+        "priyomukul/wp-notice": "v3.x-dev",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "coenjacobs/mozart": "^0.7.1",
+        "squizlabs/php_codesniffer": "~3.11.1",
+        "wp-coding-standards/wpcs": "~3.1.0",
+        "phpcompatibility/phpcompatibility-wp": "~2.1.5"
+    },
+    "extra": {
+        "mozart": {
+            "dep_namespace": "WPDeveloper\\BetterDocs\\Dependencies\\",
+            "dep_directory": "/includes/Dependencies/",
+            "classmap_directory": "/includes/classes/dependencies",
+            "classmap_prefix": "BetterDocs_",
+            "packages": [
+                "php-di/php-di"
+            ],
+            "excluded_packages": [
+                "priyomukul/wp-notice",
+                "squizlabs/php_codesniffer",
+                "wp-coding-standards/wpcs",
+                "phpcompatibility/phpcompatibility-wp"
+            ],
+            "delete_vendor_directories": true
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "format": "@php ./bin/phpcbf",
+        "lint": "@php ./vendor/bin/phpcs --report=summary,code,source",
+        "test": "@php ./tests/vendor/bin/phpunit",
+        "pre-install-cmd": [
+            "rm -Rf includes/Dependencies",
+            "rm -Rf includes/classes"
+        ],
+        "pre-update-cmd": [
+            "rm -Rf includes/Dependencies",
+            "rm -Rf includes/classes"
+        ],
+        "post-install-cmd": [
+            "./vendor/bin/mozart compose",
+            "@php bin/php84-nullable-fix.php",
+            "rm -Rf vendor/coenjacobs",
+            "rm -Rf vendor/league",
+            "rm -Rf vendor/symfony",
+            "composer dump-autoload"
+        ],
+        "post-update-cmd": [
+            "./vendor/bin/mozart compose",
+            "@php bin/php84-nullable-fix.php",
+            "rm -Rf vendor/coenjacobs",
+            "rm -Rf vendor/league",
+            "rm -Rf vendor/symfony",
+            "composer dump-autoload"
+        ]
+    }
+}
