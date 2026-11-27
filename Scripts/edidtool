@@ -1,0 +1,238 @@
+#!/usr/bin/env python3
+
+#############################################################################################################################################################################
+#   The license used for this file and its contents is: BSD-3-Clause                                                                                                        #
+#                                                                                                                                                                           #
+#   Copyright <2025> <Uri Herrera <uri_herrera@nxos.org>>                                                                                                                   #
+#                                                                                                                                                                           #
+#   Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:                          #
+#                                                                                                                                                                           #
+#    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.                                        #
+#                                                                                                                                                                           #
+#    2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer                                      #
+#       in the documentation and/or other materials provided with the distribution.                                                                                         #
+#                                                                                                                                                                           #
+#    3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software                    #
+#       without specific prior written permission.                                                                                                                          #
+#                                                                                                                                                                           #
+#    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,                      #
+#    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS                  #
+#    BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                 #
+#    GOODS OR SERVICES; LOSS OF USE, DATA,   OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,                      #
+#    STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.   #
+#############################################################################################################################################################################
+
+import json
+import hashlib
+from pathlib import Path
+import typer
+
+app = typer.Typer(
+    add_completion=False,
+    help=(
+        "EDIDTool — build and install EDID overrides that advertise VESA Adaptive-Sync.\n\n"
+        "Typical use:\n"
+        "  1. ./edidtool list                     → show DP connectors on the discrete GPU\n"
+        "  2. ./edidtool dump --card card0 --connector DP-2\n"
+        "  3. ./edidtool build --card card0 --connector DP-2 --out mi27-as.bin\n"
+        "  4. sudo ./edidtool install --file mi27-as.bin --connector DP-2\n"
+        "  5. Add the printed kernel parameter to your bootloader and reboot."
+    ),
+    rich_markup_mode="markdown"
+)
+__version__ = "1.2.0"
+
+AMD_VENDOR = "0x1002"
+AMD_IGPU_IDS = {"0x164e", "0x164c", "0x1648", "0x1506", "0x1507"}
+
+def rb(p: Path) -> bytes:
+    return p.read_bytes()
+
+def wb(p: Path, b: bytes) -> None:
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_bytes(b)
+
+def split_blocks(edid: bytes) -> list[bytes]:
+    if len(edid) < 128 or len(edid) % 128 != 0:
+        raise RuntimeError("Invalid EDID size")
+    return [edid[i:i+128] for i in range(0, len(edid), 128)]
+
+def checksum128(b: bytes) -> int:
+    return (-sum(b[:-1])) & 0xFF
+
+def fix128(b: bytes) -> bytes:
+    x = bytearray(b)
+    x[-1] = 0
+    x[-1] = checksum128(bytes(x))
+    return bytes(x)
+
+def make_displayid_as_ext(vmin: int, vmax: int) -> bytes:
+    ext = bytearray(128)
+
+    # 1. Define the Data Block (payload)
+    # DisplayID 2.0, Adaptive-Sync Data Block (Tag 0x2B)
+    max_h_freq = 242 # 0x00F2, from your monitor's Block 0 range
+    db = bytearray([
+        0x2B, 0x00, 0x05,           # Tag, Rev, Len=5
+        vmin & 0xFF, vmax & 0xFF,  # 0x30, 0xA5
+        max_h_freq & 0xFF, (max_h_freq >> 8) & 0xFF, # 0xF2, 0x00
+        0x01                      # Flags (Adaptive-Sync support)
+    ])
+    payload_len = len(db) # This is 8
+
+    # 2. Define the DisplayID 2.0 Header (5 bytes)
+    # [Tag, Version, PayloadLength, Checksum, DisplayType]
+    ext[0] = 0x70             # Tag
+    ext[1] = 0x20             # Version
+    ext[2] = payload_len      # N = 8
+    ext[3] = 0x00             # Checksum (placeholder)
+    ext[4] = 0x00             # Display Type
+
+    # 3. Place the payload (starts at byte 5)
+    ext[5 : 5 + payload_len] = db
+
+    # 4. Calculate the internal DisplayID checksum (at ext[3])
+    # The sum of bytes [1, 2] + [4, ... end of payload]
+    # must be 0 mod 256.
+    
+    # Sum bytes 1 and 2
+    partial_sum = sum(ext[1:3]) # ext[1] + ext[2]
+    
+    # Sum bytes 4 through the end of the payload
+    struct_end = 5 + payload_len # 5 + 8 = 13
+    partial_sum += sum(ext[4:struct_end]) # ext[4] + payload
+
+    # The checksum at ext[3] is the value that makes the total sum 0
+    ext[3] = (-partial_sum) & 0xFF
+
+    # 5. Calculate the 128-byte EDID block checksum
+    return fix128(bytes(ext))
+
+def append_ext(base: bytes, ext: bytes) -> bytes:
+    blocks = split_blocks(base)
+    b0 = bytearray(blocks[0])
+    b0[0x7E] = (b0[0x7E] + 1) & 0xFF
+    blocks[0] = fix128(bytes(b0))
+    blocks.append(ext)
+    return b"".join(blocks)
+
+def pci_paths_for_card(card: str) -> Path:
+    p = Path(f"/sys/class/drm/{card}/device")
+    if not p.exists():
+        raise RuntimeError(f"Card not found: {card}")
+    return p
+
+def read_pci_attr(card: str, name: str) -> str:
+    dev = pci_paths_for_card(card)
+    f = dev / name
+    return f.read_text().strip() if f.exists() else ""
+
+def is_amd_igpu(card: str) -> bool:
+    vendor = read_pci_attr(card, "vendor")
+    device = read_pci_attr(card, "device")
+    return vendor == AMD_VENDOR and device in AMD_IGPU_IDS
+
+def is_dp_connector(name: str) -> bool:
+    parts = name.split("-")
+    return len(parts) > 1 and parts[1].startswith("DP")
+
+def detect_connectors(only_dp: bool, exclude_igpu: bool) -> list[dict]:
+    root = Path("/sys/class/drm")
+    items = []
+    for p in root.glob("card*-*"):
+        name = p.name
+        card = name.split("-")[0]
+        connector = "-".join(name.split("-")[1:])
+        if exclude_igpu and is_amd_igpu(card):
+            continue
+        if only_dp and not is_dp_connector(name):
+            continue
+        st = (p / "status").read_text().strip() if (p / "status").exists() else "unknown"
+        items.append({
+            "path": str(p),
+            "card": card,
+            "connector": connector,
+            "status": st,
+            "has_edid": (p / "edid").exists(),
+            "gpu_vendor": read_pci_attr(card, "vendor"),
+            "gpu_device": read_pci_attr(card, "device")
+        })
+    return sorted(items, key=lambda x: (x["card"], x["connector"]))
+
+def pick_connector(card: str, connector: str, only_dp: bool, exclude_igpu: bool, allow_non_dp: bool, include_igpu: bool) -> Path:
+    if exclude_igpu and not include_igpu and is_amd_igpu(card):
+        raise RuntimeError(f"Refusing iGPU card by default: {card}. Pass --include-igpu to override.")
+    if only_dp and not allow_non_dp and not is_dp_connector(f"{card}-{connector}"):
+        raise RuntimeError(f"Refusing non-DisplayPort connector by default: {connector}. Pass --allow-non-dp to override.")
+    p = Path(f"/sys/class/drm/{card}-{connector}")
+    if not p.exists():
+        raise RuntimeError(f"Connector not found: {card}-{connector}")
+    if not (p / "edid").exists():
+        raise RuntimeError(f"No EDID at {card}-{connector}")
+    return p
+
+@app.command(help="List DisplayPort connectors on the discrete GPU by default. Use --all to include non-DP, --include-igpu to include iGPU.")
+def list(all: bool = typer.Option(False, "--all", help="Include non-DisplayPort connectors"), include_igpu: bool = typer.Option(False, "--include-igpu", help="Include AMD iGPU cards")):
+    conns = detect_connectors(only_dp=not all, exclude_igpu=not include_igpu)
+    typer.echo(json.dumps(conns, indent=2))
+
+@app.command(help="Dump the raw EDID from a connector to a file (default: ./edid.bin).")
+def dump(
+    card: str = typer.Option(..., help="Card name, e.g. card0"),
+    connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
+    out: Path = typer.Option(Path("./edid.bin"), help="Destination path for EDID dump"),
+    allow_non_dp: bool = typer.Option(False, help="Allow non-DisplayPort connector"),
+    include_igpu: bool = typer.Option(False, help="Allow AMD iGPU card")
+):
+    base = rb(pick_connector(card, connector, only_dp=True, exclude_igpu=True, allow_non_dp=allow_non_dp, include_igpu=include_igpu) / "edid")
+    wb(out, base)
+    typer.echo(f"Saved EDID to {out}")
+
+@app.command(help="Build a new EDID with Adaptive-Sync range appended.")
+def build(
+    card: str = typer.Option(..., help="Card name, e.g. card0"),
+    connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
+    out: Path = typer.Option(Path("./edid-as.bin"), help="Output file name"),
+    vmin: int = typer.Option(48, help="Minimum VRR vertical frequency (Hz)"),
+    vmax: int = typer.Option(165, help="Maximum VRR vertical frequency (Hz)"),
+    allow_non_dp: bool = typer.Option(False, help="Allow non-DisplayPort connector"),
+    include_igpu: bool = typer.Option(False, help="Allow AMD iGPU card")
+):
+    base = rb(pick_connector(card, connector, only_dp=True, exclude_igpu=True, allow_non_dp=allow_non_dp, include_igpu=include_igpu) / "edid")
+    ext = make_displayid_as_ext(vmin, vmax)
+    ov = append_ext(base, ext)
+    wb(out, ov)
+    typer.echo(f"Wrote Adaptive-Sync EDID to {out}")
+
+@app.command(help="Show file size, block count, and checksum for an EDID file.")
+def info(file: Path = typer.Option(..., help="Path to EDID file")):
+    b = rb(file)
+    blocks = len(b) // 128
+    sha = hashlib.sha256(b).hexdigest()
+    typer.echo(json.dumps({"size": len(b), "blocks": blocks, "sha256": sha}, indent=2))
+
+@app.command(help="Install an EDID file under /usr/lib/firmware/edid and print kernel parameters.")
+def install(
+    file: Path = typer.Option(..., help="EDID file to install"),
+    connector: str = typer.Option(..., help="Connector name, e.g. DP-2"),
+    fwdir: Path = typer.Option(Path("/usr/lib/firmware/edid"), help="Firmware directory"),
+    print_kernel_params: bool = typer.Option(True, help="Show boot parameters to enable override")
+):
+    data = rb(file)
+    fwdir.mkdir(parents=True, exist_ok=True)
+    target = fwdir / file.name
+    wb(target, data)
+    if print_kernel_params:
+        typer.echo(f"\nAdd to kernel parameters:\n")
+        typer.echo(f"  drm.edid_firmware={connector}:edid/{file.name}")
+        typer.echo(f"  video={connector}:e\n")
+    typer.echo(f"Installed {target}")
+
+@app.callback()
+def version_callback(version: bool = typer.Option(None, "--version", help="Show version and exit.", is_eager=True)):
+    if version:
+        typer.echo(f"EDIDTool {__version__}")
+        raise typer.Exit()
+
+if __name__ == "__main__":
+    app()

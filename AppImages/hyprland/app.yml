@@ -1,0 +1,116 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: hyprland
+  version: 0.50.1
+  binarypath: /usr/bin/Hyprland
+  distrorepo:
+    - distro: debian
+      release: unstable
+      arch: amd64
+      components:
+        - main
+  deps:
+    - binutils
+    - binutils-common
+    - binutils-x86-64-linux-gnu
+    - coreutils
+    - grep
+    - libbinutils
+    - libbz2-1.0
+    - libcairo-gobject2
+    - libcairo2
+    - libctf-nobfd0
+    - libctf0
+    - libdatrie1
+    - libdav1d7
+    - libdecor-0-0
+    - libdecor-0-plugin-1-gtk
+    - libdisplay-info2
+    - libduktape207
+    - libevdev2
+    - libffi8
+    - libfontenc1
+    - libfribidi0
+    - libgdk-pixbuf-2.0-0
+    - libgprofng0
+    - libgudev-1.0-0
+    - libice6
+    - libinput-bin
+    - libinput10
+    - libjpeg62-turbo
+    - libkmod2
+    - libliftoff0
+    - libmtdev1t64
+    - libpango-1.0-0
+    - libpangocairo-1.0-0
+    - libpangoft2-1.0-0
+    - libpci3
+    - libpixman-1-0
+    - libpolkit-agent-1-0
+    - libpolkit-gobject-1-0
+    - librsvg2-2
+    - libseat1
+    - libselinux1
+    - libsframe1
+    - libsm6
+    - libsystemd0
+    - libthai0
+    - libtomlplusplus3t64
+    - libudev1
+    - libudis86-0
+    - libuuid1
+    - libwacom-common
+    - libwacom9
+    - libxaw7
+    - libxcb-composite0
+    - libxcb-errors0
+    - libxcb-icccm4
+    - libxcb-render0
+    - libxcb-res0
+    - libxcb-xfixes0
+    - libxcb1
+    - libxcvt0
+    - libxdmcp6
+    - libxfont2
+    - libxkbcommon0
+    - libxkbfile1
+    - libxml2
+    - libxmu6
+    - libxpm4
+    - libxrender1
+    - libxt6t64
+    - libzip5
+    - pciutils
+    - polkitd
+    - sed
+    - sgml-base
+    - x11-xkb-utils
+    - xfonts-base
+    - xfonts-encodings
+    - xfonts-utils
+    - xkb-data
+    - xml-core
+    - xserver-common
+    - xwayland
+    - aquamarine
+    - hyprland
+    - hyprwayland-scanner
+    - hyprwall
+    - hypr
+  runtime: uruntime
+
+apprunconf:
+  exec: /usr/bin/Hyprland
+  setpath: /usr/bin
+  setlibpath: /usr/lib
+  envvars:
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+  prebuild_commands: []
+
+sandbox:
+  type: none
+
+integration:
+  type: wm

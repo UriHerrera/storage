@@ -1,0 +1,28 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: lact
+  version: 0.9.0-0
+  binarypath: /usr/bin/lact
+  os-target: 7.0.0
+  distrorepo: 
+    - distro: nitrux
+      release: duke
+      arch: amd64
+  deps:
+    - lact
+  runtime: uruntime
+
+apprunconf:
+  exec: /usr/bin/lact
+  setpath: /usr/bin
+  setlibpath: /usr/lib
+  envvars: {}
+  prebuild-commands: []
+
+sandbox:
+  type: none
+
+integration:
+  type: gui

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2026 <Nitrux Latinoamericana S.C. <hello@nxos.org>>
+
+
+# -- Exit on errors.
+
+set -xe
+
+
+# -- Resolve the absolute path of the directory containing this script.
+
+APP_ID="io.github.ilya_zlobintsev.LACT"
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
+# 1. Prefer the lact binary sitting alongside daemon.sh, then search Flatpak active deployments
+if [ -x "${SCRIPT_DIR}/lact" ]; then
+    LACT_BIN="${SCRIPT_DIR}/lact"
+elif [ -n "${FLATPAK_INSTALL_USER}" ] && [ -x "/Users/${FLATPAK_INSTALL_USER}/.local/share/flatpak/app/${APP_ID}/x86_64/stable/active/files/bin/lact" ]; then
+    LACT_BIN="/Users/${FLATPAK_INSTALL_USER}/.local/share/flatpak/app/${APP_ID}/x86_64/stable/active/files/bin/lact"
+else
+    FOUND_BIN=$(find /Users /var/lib/flatpak -maxdepth 10 -path "*/flatpak/app/${APP_ID}/*/*/active/files/bin/lact" -print -quit 2>/dev/null || true)
+    if [ -n "${FOUND_BIN}" ] && [ -x "${FOUND_BIN}" ]; then
+        LACT_BIN="${FOUND_BIN}"
+    else
+        echo "Error: Could not find lact binary inside Flatpak installation for ${APP_ID}" >&2
+        exit 1
+    fi
+fi
+
+# 2. Point daemon config to /System/Configuration/lact and socket to /run/lactd.sock
+mkdir -p /System/Configuration/lact
+export LACT_DAEMON_SOCKET_PATH="/run/lactd.sock"
+export LACT_DAEMON_CONFIG_DIR="/System/Configuration/lact"
+
+# 3. Remove stale host socket if lact is not currently running
+if [ -S "${LACT_DAEMON_SOCKET_PATH}" ] && ! pgrep -x "lact" >/dev/null 2>&1; then
+    rm -f "${LACT_DAEMON_SOCKET_PATH}"
+fi
+
+# 4. Execute the daemon directly on the host
+exec "${LACT_BIN}" daemon

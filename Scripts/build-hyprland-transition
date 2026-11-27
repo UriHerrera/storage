@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2026 <Nitrux Latinoamericana S.C. <hello@nxos.org>>
+
+
+# -- Exit on errors.
+
+set -euo pipefail
+
+usage() {
+	printf "%s\n" "Usage: $0 [--output-dir DIRECTORY]"
+}
+
+output_dir="$PWD"
+
+while [ "$#" -gt 0 ]; do
+	case "$1" in
+		--output-dir|-o)
+			[ "$#" -ge 2 ] || { usage >&2; exit 2; }
+			output_dir=$2
+			shift 2
+			;;
+		--help|-h)
+			usage
+			exit 0
+			;;
+		*)
+			usage >&2
+			exit 2
+			;;
+	esac
+done
+
+case "$output_dir" in
+	/*) ;;
+	*) output_dir="$PWD/$output_dir" ;;
+esac
+
+for command in equivs-build dpkg-deb; do
+	command -v "$command" >/dev/null 2>&1 || {
+		printf "Missing required command: %s\n" "$command" >&2
+		exit 1
+	}
+done
+
+mkdir -p -- "$output_dir"
+
+work_dir=$(mktemp -d)
+trap 'rm -rf -- "$work_dir"' EXIT
+
+version="0.0.1-$(date +%Y%m%d%H%M%S)"
+control="$work_dir/transition-configuration"
+printf "%s\n" \
+	"Section: oldlibs" \
+	"Priority: optional" \
+	"Homepage: https://nxos.org" \
+	"Package: hyprland-transition" \
+	"Version: $version" \
+	"Maintainer: Uri Herrera <uri_herrera@nxos.org>" \
+	"Depends: hyprland-desktop" \
+	"Conflicts: hyprland-core, hyprland-data, hyprland-qt-support0, hyprlock, hyprpicker, hyprpolkitagent, hyprsysteminfo, hyprscreend, iio-hyprland, libhyprcursor1, libhyprutils10, libhyprutils11" \
+	"Replaces: hyprland-core, hyprland-data, hyprland-qt-support0, hyprlock, hyprpicker, hyprpolkitagent, hyprsysteminfo, hyprscreend, iio-hyprland, libhyprcursor1, libhyprutils10, libhyprutils11" \
+	"Architecture: all" \
+	"Description: Transition package for the Nitrux Hyprland package migration." \
+	> "$control"
+
+(
+	cd "$work_dir"
+	equivs-build "$control"
+)
+
+package_deb=$(find "$work_dir" -maxdepth 1 -type f -name 'hyprland-transition_*.deb' -print -quit)
+[ -n "$package_deb" ] || {
+	printf "%s\n" "Failed to build hyprland-transition." >&2
+	exit 1
+}
+
+dpkg-deb --info "$package_deb" >/dev/null
+cp -- "$package_deb" "$output_dir/"
+printf "Wrote %s\n" "$output_dir/$(basename "$package_deb")"

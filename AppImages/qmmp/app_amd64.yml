@@ -1,0 +1,186 @@
+# YAML build file
+# nx-apphub-cli 2025 (c) Nitrux Latinoamericana S.C.
+
+buildinfo:
+  name: qmmp
+  version: 1.6.2-1+b1
+  binarypath: /usr/bin/qmmp-1
+  distrorepo:
+    - distro: debian
+      release: bookworm
+      arch: amd64
+      components:
+        - main
+  deps:
+    - libaom3
+    - libarchive13
+    - libasound2
+    - libasound2-data
+    - libasyncns0
+    - libavcodec59
+    - libavformat59
+    - libavutil57
+    - libbluray2
+    - libbs2b0
+    - libcddb2
+    - libcdio-cdda2
+    - libcdio19
+    - libchromaprint1
+    - libcjson1
+    - libcodec2-1.0
+    - libcurl3-gnutls
+    - libdav1d6
+    - libdouble-conversion3
+    - libenca0
+    - libevdev2
+    - libfaad2
+    - libflac12
+    - libgme0
+    - libgomp1
+    - libgsm1
+    - libgudev-1.0-0
+    - libhwy1
+    - libice6
+    - libicu72
+    - libinput-bin
+    - libinput10
+    - libjack-jackd2-0
+    - libjxl0.7
+    - liblcms2-2
+    - libldap-2.5-0
+    - libmad0
+    - libmbedcrypto7
+    - libmd4c0
+    - libmfx1
+    - libmms0
+    - libmng1
+    - libmp3lame0
+    - libmpcdec6
+    - libmpg123-0
+    - libmtdev1
+    - libnorm1
+    - libnuma1
+    - libogg0
+    - libopenjp2-7
+    - libopenmpt0
+    - libopus0
+    - libopusfile0
+    - libpcre2-16-0
+    - libpgm-5.3-0
+    - libpipewire-0.3-0
+    - libpulse0
+    - libqt5core5a
+    - libqt5dbus5
+    - libqt5gui5
+    - libqt5multimedia5
+    - libqt5network5
+    - libqt5qml5
+    - libqt5qmlmodels5
+    - libqt5quick5
+    - libqt5sql5
+    - libqt5svg5
+    - libqt5waylandclient5
+    - libqt5waylandcompositor5
+    - libqt5widgets5
+    - libqt5x11extras5
+    - librabbitmq4
+    - librav1e0
+    - librist4
+    - libsamplerate0
+    - libshine3
+    - libshout3
+    - libsidplayfp6
+    - libsm6
+    - libsnappy1v5
+    - libsndfile1
+    - libsodium23
+    - libsoxr0
+    - libspa-0.2-modules
+    - libspeex1
+    - libsrt1.5-gnutls
+    - libssh-gcrypt-4
+    - libsvtav1enc1
+    - libswresample4
+    - libtag1v5
+    - libtag1v5-vanilla
+    - libtheora0
+    - libtwolame0
+    - libudfread0
+    - libva-drm2
+    - libva-x11-2
+    - libva2
+    - libvdpau1
+    - libvorbis0a
+    - libvorbisenc2
+    - libvorbisfile3
+    - libvpx7
+    - libwacom-common
+    - libwacom9
+    - libwavpack1
+    - libwebpdemux2
+    - libwebpmux3
+    - libwebrtc-audio-processing1
+    - libwildmidi2
+    - libx11-6
+    - libx11-xcb1
+    - libx264-164
+    - libx265-199
+    - libxcb-dri2-0
+    - libxcb-dri3-0
+    - libxcb-glx0
+    - libxcb-icccm4
+    - libxcb-image0
+    - libxcb-keysyms1
+    - libxcb-present0
+    - libxcb-randr0
+    - libxcb-render-util0
+    - libxcb-render0
+    - libxcb-shape0
+    - libxcb-shm0
+    - libxcb-sync1
+    - libxcb-util1
+    - libxcb-xfixes0
+    - libxcb-xinerama0
+    - libxcb-xinput0
+    - libxcb-xkb1
+    - libxcb1
+    - libxkbcommon-x11-0
+    - libxkbcommon0
+    - libxkbfile1
+    - libxmp4
+    - libxvidcore4
+    - libzmq5
+    - libzvbi-common
+    - libzvbi0
+    - ocl-icd-libopencl1
+    - qmmp
+    - qt5-image-formats-plugins
+    - qtwayland5
+    - x11-common
+    - xkb-data
+  runtime: go
+
+apprunconf:
+  setpath: "/usr/bin"
+  setlibpath: "/usr/lib"
+  exec: "/usr/bin/qmmp-1"
+  envvars:
+    QT_QPA_PLATFORM: "xcb;wayland"
+    QT_PLUGIN_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/plugins:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/plugins"
+    QT_QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml:$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt6/qml"
+    QML2_IMPORT_PATH: "$APPDIR/usr/lib/x86_64-linux-gnu/qt5/qml"
+    SESSION_MANAGER: ""
+    XKB_CONFIG_ROOT: "$APPDIR/usr/share/X11/xkb"
+    LD_LIBRARY_PATH: "$APPDIR/usr/lib/qmmp"
+    QT_DEBUG_PLUGINS: "1"
+  extra_rpaths:
+    - "$ORIGIN/../../usr/lib/qmmp"
+  prebuild_commands:
+    - "rm -f $APPDIR/usr/share/metainfo/qmmp-1.appdata.xml"
+
+sandbox:
+  type: none
+
+integration:
+  type: gui

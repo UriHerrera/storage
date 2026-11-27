@@ -1,0 +1,144 @@
+#!/usr/bin/env sh
+
+# SPDX-License-Identifier: BSD-3-Clause
+# Copyright 2023-2025 <Nitrux Latinoamericana S.C. <hello@nxos.org>>
+
+
+# -- Exit on errors.
+
+set -e
+
+
+set -e
+
+
+# -- Set program name and version.
+
+TOOL_NAME="Uninstall Guix (Binary)"
+
+
+# -- Print informative messages to stderr.
+
+puts_info() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[34mInfo:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print success messages to stderr.
+
+puts_success() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[32mSuccess:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print error messages to stderr.
+
+puts_error() {
+	if [ -n "$1" ]; then
+		printf "%s: \e[31mError:\e[0m %b\n" "$TOOL_NAME" "$*" >&2
+	fi
+}
+
+
+# -- Print messages or text using multiple lines to stderr.
+
+print_message() {
+	if [ $# -eq 0 ]; then
+		printf "\n" >&2
+	else
+		printf "%s\n" "$@" >&2
+	fi
+}
+
+
+# -- Print warning messages to stderr.
+
+puts_warning() {
+    if [ -n "$1" ]; then
+        printf "%s: \e[33mWarning:\e[0m %s\n" "$TOOL_NAME" "$*" >&2
+    fi
+}
+
+
+# -- Functions
+
+remove_dir() {
+	TARGET="$1"
+	if [ -d "$TARGET" ]; then
+		puts_info "Removing $TARGET"
+		rm -rf "$TARGET" 2>/dev/null || sudo rm -rf "$TARGET" || puts_warning "Failed to remove $TARGET"
+	fi
+}
+
+
+# -- Variables
+
+ZSHRC_FILE="$HOME/.zshrc"
+GUIX_WRAPPER_PATH="$HOME/.local/bin/guix"
+
+
+#   ====== START ======
+
+
+# -- Stop user-mode guix-daemon
+
+puts_info "Stopping any running guix-daemon processes"
+pkill -f guix-daemon 2>/dev/null || true
+
+
+# -- Remove Guix directories
+
+remove_dir "$HOME/.local/guix"
+remove_dir "$HOME/.guix-profile"
+remove_dir "$HOME/.config/guix"
+remove_dir "$HOME/.guix-daemon"
+
+
+# -- Remove PATH export block for ~/.config/guix/current/bin
+
+puts_info "Removing Guix PATH entry from $ZSHRC_FILE"
+if grep -q '# Guix environment setup' "$ZSHRC_FILE"; then
+	sed -i '/# Guix environment setup/,+2d' "$ZSHRC_FILE"
+	puts_info "Guix PATH entry removed from $ZSHRC_FILE"
+else
+	puts_warning "Guix PATH entry not found in $ZSHRC_FILE"
+fi
+
+# -- Remove wrapper
+
+puts_info "Removing Guix wrapper script"
+
+if [ -f "$GUIX_WRAPPER_PATH" ]; then
+	rm -f "$GUIX_WRAPPER_PATH"
+	puts_info "Removed $GUIX_WRAPPER_PATH"
+else
+	puts_warning "Wrapper script not found"
+fi
+
+
+# -- Remove ~/.local/bin PATH entry if present
+
+puts_info "Removing ~/.local/bin PATH entry from $ZSHRC_FILE"
+
+if grep -q "export PATH=\"\$HOME/.local/bin:\$PATH\"" "$ZSHRC_FILE"; then
+	sed -i "/export PATH=\"\\\$HOME\/.local\/bin:\\\$PATH\"/d" "$ZSHRC_FILE"
+	puts_info "Removed ~/.local/bin PATH entry"
+else
+	puts_warning "$HOME/.local/bin PATH entry not found"
+fi
+
+
+# -- Remove leftover Guix archive
+
+puts_info "Cleaning up any leftover archive files"
+
+rm -f guix-binary-*.tar.xz
+
+puts_success "Guix has been uninstalled from your user environment."
+puts_info "Restarting shell to apply environment variables"
+
+exec zsh
